@@ -1,0 +1,152 @@
+/* style.css - Стили для главной страницы (Хаба) + Анимация */
+:root {
+    --bg-hub: #111115;
+    --card-bg: #1e1e1e;
+    --card-hover-bg: #2a2a2a;
+    --text-primary: #f0f0f5;
+    --text-secondary: #a0a0b0;
+    --text-tertiary: #70707d; /* Добавил для футера */
+    --accent-music: #00e0ff;
+    --accent-calendar: #8a7ffb;
+    --accent-notion: #ffad4d;
+    --accent-weather: #5c9dff; /* Добавил для погоды */
+    --disabled-bg: #2c2c34;    /* Для карточек "В разработке" */
+    --disabled-border: #444;
+    --disabled-text: #777;
+    --border-color: #333333;
+    --font-main: 'Inter', sans-serif; /* Убедитесь, что подключен в HTML */
+    --border-radius: 12px;
+    --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.35);
+    --transition-main: 0.3s ease;
+    --transition-fast: 0.15s ease-out; /* Для анимации */
+    --animation-duration: 0.5s;       /* Длительность анимации появления */
+    --animation-delay-step: 0.08s;     /* Шаг задержки для каждой карточки */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; width: 100%; }
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-hub);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.hub-container { width: 100%; max-width: 900px; text-align: center; }
+.hub-header { margin-bottom: 40px; }
+.hub-header h1 { font-size: 2.8em; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.hub-header p { font-size: 1.1em; color: var(--text-secondary); }
+
+.app-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.app-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 35px 25px;
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-main), box-shadow var(--transition-main), border-color var(--transition-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    min-height: 260px;
+    justify-content: center;
+    position: relative; /* Для лейбла и анимации */
+    overflow: hidden;
+
+    /* --- АНИМАЦИЯ ПОЯВЛЕНИЯ --- */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInCard var(--animation-duration) ease-out forwards;
+}
+
+/* Задержка анимации */
+.app-card:nth-child(1) { animation-delay: calc(var(--animation-delay-step) * 0); }
+.app-card:nth-child(2) { animation-delay: calc(var(--animation-delay-step) * 1); }
+.app-card:nth-child(3) { animation-delay: calc(var(--animation-delay-step) * 2); }
+.app-card:nth-child(4) { animation-delay: calc(var(--animation-delay-step) * 3); }
+.app-card:nth-child(5) { animation-delay: calc(var(--animation-delay-step) * 4); }
+.app-card:nth-child(6) { animation-delay: calc(var(--animation-delay-step) * 5); }
+
+/* Анимация */
+@keyframes fadeInCard {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+/* --- КОНЕЦ АНИМАЦИИ --- */
+
+
+.app-card:not(.in-development):hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.app-icon { margin-bottom: 15px; }
+.app-card i { transition: color var(--transition-main); }
+
+.music-card i { color: var(--accent-music); }
+.calendar-card i { color: var(--accent-calendar); }
+.notion-card i { color: var(--accent-notion); }
+.weather-card i { color: var(--accent-weather); } /* Стиль для иконки погоды */
+
+.music-card:hover { border-color: var(--accent-music); }
+.calendar-card:hover { border-color: var(--accent-calendar); }
+.notion-card:hover { border-color: var(--accent-notion); }
+.weather-card:hover { border-color: var(--accent-weather); } /* Стиль ховера погоды */
+
+/* Стили для карточек "В разработке" */
+.app-card.in-development {
+    background-color: var(--disabled-bg);
+    border-color: var(--disabled-border);
+    cursor: not-allowed;
+    opacity: 0.7; /* Начальная прозрачность для анимации должна быть 0, но для неактивных ставим 0.7 */
+    animation: fadeInCard var(--animation-duration) ease-out forwards; /* Применяем анимацию и к ним */
+    box-shadow: none;
+}
+.app-card.in-development:hover {
+    transform: none; /* Убираем эффект ховера */
+    box-shadow: none;
+    border-color: var(--disabled-border);
+}
+.app-card.in-development i { color: var(--disabled-text); }
+.app-card.in-development .app-info h2,
+.app-card.in-development .app-info p { color: var(--disabled-text); }
+
+/* Лейбл "В разработке" */
+.dev-label {
+    position: absolute; top: 15px; right: -40px; background-color: var(--accent-calendar); /* Используем цвет календаря */ color: white; padding: 4px 40px; font-size: 0.75em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transform: rotate(45deg); transform-origin: top right; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.app-info h2 { font-size: 1.6em; font-weight: 600; margin-bottom: 10px; }
+.app-info p { font-size: 0.95em; color: var(--text-secondary); max-width: 250px; margin: 0 auto; }
+.hub-footer { margin-top: 30px; font-size: 0.9em; color: var(--text-tertiary); }
+
+/* Адаптивность */
+@media (max-width: 1250px) { /* Точка для 3х карточек */
+     .app-links { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+}
+@media (max-width: 900px) { /* Точка для 2х карточек */
+     .app-links { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+}
+@media (max-width: 650px) {
+    .hub-header h1 { font-size: 2.2em; }
+    .hub-header p { font-size: 1em; }
+    .app-links { grid-template-columns: 1fr; gap: 20px; }
+    .app-card { padding: 25px 20px; min-height: auto;}
+    .app-info h2 { font-size: 1.3em; }
+    .app-info p { font-size: 0.9em; }
+}

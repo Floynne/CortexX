@@ -1,0 +1,694 @@
+/* --- style.css (Полный код - Финальная версия) --- */
+
+/* --- Глобальные переменные и базовые стили --- */
+:root {
+    --primary-color: #00e0ff;
+    --primary-color-rgb: 0, 224, 255;
+    --glow-color: rgba(0, 224, 255, 0.5);
+    --background-color: #000000;
+    --sidebar-bg: #080808;
+    --content-bg: #121212;
+    --playback-bar-bg: #181818;
+    --panel-bg: #282828; /* Цвет фона панелей/карточек */
+    --fullscreen-bg: linear-gradient(180deg, #303030 0%, #121212 100%);
+    --text-color: #ffffff;
+    --text-color-subtle: #b3b3b3;
+    --placeholder-bg: #333; /* Чуть светлее для плейсхолдеров */
+    --playback-bar-height: 90px;
+    --sidebar-width: 240px;
+    --item-hover-bg: #2a2a2a;
+    --item-active-bg: #383838;
+    --button-active-color: var(--primary-color);
+    --like-color: #1db954; /* Более каноничный Spotify зеленый */
+    --progress-bar-bg: #535353; /* Чуть светлее фон прогресс-баров */
+    --progress-bar-fg: #b3b3b3;
+    --progress-bar-fg-hover: #ffffff; /* Белый при наведении на прогресс */
+    --thumb-color: #ffffff;
+    --thumb-hover-color: var(--primary-color);
+    --border-color: #404040; /* Цвет границ */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow: hidden;
+    font-size: 15px;
+}
+
+#app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* --- Сайдбар --- */
+#sidebar {
+    width: var(--sidebar-width);
+    height: calc(100% - var(--playback-bar-height)); /* Правильная высота */
+    background-color: var(--sidebar-bg);
+    padding: 24px 12px; /* Немного другие отступы */
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+    z-index: 100;
+    border-right: 1px solid var(--border-color); /* Тонкая граница */
+}
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px 25px 12px;
+    color: var(--text-color);
+    flex-shrink: 0;
+}
+.sidebar-logo i { color: var(--primary-color); }
+.sidebar-logo span { font-size: 1.4em; font-weight: bold; white-space: nowrap; }
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0; /* Отступ снизу */
+    overflow-y: auto;
+    flex-grow: 1;
+}
+/* Стили для скроллбара сайдбара (опционально, Webkit) */
+.sidebar-nav::-webkit-scrollbar { width: 6px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--progress-bar-bg); border-radius: 3px;}
+.sidebar-nav::-webkit-scrollbar-thumb:hover { background: var(--progress-bar-fg); }
+
+.sidebar-nav li a.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Чуть больше */
+    padding: 10px 12px; /* Уменьшим вертикальный паддинг */
+    border-radius: 6px;
+    color: var(--text-color-subtle);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+    margin-bottom: 6px;
+    white-space: nowrap;
+}
+.sidebar-nav li a.nav-link:hover { color: var(--text-color); background-color: var(--item-hover-bg); }
+.sidebar-nav li a.nav-link.active { color: var(--text-color); background-color: var(--item-active-bg); }
+.sidebar-nav li a.nav-link i { width: 22px; text-align: center; font-size: 1.2em; flex-shrink: 0; }
+.sidebar-nav li a.nav-link span { flex-grow: 1; }
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 10px 12px 0 12px; /* Отступ сверху */
+    flex-shrink: 0;
+    border-top: 1px solid var(--border-color); /* Разделитель */
+}
+.sidebar-file-label {
+    display: flex !important;
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-start;
+    padding: 12px 12px; /* Отступы как у ссылок */
+    margin-top: 10px;
+    background-color: transparent;
+    color: var(--text-color-subtle);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.95em;
+    font-weight: 500;
+    border: none;
+    text-align: left;
+    width: 100%;
+    white-space: nowrap;
+}
+
+/* Обертка для кнопки "Домой" и логотипа */
+.sidebar-header-flex {
+    display: flex; /* Используем Flexbox для выравнивания */
+    align-items: center; /* Выравниваем по вертикали */
+    /* Настройте паддинги, чтобы соответствовать вашему дизайну */
+    /* Пример: */
+    padding: 15px 15px 10px 15px;
+    /* Можно добавить границу снизу, если она нужна */
+    /* border-bottom: 1px solid var(--border-color, #303030); */
+    gap: 15px; /* Расстояние между кнопкой и лого */
+}
+
+/* Ссылка/кнопка "Домой" */
+a.back-to-hub {
+    /* Цвета - используйте переменные из вашего :root или конкретные значения */
+    color: var(--text-secondary, #a0a0a0); /* Цвет иконки */
+    font-size: 1.3em; /* Размер иконки */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    padding: 6px; /* Небольшой внутренний отступ для области клика */
+    border-radius: 50%; /* Делаем круглым фон при наведении */
+    transition: color 0.2s ease, background-color 0.2s ease;
+    display: inline-flex; /* Для правильного отображения и выравнивания иконки */
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Запрещаем кнопке сжиматься */
+}
+
+/* Если у вашего .sidebar-logo были отступы или границы, их, возможно, нужно убрать */
+#sidebar .sidebar-logo {
+    padding: 0; /* Убираем стандартный паддинг, если он мешает выравниванию */
+    flex-grow: 1; /* Логотип занимает оставшееся место */
+    border-bottom: none; /* Убираем границу логотипа, если она была */
+    /* Возможно, нужно изменить justify-content, если логотип должен быть не по центру */
+    /* display: flex; */ /* Убедитесь, что flex остался */
+    /* align-items: center; */
+    /* gap: 12px; */
+}
+a.back-to-hub:hover {
+    /* Цвета при наведении */
+    color: var(--text-primary, #e0e0e0);
+    background-color: var(--bg-hover, #2d2d2d); /* Цвет фона при наведении */
+}
+a.back-to-hub:active {
+    transform: scale(0.95); /* Легкое уменьшение при нажатии */
+}
+.sidebar-file-label:hover { background-color: var(--item-hover-bg); color: var(--text-color); }
+.sidebar-file-label i { width: 22px; text-align: center; font-size: 1.1em; flex-shrink: 0;}
+.sidebar-file-label span { flex-grow: 1; }
+
+/* --- Область Контента --- */
+#content-area {
+    flex-grow: 1;
+    height: calc(100% - var(--playback-bar-height)); /* Правильная высота */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--content-bg);
+}
+
+/* Верхняя панель (с поиском) */
+#top-bar {
+    padding: 15px 30px;
+    background-color: var(--content-bg); /* Можно сделать чуть темнее фона #101010 */
+    flex-shrink: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--border-color); /* Разделитель */
+}
+.search-section { display: flex; max-width: 450px; gap: 10px; }
+#searchInput {
+    flex-grow: 1;
+    padding: 10px 18px; /* Увеличим паддинг */
+    border: none; /* Уберем рамку */
+    background-color: var(--panel-bg); /* Используем цвет панелей */
+    color: var(--text-color);
+    border-radius: 50px; /* Сильно скругленные края */
+    font-size: 0.95em;
+    outline: none;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+#searchInput::placeholder { color: var(--text-color-subtle); }
+#searchInput:focus {
+     background-color: var(--item-hover-bg); /* Цвет как у ховера */
+     box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.5); /* Подсветка при фокусе */
+}
+#searchButton {
+    background-color: transparent;
+    color: var(--text-color-subtle);
+    border: none;
+    border-radius: 50%;
+    width: 40px; /* Чуть больше */
+    height: 40px;
+    font-size: 1.1em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    flex-shrink: 0;
+}
+#searchButton:hover {
+    color: var(--text-color);
+    background-color: var(--item-hover-bg);
+}
+
+/* Основной контент (скроллируемый) */
+#main-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 30px; /* Увеличим паддинг */
+    scroll-behavior: smooth;
+}
+#main-content::-webkit-scrollbar { width: 8px; }
+#main-content::-webkit-scrollbar-track { background: var(--content-bg); }
+#main-content::-webkit-scrollbar-thumb { background: var(--progress-bar-bg); border-radius: 4px;}
+#main-content::-webkit-scrollbar-thumb:hover { background: var(--progress-bar-fg); }
+
+.content-view { display: none; animation: fadeIn 0.3s ease-in-out; }
+.content-view.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+#home-view h2, #liked-view h2 {
+    margin-top: 0;
+    margin-bottom: 30px; /* Больше отступ */
+    font-size: 1.8em; /* Крупнее */
+    font-weight: 700; /* Жирнее */
+}
+.search-results-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Чуть меньше мин. ширина */
+    gap: 24px; /* Больше гэп */
+}
+
+/* Карточки трека */
+.chart-item {
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    padding: 16px; /* Больше паддинг */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: background-color 0.2s ease;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Легкая тень */
+}
+.chart-item:hover { background-color: var(--item-hover-bg); }
+.chart-item:hover .play-item-btn { opacity: 1; transform: translateY(0) scale(1); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+
+.chart-item img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 6px; /* Скругление обложки */
+    background-color: var(--placeholder-bg);
+    margin-bottom: 4px; /* Небольшой отступ снизу */
+}
+.chart-item-info { display: flex; flex-direction: column; gap: 5px; overflow: hidden; }
+.chart-item-title {
+    font-weight: 600; /* Жирнее название */
+    font-size: 1em;
+    color: var(--text-color);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.chart-item-artist {
+    font-size: 0.88em; /* Чуть крупнее артист */
+    color: var(--text-color-subtle);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.play-item-btn {
+    position: absolute;
+    bottom: 20px; /* Немного выше */
+    right: 20px;
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 45px; /* Крупнее */
+    height: 45px;
+    font-size: 1.1em;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px) scale(0.9); /* Начальное состояние для анимации */
+    transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Тень по умолчанию */
+}
+.play-item-btn:hover { background-color: #33ebff; transform: translateY(0) scale(1.05); } /* Эффект при наведении */
+
+.chart-item.liked-item .remove-liked-btn { /* Кнопка удаления лайка (оставляем) */
+    position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.6);
+    color: var(--text-color-subtle); border: none; border-radius: 50%; width: 28px; height: 28px;
+    font-size: 0.8em; display: flex; justify-content: center; align-items: center;
+    cursor: pointer; opacity: 0.8; transition: opacity 0.2s, color 0.2s; z-index: 6;
+}
+.chart-item.liked-item .remove-liked-btn:hover { opacity: 1; color: var(--text-color); }
+
+.loading-text { color: var(--text-color-subtle); text-align: center; margin-top: 40px; font-size: 1.1em; }
+
+/* --- Нижняя панель воспроизведения --- */
+#playback-bar {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: var(--playback-bar-height);
+    background-color: var(--playback-bar-bg);
+    border-top: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) 1.5fr minmax(220px, 1fr); /* Увеличим правую колонку */
+    align-items: center;
+    padding: 0 24px; /* Больше паддинг */
+    z-index: 1000;
+    gap: 24px; /* Больше гэп */
+}
+
+/* Левая часть панели */
+.pb-track-info { grid-column: 1 / 2; display: flex; align-items: center; gap: 14px; min-width: 0; overflow: hidden; cursor: pointer; }
+#pb-album-art { width: 56px; height: 56px; border-radius: 4px; object-fit: cover; background-color: var(--placeholder-bg); flex-shrink: 0; display: block; }
+.pb-text { overflow: hidden; margin-right: 10px; flex-grow: 1; }
+#pb-track-title { font-size: 0.95em; font-weight: 500; color: var(--text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 5px; }
+#pb-track-artist { font-size: 0.8em; color: var(--text-color-subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Центральная часть */
+.pb-controls-progress { grid-column: 2 / 3; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 700px; margin: 0 auto; min-width: 0; }
+.pb-controls { display: flex; align-items: center; gap: 18px; margin-bottom: 10px; flex-wrap: nowrap; }
+.pb-button { background: none; border: none; color: var(--text-color-subtle); font-size: 1.2em; cursor: pointer; padding: 5px; transition: color 0.15s ease; position: relative; line-height: 1; }
+.pb-button:hover:not(:disabled) { color: var(--text-color); }
+.pb-button:disabled { opacity: 0.4; cursor: not-allowed; }
+.pb-button.active { color: var(--button-active-color); }
+
+.pb-play-pause { background-color: var(--text-color); color: #000; border-radius: 50%; width: 38px; height: 38px; font-size: 1em; display: flex; justify-content: center; align-items: center; margin: 0 5px; transition: transform 0.1s ease, background-color 0.2s ease; }
+.pb-play-pause:hover:not(:disabled) { background-color: #f0f0f0; transform: scale(1.05); }
+.pb-play-pause i { transition: none; }
+
+#pb-repeat-btn.repeat-one::after, #fs-repeat-btn.repeat-one::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background-color: var(--button-active-color); border-radius: 50%; }
+
+.pb-progress-container { display: flex; align-items: center; width: 100%; gap: 12px; }
+.pb-progress-container span { font-size: 0.78em; color: var(--text-color-subtle); min-width: 40px; text-align: center; user-select: none; }
+#pb-progress-bar { flex-grow: 1; cursor: pointer; appearance: none; -webkit-appearance: none; width: 100%; height: 5px; background: var(--progress-bar-bg); border-radius: 2.5px; outline: none; position: relative; overflow: hidden; }
+#pb-progress-bar::before { content: ''; display: block; position: absolute; top: 0; left: 0; height: 100%; background-color: var(--progress-bar-fg); width: var(--progress-percent, 0%); border-radius: 2.5px; transition: background-color 0.1s ease, width 0.05s linear; }
+#pb-progress-bar:hover::before { background-color: var(--progress-bar-fg-hover); }
+#pb-progress-bar::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; background: var(--thumb-color); border-radius: 50%; cursor: pointer; opacity: 0; transition: opacity 0.2s ease, background-color 0.15s ease; position: relative; z-index: 2; border: none; }
+#pb-progress-bar::-moz-range-thumb { width: 14px; height: 14px; background: var(--thumb-color); border-radius: 50%; cursor: pointer; border: none; opacity: 0; transition: opacity 0.2s ease, background-color 0.15s ease; position: relative; z-index: 2; }
+#playback-bar:hover #pb-progress-bar::-webkit-slider-thumb, #playback-bar:hover #pb-progress-bar::-moz-range-thumb,
+#pb-progress-bar:active::-webkit-slider-thumb, #pb-progress-bar:active::-moz-range-thumb { opacity: 1; }
+#playback-bar:hover #pb-progress-bar { height: 8px; transform: translateY(-1.5px); }
+#pb-progress-bar:hover::-webkit-slider-thumb { background-color: var(--thumb-hover-color); }
+#pb-progress-bar:hover::-moz-range-thumb { background-color: var(--thumb-hover-color); }
+
+/* Правая часть */
+.pb-controls-right { grid-column: 3 / 4; display: flex; align-items: center; justify-content: flex-end; gap: 16px; min-width: 0; overflow: visible; /* Разрешим EQ выходить за границу */ }
+.pb-like-btn { font-size: 1.25em; }
+.pb-like-btn.liked { color: var(--like-color); }
+.pb-like-btn.liked i::before { font-weight: 900; content: "\f004"; }
+.pb-like-btn i::before { font-weight: 400; content: "\f004"; }
+
+.pb-volume { display: flex; align-items: center; gap: 10px; }
+.pb-volume i { color: var(--text-color-subtle); font-size: 1.15em; width: 20px; text-align: center; cursor: pointer; transition: color 0.15s ease; }
+.pb-volume i:hover { color: var(--text-color); }
+
+#pb-volume-slider { appearance: none; -webkit-appearance: none; width: 90px; height: 5px; background: var(--progress-bar-bg); border-radius: 2.5px; outline: none; cursor: pointer; position: relative; overflow: hidden; }
+#pb-volume-slider::before { content: ''; display: block; position: absolute; top: 0; left: 0; height: 100%; background-color: var(--progress-bar-fg); width: var(--volume-percent, 80%); border-radius: 2.5px; transition: background-color 0.1s ease; }
+#pb-volume-slider:hover::before { background-color: var(--progress-bar-fg-hover); }
+#pb-volume-slider::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; background: var(--thumb-color); border-radius: 50%; cursor: pointer; opacity: 0; transition: opacity 0.2s ease, background-color 0.15s ease; position: relative; z-index: 2; border: none; }
+#pb-volume-slider::-moz-range-thumb { width: 14px; height: 14px; background: var(--thumb-color); border-radius: 50%; cursor: pointer; border: none; opacity: 0; transition: opacity 0.2s ease, background-color 0.15s ease; position: relative; z-index: 2; }
+.pb-volume:hover #pb-volume-slider::-webkit-slider-thumb, .pb-volume:hover #pb-volume-slider::-moz-range-thumb,
+#pb-volume-slider:active::-webkit-slider-thumb, #pb-volume-slider:active::-moz-range-thumb { opacity: 1; }
+.pb-volume:hover #pb-volume-slider { height: 8px; transform: translateY(-1.5px); }
+#pb-volume-slider:hover::-webkit-slider-thumb { background-color: var(--thumb-hover-color); }
+#pb-volume-slider:hover::-moz-range-thumb { background-color: var(--thumb-hover-color); }
+
+
+/* --- ПАНЕЛЬ ЭКВАЛАЙЗЕРА --- */
+#eq-panel {
+    position: absolute;
+    bottom: calc(var(--playback-bar-height) + 12px);
+    right: 24px; /* Выравниваем по правому краю паддинга панели */
+    width: 380px; /* Увеличим немного ширину для гэпов */
+    max-width: calc(100vw - 48px);
+    background-color: var(--panel-bg);
+    border-radius: 10px; /* Более скругленные углы */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); /* Глубже тень */
+    padding: 20px; /* Больше паддинг */
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Увеличим гэп */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.25s, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#eq-panel.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.eq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px; /* Увеличим отступ */
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0;
+}
+
+.eq-header span {
+    font-size: 1.1em; /* Крупнее */
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* Переключатель EQ (оставляем как есть) */
+.eq-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+.eq-switch input { display: none; }
+.eq-slider-toggle { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; transition: .3s; border-radius: 28px; }
+.eq-slider-toggle:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+input:checked + .eq-slider-toggle { background-color: var(--button-active-color); }
+input:disabled + .eq-slider-toggle { background-color: #444; cursor: not-allowed; opacity: 0.6; }
+input:checked + .eq-slider-toggle:before { transform: translateX(22px); }
+
+/* Контейнер полос EQ */
+.eq-bands {
+    display: flex;
+    justify-content: space-between; /* Равномерное распределение с отступами по краям */
+    align-items: stretch; /* Выравниваем по высоте */
+    height: 150px; /* !!! Увеличим высоту контейнера !!! */
+    padding: 25px 0 25px 0; /* Паддинг СВЕРХУ для dB, СНИЗУ для частот */
+    position: relative; /* Контекст для позиционирования слайдеров */
+}
+
+.eq-band {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Распределяем метки сверху и снизу */
+    height: 100%;
+    position: relative; /* Контекст для слайдера и dB метки */
+    width: auto; /* Ширина определяется содержимым (меткой частоты) и gap'ом */
+    flex-grow: 1; /* Занимаем равное пространство */
+    text-align: center;
+}
+
+/* Метка значения dB */
+.eq-db-label {
+    position: absolute;
+    top: 0; /* Вверху контейнера .eq-band */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75em;
+    color: var(--text-color);
+    background-color: rgba(0,0,0,0.7);
+    padding: 2px 4px;
+    border-radius: 3px;
+    min-width: 32px;
+    text-align: center;
+    user-select: none;
+    line-height: 1.2;
+    z-index: 3; /* Выше слайдера и трека */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease-in-out;
+}
+.eq-band:hover .eq-db-label { opacity: 1; }
+/* Показ/скрытие при фокусе/блюре управляется JS */
+
+
+/* Вертикальные слайдеры (через поворот горизонтального) */
+#eq-panel .eq-bands .eq-band input[type="range"] { /* Убираем [orient="vertical"] */
+    appearance: none; -webkit-appearance: none;
+    width: calc(100% - -20px); /* !!! Ширина ПОВЕРНУТОГО слайдера = ВЫСОТА его трека !!! */
+    height: 6px; /* !!! Высота ПОВЕРНУТОГО слайдера = ТОЛЩИНА его трека !!! */
+    cursor: pointer; margin: 0; padding: 0; border: none;
+    background: transparent; /* Фон не нужен, стилизуем трек */
+    position: absolute; top: 50%; left: 50%;
+    transform-origin: center center; /* Точка вращения - центр */
+    transform: translate(-50%, -50%) rotate(-90deg); /* Сначала центрируем, потом поворачиваем */
+    z-index: 2; /* Выше меток частоты, но ниже dB */
+}
+
+/* Стилизация ТРЕКА слайдера Webkit */
+#eq-panel .eq-bands .eq-band input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%; height: 100%; background: #555; border-radius: 3px; transition: background-color 0.15s ease;
+}
+#eq-panel .eq-bands .eq-band input[type="range"]:hover::-webkit-slider-runnable-track { background: #666; }
+
+/* Стилизация ТРЕКА слайдера Firefox */
+#eq-panel .eq-bands .eq-band input[type="range"]::-moz-range-track {
+    width: 100%; height: 100%; background: #555; border-radius: 3px; transition: background-color 0.15s ease; border: none;
+}
+#eq-panel .eq-bands .eq-band input[type="range"]:hover::-moz-range-track { background: #666; }
+
+/* Ползунок Webkit EQ */
+#eq-panel .eq-bands .eq-band input[type="range"]::-webkit-slider-thumb {
+    appearance: none; -webkit-appearance: none;
+    width: 18px; height: 18px; background: var(--thumb-color); border-radius: 50%;
+    cursor: pointer; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    margin-top: -6px; /* !!! Центрируем ползунок: (18px - 6px) / 2 = 6px !!! */
+}
+#eq-panel .eq-bands .eq-band input[type="range"]:hover::-webkit-slider-thumb { background-color: var(--thumb-hover-color); }
+#eq-panel .eq-bands .eq-band input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.1); }
+
+/* Ползунок Firefox EQ */
+#eq-panel .eq-bands .eq-band input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px; background: var(--thumb-color); border-radius: 50%;
+    cursor: pointer; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    transition: background-color 0.15s ease;
+}
+#eq-panel .eq-bands .eq-band input[type="range"]:hover::-moz-range-thumb { background-color: var(--thumb-hover-color); }
+
+/* Отключенное состояние EQ слайдеров */
+#eq-panel .eq-bands .eq-band input[type="range"]:disabled { cursor: not-allowed; opacity: 0.5; }
+#eq-panel .eq-bands .eq-band input[type="range"]:disabled::-webkit-slider-runnable-track { background: #444; }
+#eq-panel .eq-bands .eq-band input[type="range"]:disabled::-moz-range-track { background: #444; }
+#eq-panel .eq-bands .eq-band input[type="range"]:disabled::-webkit-slider-thumb { background: #888; box-shadow: none; transform: none; }
+#eq-panel .eq-bands .eq-band input[type="range"]:disabled::-moz-range-thumb { background: #888; box-shadow: none; }
+
+/* Метка частоты EQ */
+.eq-freq-label {
+    font-size: 0.8em;
+    color: var(--text-color-subtle);
+    text-align: center;
+    user-select: none;
+    width: 100%;
+    padding-top: 5px; /* Отступ от слайдера */
+}
+
+/* Пресеты EQ */
+.eq-presets { margin-top: 0; }
+#eq-preset-select {
+    width: 100%; padding: 10px 14px;
+    background-color: #383838; color: var(--text-color);
+    border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.95em;
+    cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23b3b3b3' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    padding-right: 40px; transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+#eq-preset-select:hover { background-color: #404040; border-color: #666; }
+#eq-preset-select:disabled { background-color: #404040; color: var(--text-color-subtle); cursor: not-allowed; opacity: 0.7; background-image: none; }
+#eq-preset-select option { background-color: #383838; color: var(--text-color); }
+
+/* Отключение контролов EQ */
+#eq-panel.controls-disabled { opacity: 0.7; pointer-events: none; }
+#eq-panel.controls-disabled .eq-header, #eq-panel.controls-disabled .eq-presets { pointer-events: auto; }
+#eq-panel.controls-disabled .eq-switch { pointer-events: auto; }
+
+
+/* --- Полноэкранный режим плеера --- */
+#fullscreen-player { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--fullscreen-bg); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 30px 30px 30px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; overflow: hidden; }
+#fullscreen-player.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.fs-top-bar { position: absolute; top: 15px; left: 15px; right: 15px; display: flex; justify-content: space-between; align-items: center; width: calc(100% - 30px); z-index: 11; }
+#fs-close-btn { background: rgba(0, 0, 0, 0.3); border: none; color: var(--text-color-subtle); border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background-color 0.2s, color 0.2s; }
+#fs-close-btn:hover { background-color: rgba(0, 0, 0, 0.5); color: var(--text-color); }
+.fs-header-info { color: var(--text-color-subtle); font-size: 0.9em; }
+.fs-main-content { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; width: 100%; max-width: 600px; margin-top: 30px; }
+.fs-art-visualizer-wrapper { position: relative; width: clamp(200px, 50vh, 350px); max-width: 90%; aspect-ratio: 1 / 1; margin-bottom: 40px; display: flex; justify-content: center; align-items: center; }
+#fs-album-art { width: 80%; height: 80%; border-radius: 50%; overflow: hidden; background-color: var(--placeholder-bg); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; }
+#fs-album-art-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+#visualizerCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.fs-track-controls-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 25px; }
+#fs-track-info { text-align: center; }
+#fs-track-title { font-size: 1.6em; font-weight: 600; margin-bottom: 8px; color: var(--text-color); }
+#fs-track-artist { font-size: 1em; color: var(--text-color-subtle); }
+.fs-controls { display: flex; align-items: center; justify-content: center; gap: 30px; width: 100%; }
+.fs-button { background: none; border: none; color: var(--text-color-subtle); cursor: pointer; padding: 8px; font-size: 1.1em; transition: color 0.2s ease, transform 0.1s ease; line-height: 1; }
+.fs-button:hover:not(:disabled) { color: var(--text-color); }
+.fs-button:active:not(:disabled) { transform: scale(0.95); }
+.fs-button:disabled { opacity: 0.4; cursor: not-allowed; }
+.fs-button.active { color: var(--button-active-color); }
+.fs-play-pause { font-size: 3.2em; color: var(--text-color); padding: 0; margin: 0 10px; }
+.fs-play-pause:hover:not(:disabled) { color: var(--primary-color); transform: scale(1.05); }
+.fs-like-btn { font-size: 1.5em; color: var(--text-color-subtle); }
+.fs-like-btn.liked { color: var(--like-color); }
+.fs-like-btn.liked i::before { font-weight: 900; content: "\f004"; }
+.fs-like-btn i::before { font-weight: 400; content: "\f004"; }
+
+
+/* Скрытие контейнера YT плеера */
+#youtubePlayerContainer { position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+
+/* --- Адаптивность --- */
+@media (max-width: 900px) {
+    :root { --sidebar-width: 70px; }
+    #sidebar .sidebar-logo span, #sidebar .sidebar-nav span, .sidebar-file-label span { display: none; }
+    #sidebar .sidebar-logo { justify-content: center; padding-bottom: 20px;}
+    #sidebar .sidebar-nav li a.nav-link { justify-content: center; padding: 12px 0; }
+    .sidebar-footer { padding: 5px; }
+    .sidebar-file-label { justify-content: center; padding: 10px 0; }
+    .search-results-list { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+    #playback-bar { grid-template-columns: auto 1fr auto; padding: 0 15px; gap: 15px; }
+    .pb-track-info { min-width: 56px; flex-basis: auto; gap: 0; }
+    .pb-track-info .pb-text { display: none; }
+    .pb-like-btn { display: none; }
+    .pb-controls-right { min-width: auto; flex-basis: auto; justify-content: flex-end; gap: 10px; }
+    #pb-eq-btn { margin-right: 5px; }
+    .pb-volume { min-width: auto; }
+    #pb-volume-slider { width: 70px; }
+    .search-results-list { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+    #top-bar { padding: 15px 20px; }
+    #main-content { padding: 20px; }
+    .fs-art-visualizer-wrapper { width: clamp(180px, 45vh, 300px); }
+    #fs-track-title { font-size: 1.4em; }
+    #fs-track-artist { font-size: 0.9em; }
+    .fs-controls { gap: 20px; }
+    #eq-panel { width: 320px; right: 15px; bottom: calc(var(--playback-bar-height) + 8px); padding: 15px; gap: 15px; }
+    .eq-bands { height: 140px; gap: 10px; padding: 20px 0 20px 0;} /* Адаптируем высоту и паддинги */
+    .eq-band { /* Ширина будет auto */ }
+    #eq-preset-select { padding: 8px 12px; padding-right: 35px; background-position: right 12px center;}
+}
+
+@media (max-width: 600px) {
+     :root { --playback-bar-height: 80px; }
+     #sidebar { height: calc(100% - var(--playback-bar-height)); }
+     #content-area { height: calc(100% - var(--playback-bar-height)); }
+     #playback-bar { padding: 0 10px; gap: 10px;}
+     .pb-controls { gap: 10px; margin-bottom: 5px;}
+     .pb-button { font-size: 1.1em; }
+     .pb-play-pause { width: 32px; height: 32px; font-size: 0.9em;}
+     .pb-progress-container span { display: none; }
+     .pb-volume { display: none; }
+     #pb-eq-btn { display: none !important; } /* Гарантированно скрываем кнопку EQ */
+     #eq-panel { display: none !important; } /* Гарантированно скрываем панель EQ */
+     #top-bar { padding: 10px 15px; }
+     #main-content { padding: 15px; padding-bottom: calc(var(--playback-bar-height) + 15px); }
+     #fullscreen-player { padding: 50px 15px 15px 15px; }
+     .fs-top-bar { top: 10px; left: 10px; right: 10px; width: calc(100% - 20px); }
+     #fs-close-btn { width: 35px; height: 35px; font-size: 1.1em; }
+     .fs-art-visualizer-wrapper { width: clamp(180px, 40vh, 250px); margin-bottom: 30px;}
+     #fs-track-title { font-size: 1.3em; }
+     .fs-controls { gap: 15px; max-width: 320px; }
+     .fs-button { font-size: 1em; padding: 6px;}
+     .fs-play-pause { font-size: 3em; margin: 0 5px;}
+     .fs-like-btn { font-size: 1.3em;}
+     .fs-track-controls-wrapper { gap: 20px; }
+}
+
+@media (max-width: 480px) {
+     .search-results-list { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+     .chart-item { padding: 10px; }
+     .play-item-btn { width: 35px; height: 35px; font-size: 0.9em; bottom: 10px; right: 10px;}
+     .fs-art-visualizer-wrapper { width: clamp(150px, 35vh, 220px); margin-bottom: 25px;}
+     #fs-track-title { font-size: 1.2em; }
+     #fs-track-artist { font-size: 0.85em; }
+     .fs-controls { gap: 12px; }
+     .fs-play-pause { font-size: 2.8em; }
+     .fs-like-btn { font-size: 1.2em; }
+}
+
+/* Стиль для скрытого input файла */
+input[type="file"]#audioFile {
+    display: none;
+}

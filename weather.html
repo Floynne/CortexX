@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Погода Pro</title> <!-- Обновленный Title -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome для иконок деталей -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Подключаем CSS файл для погоды -->
+    <link rel="stylesheet" href="weather.css">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
+</head>
+<body>
+    <div class="weather-app-container">
+        <div class="weather-app">
+            <header class="app-header">
+                <div class="search-box">
+                     <!-- !!! ВОТ ОНА - ССЫЛКА "ДОМОЙ" !!! -->
+                     <a href="index.html" class="icon-btn back-to-hub-weather" title="На главную">
+                         <i class="fas fa-arrow-left"></i> <!-- Font Awesome иконка -->
+                     </a>
+                     <!-- Остальные кнопки поиска -->
+                    <button id="location-btn" class="icon-btn" title="Погода в моей локации">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </button>
+                    <input type="text" id="city-input" placeholder="Введите город...">
+                    <button id="search-btn" class="icon-btn" title="Найти">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </header>
+
+            <main class="app-main">
+                <div class="status-section">
+                     <div id="loader" class="loader hidden"></div> <!-- Индикатор загрузки -->
+                     <div id="error-message" class="error-message hidden"></div> <!-- Сообщение об ошибке -->
+                </div>
+
+                <div id="weather-display" class="weather-display hidden"> <!-- Скрыт по умолчанию -->
+                    <!-- Текущая погода -->
+                    <section class="current-weather-section">
+                        <div class="current-main">
+                            <div class="location-datetime">
+                                <h2 id="city-name">--</h2>
+                                <p id="current-date">--</p>
+                            </div>
+                            <div class="current-temp-icon">
+                                <img id="weather-icon" src="https://openweathermap.org/img/wn/01d@4x.png" alt="иконка погоды">
+                                <p id="temperature">--°</p>
+                            </div>
+                            <p id="description">--</p>
+                        </div>
+                        <div class="current-details">
+                            <h3>Подробности</h3>
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <i class="fas fa-temperature-low"></i>
+                                    <div> <p>Ощущается как</p> <p id="feels-like">--°</p> </div>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tint"></i>
+                                    <div> <p>Влажность</p> <p id="humidity">--%</p> </div>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-wind"></i>
+                                    <div> <p>Ветер</p> <p id="wind-speed">-- м/с</p> </div>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <div> <p>Давление</p> <p id="pressure">-- гПа</p> </div>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-eye"></i>
+                                    <div> <p>Видимость</p> <p id="visibility">-- км</p> </div>
+                                </div>
+                                <div class="detail-item">
+                                     <i class="fas fa-sunrise"></i>
+                                     <div> <p>Восход</p> <p id="sunrise">--:--</p> </div>
+                                 </div>
+                                 <div class="detail-item">
+                                     <i class="fas fa-sunset"></i>
+                                     <div> <p>Закат</p> <p id="sunset">--:--</p> </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Прогноз погоды -->
+                    <section class="forecast-section">
+                        <h3>Прогноз на 24 часа</h3>
+                        <div class="forecast-container" id="forecast-container">
+                            <!-- Прогноз генерируется JS -->
+                        </div>
+                    </section>
+                </div>
+            </main>
+
+            <footer class="app-footer">
+                Данные предоставлены <a href="https://openweathermap.org/" target="_blank" rel="noopener noreferrer">OpenWeatherMap</a>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Подключаем JS файл для погоды -->
+    <script src="weather.js"></script>
+</body>
+</html>
