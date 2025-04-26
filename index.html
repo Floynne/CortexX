@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex X</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>">
+</head>
+<body>
+    <div class="hub-container">
+        <header class="hub-header">
+            <h1>Добро пожаловать!</h1>
+            <p>Выберите приложение для запуска:</p>
+        </header>
+
+        <div class="app-links">
+            <!-- Карточка Музыкального Плеера -->
+            <a href="pulse.html" class="app-card music-card">
+                <div class="app-icon"><i class="fas fa-headphones-alt fa-3x"></i></div>
+                <div class="app-info"><h2>Pulse Hub</h2><p>Музыкальная площадка с плейлистами и визуализацией.</p></div>
+            </a>
+
+            <!-- Карточка Календаря -->
+            <a href="calendar.html" class="app-card calendar-card">
+                <div class="app-icon"><i class="fas fa-calendar-alt fa-3x"></i></div>
+                <div class="app-info"><h2>Календарь</h2><p>Календарь с заметками на каждый день.</p></div>
+            </a>
+
+            <!-- Карточка Notion Clone -->
+            <a href="notes.html" class="app-card notion-card">
+                <div class="app-icon"><i class="fas fa-pencil-alt fa-3x"></i></div>
+                <div class="app-info"><h2>Заметки+</h2><p>Простой редактор заметок с иерархией.</p></div>
+            </a>
+
+            <!-- Карточка Погоды -->
+            <a href="weather.html" class="app-card weather-card">
+                <div class="app-icon"><i class="fas fa-cloud-sun-rain fa-3x"></i></div>
+                <div class="app-info"><h2>Погода</h2><p>Прогноз погоды по городу или геолокации на каждый день.</p></div>
+            </a>
+
+            <!-- !!! КАРТОЧКА ЗАГЛУШКА 1 !!! -->
+            <div class="app-card in-development">
+                <div class="app-icon">
+                    <i class="fas fa-tasks fa-3x"></i> <!-- Иконка задач -->
+                </div>
+                <div class="app-info">
+                    <h2>Coming Soon...</h2>
+                    <p>...</p>
+                    <span class="dev-label">В разработке</span>
+                </div>
+            </div>
+            <!-- Конец карточки заглушки 1 -->
+
+            <!-- !!! КАРТОЧКА ЗАГЛУШКА 2 !!! -->
+            <div class="app-card in-development">
+                <div class="app-icon">
+                    <i class="fas fa-film fa-3x"></i> <!-- Иконка фильмов -->
+                </div>
+                <div class="app-info">
+                    <h2>Coming Soon...</h2>
+                    <p>...</p>
+                    <span class="dev-label">В разработке</span>
+                </div>
+            </div>
+            <!-- Конец карточки заглушки 2 -->
+
+        </div>
+
+        <footer class="hub-footer">
+            <p>© 2024 Cortex X. Все права защищены.</p>
+        </footer>
+    </div>
+</body>
+</html>

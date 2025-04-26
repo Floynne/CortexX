@@ -1,0 +1,286 @@
+/* style.css - Notion Clone Lite */
+:root {
+    --bg-app: #191919;
+    --bg-sidebar: #1f1f1f;
+    --bg-main: #191919;
+    --bg-editor: #191919;
+    --bg-hover: #2d2d2d;
+    --bg-active: #333333;
+    --bg-toolbar: #252525;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --text-placeholder: #555555;
+    --border-color: #303030;
+    --accent-color: #4a90e2; /* Синий акцент */
+    --accent-hover: #6aaaf9;
+    --danger-hover: rgba(244, 67, 54, 0.2);
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --sidebar-width: 260px;
+    --border-radius: 6px;
+    --transition-fast: 0.15s ease-out;
+    --transition-medium: 0.25s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; width: 100%; overflow: hidden; }
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+/* Sidebar */
+#sidebar {
+    width: var(--sidebar-width);
+    height: 100%;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.2s ease; /* Для возможного схлопывания */
+    position: relative; /* Для футера */
+}
+
+.sidebar-header {
+    padding: 18px 15px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.workspace-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+.workspace-info i { color: var(--text-secondary); font-size: 1.1em; }
+
+.sidebar-nav {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px 8px;
+    /* Кастомный скроллбар */
+    scrollbar-width: thin; scrollbar-color: var(--bg-hover) transparent;
+}
+.sidebar-nav::-webkit-scrollbar { width: 6px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background-color: var(--bg-hover); border-radius: 3px; }
+
+#page-list {
+    list-style: none;
+}
+
+.page-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    margin-bottom: 2px;
+    position: relative; /* Для кнопки удаления */
+}
+.page-item:hover {
+    background-color: var(--bg-hover);
+}
+.page-item.active {
+    background-color: var(--bg-active);
+    font-weight: 500;
+}
+
+.page-icon {
+    color: var(--text-secondary);
+    margin-right: 10px;
+    font-size: 0.9em;
+    width: 16px; /* Фикс. ширина иконки */
+    text-align: center;
+}
+
+.page-title-sidebar {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.95em;
+    padding-right: 25px; /* Место для кнопки удаления */
+}
+
+.delete-page-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2em;
+    line-height: 1;
+    padding: 2px 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0; /* Скрыта по умолчанию */
+    transition: opacity var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+}
+.page-item:hover .delete-page-btn {
+    opacity: 1;
+}
+.delete-page-btn:hover {
+    background-color: var(--danger-hover);
+    color: #fff;
+}
+
+.sidebar-footer {
+    padding: 10px 15px;
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+#add-page-btn {
+    background: none; border: none; color: var(--text-secondary);
+    width: 100%; text-align: left; padding: 8px 5px; border-radius: var(--border-radius);
+    font-size: 0.95em; font-weight: 500; cursor: pointer; transition: background-color var(--transition-fast), color var(--transition-fast);
+    display: flex; align-items: center; gap: 8px;
+}
+#add-page-btn:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+#add-page-btn i { width: 16px; text-align: center; }
+
+#status-indicator {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: 8px;
+    opacity: 0.7;
+    transition: opacity 0.5s ease;
+}
+#status-indicator.saving {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
+
+/* Main Content */
+#main-content {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Важно */
+    position: relative; /* Для empty state */
+}
+
+#editor-toolbar {
+    padding: 8px 15px;
+    background-color: var(--bg-toolbar);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    display: flex;
+    gap: 5px;
+}
+#editor-toolbar button {
+    background: none; border: none; color: var(--text-secondary); font-size: 1em; padding: 6px 8px; border-radius: var(--border-radius-sm); cursor: pointer; transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+#editor-toolbar button:hover { background-color: var(--bg-hover); color: var(--text-primary); }
+#editor-toolbar button.active { background-color: var(--bg-active); color: var(--accent-color); } /* Выделение активной кнопки */
+
+
+#page-editor {
+    flex-grow: 1;
+    overflow-y: auto; /* Скролл для контента */
+    padding: 30px 40px; /* Отступы внутри редактора */
+    /* Кастомный скроллбар */
+    scrollbar-width: thin; scrollbar-color: var(--bg-hover) transparent;
+}
+#page-editor::-webkit-scrollbar { width: 8px; }
+#page-editor::-webkit-scrollbar-track { background: transparent; }
+#page-editor::-webkit-scrollbar-thumb { background-color: var(--bg-hover); border-radius: 4px; }
+
+
+/* Стили для contenteditable */
+[contenteditable] {
+    outline: none;
+    line-height: 1.7; /* Улучшенная читаемость */
+}
+[contenteditable]:empty:before {
+    content: attr(placeholder);
+    color: var(--text-placeholder);
+    cursor: text;
+    pointer-events: none; /* Важно, чтобы клик проходил */
+}
+
+#page-title-editor {
+    font-size: 2.2em; /* Крупный заголовок */
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+#page-content-editor {
+    font-size: 1em;
+    color: var(--text-primary);
+    min-height: 200px; /* Минимальная высота для начала */
+}
+
+/* Стили для базового форматирования */
+#page-content-editor b, #page-content-editor strong { font-weight: 700; }
+#page-content-editor i, #page-content-editor em { font-style: italic; }
+#page-content-editor ul, #page-content-editor ol { margin-left: 25px; margin-top: 0.5em; margin-bottom: 0.5em; }
+#page-content-editor li { margin-bottom: 0.3em; }
+
+
+/* Empty State */
+#empty-state {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-secondary);
+    opacity: 0.5;
+    pointer-events: none; /* Не мешает кликам */
+}
+#empty-state i {
+    margin-bottom: 15px;
+    color: var(--text-placeholder);
+}
+.hidden { display: none; }
+
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    :root { --sidebar-width: 220px; }
+    #sidebar { /* Можно сделать скрываемым */ }
+    #page-editor { padding: 20px; }
+    #page-title-editor { font-size: 1.8em; margin-bottom: 15px; }
+    #editor-toolbar { padding: 6px 10px; }
+    #editor-toolbar button { padding: 5px 6px; font-size: 0.9em;}
+}
+
+@media (max-width: 600px) {
+    #app-container { flex-direction: column; } /* Или скрывать сайдбар */
+    #sidebar {
+        width: 100%; height: auto; /* Пример, если сайдбар будет сверху или скрыт */
+        /* Логика скрытия/показа сайдбара потребует JS */
+        display: none; /* Пока просто скроем */
+    }
+    :root { --sidebar-width: 0px; } /* Убираем влияние на main */
+    #page-editor { padding: 15px; }
+    #page-title-editor { font-size: 1.6em; }
+    body { font-size: 14px; }
+}

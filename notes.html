@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заметки+</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="notion.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Сайдбар -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="workspace-info">
+                    <i class="fas fa-book"></i>
+                    <span>Моё Пространство</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul id="page-list">
+                    <!-- Страницы генерируются JS -->
+                    <!-- Пример:
+                    <li class="page-item active" data-id="12345">
+                        <i class="fas fa-file-alt page-icon"></i>
+                        <span class="page-title-sidebar">Название страницы</span>
+                        <button class="delete-page-btn">×</button>
+                    </li>
+                    -->
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="add-page-btn">
+                    <i class="fas fa-plus"></i> Новая страница
+                </button>
+                 <div id="status-indicator">Сохранено</div>
+            </div>
+        </aside>
+
+        <!-- Основной контент -->
+        <main id="main-content">
+            <div id="editor-toolbar">
+                <button data-command="bold" title="Жирный (Ctrl+B)"><i class="fas fa-bold"></i></button>
+                <button data-command="italic" title="Курсив (Ctrl+I)"><i class="fas fa-italic"></i></button>
+                <button data-command="insertUnorderedList" title="Маркированный список"><i class="fas fa-list-ul"></i></button>
+                <button data-command="insertOrderedList" title="Нумерованный список"><i class="fas fa-list-ol"></i></button>
+                <!-- Можно добавить другие кнопки (заголовок, код и т.д.) -->
+            </div>
+            <div id="page-editor">
+                <div id="page-title-editor" contenteditable="true" placeholder="Без названия"></div>
+                <div id="page-content-editor" contenteditable="true" placeholder="Начните вводить текст..."></div>
+            </div>
+            <div id="empty-state" class="hidden">
+                <i class="fas fa-ghost fa-4x"></i>
+                <p>Выберите страницу или создайте новую</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="notes.js"></script>
+</body>
+</html>
