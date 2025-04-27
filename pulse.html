@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse Music Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="pulse.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Боковая панель -->
+        <div id="sidebar">
+            <div class="sidebar-header-flex">
+                <a href="index.html" class="back-to-hub"><i class="fas fa-arrow-left"></i></a>
+                <div class="sidebar-logo">
+                    <i class="fas fa-headphones-alt"></i>
+                    <span>Pulse</span>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="Home" class="nav-link" data-view="home-view"><i class="fas fa-home"></i><span>Главная</span></a></li>
+                <li><a href="Favorite" class="nav-link" data-view="liked-view"><i class="fas fa-heart"></i><span>Понравившиеся</span></a></li>
+                <li><a href="PlayList" class="nav-link" data-view="playlists-view"><i class="fas fa-list"></i><span>Плейлисты</span></a></li>
+                <li><a href="Setting" class="nav-link" id="preference-btn"><i class="fas fa-sliders-h"></i><span>Предпочтения</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <label for="audioFile" class="sidebar-file-label">
+                    <i class="fas fa-upload"></i>
+                    <span>Загрузить трек</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Область контента -->
+        <div id="content-area">
+            <div id="top-bar">
+                <div class="search-section">
+                    <input type="text" id="searchInput" placeholder="Поиск треков...">
+                    <button id="searchButton"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div id="main-content">
+                <!-- Главная страница -->
+                <div id="home-view" class="content-view active">
+                    <h2 id="resultsTitle">Рекомендации для вас</h2>
+                    <div id="searchResults" class="search-results-list"></div>
+                </div>
+                <!-- Вкладка "Понравившиеся" -->
+                <div id="liked-view" class="content-view">
+                    <h2>Понравившиеся треки</h2>
+                    <div id="likedTracksList" class="search-results-list"></div>
+                </div>
+                <!-- Вкладка "Плейлисты" -->
+                <div id="playlists-view" class="content-view">
+                    <button id="create-playlist-btn"><i class="fas fa-plus"></i> Создать плейлист</button>
+                    <div id="playlists-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Панель воспроизведения -->
+        <div id="playback-bar">
+            <div class="pb-track-info">
+                <img id="pb-album-art" src="placeholder.jpg" alt="Обложка">
+                <div class="pb-text">
+                    <div id="pb-track-title">Трек не выбран</div>
+                    <div id="pb-track-artist">Исполнитель</div>
+                </div>
+            </div>
+            <div class="pb-controls-progress">
+                <div class="pb-controls">
+                    <button id="pb-shuffle-btn" class="pb-button" title="Перемешать"><i class="fas fa-random"></i></button>
+                    <button id="pb-prev-btn" class="pb-button" title="Предыдущий трек"><i class="fas fa-step-backward"></i></button>
+                    <button id="pb-play-pause-btn" class="pb-button pb-play-pause" title="Воспроизведение/Пауза"><i class="fas fa-play"></i></button>
+                    <button id="pb-next-btn" class="pb-button" title="Следующий трек"><i class="fas fa-step-forward"></i></button>
+                    <button id="pb-repeat-btn" class="pb-button" title="Повтор"><i class="fas fa-redo"></i></button>
+                </div>
+                <div class="pb-progress-container">
+                    <span id="pb-current-time">0:00</span>
+                    <input type="range" id="pb-progress-bar" min="0" max="100" value="0">
+                    <span id="pb-duration">0:00</span>
+                </div>
+            </div>
+            <div class="pb-controls-right">
+                <button id="pb-like-btn" class="pb-button pb-like-btn" title="Лайк"><i class="fas fa-heart"></i></button>
+                <button id="pb-eq-btn" class="pb-button" title="Эквалайзер"><i class="fas fa-sliders-h"></i></button>
+                <div class="pb-volume">
+                    <i id="pb-volume-icon" class="fas fa-volume-up"></i>
+                    <input type="range" id="pb-volume-slider" min="0" max="100" value="80">
+                    <button id="pb-add-to-playlist-btn" class="pb-button" title="Добавить в плейлист"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Полноэкранный плеер -->
+        <div id="fullscreen-player" class="fullscreen-player">
+            <div class="fs-top-bar">
+                <button id="fs-close-btn"><i class="fas fa-times"></i></button>
+                <div class="fs-header-info">Pulse Player</div>
+            </div>
+            <div class="fs-main-content">
+                <div class="fs-art-visualizer-wrapper">
+                    <div id="fs-album-art">
+                        <img id="fs-album-art-img" src="placeholder.jpg" alt="Обложка">
+                    </div>
+                    <canvas id="visualizerCanvas"></canvas>
+                </div>
+                <div class="fs-track-controls-wrapper">
+                    <div id="fs-track-info">
+                        <div id="fs-track-title">Трек не выбран</div>
+                        <div id="fs-track-artist">Исполнитель</div>
+                    </div>
+                    <div class="fs-controls">
+                        <button id="fs-shuffle-btn" class="fs-button" title="Перемешать"><i class="fas fa-random"></i></button>
+                        <button id="fs-prev-btn" class="fs-button" title="Предыдущий трек"><i class="fas fa-step-backward"></i></button>
+                        <button id="fs-play-pause-btn" class="fs-button fs-play-pause" title="Воспроизведение/Пауза"><i class="fas fa-play"></i></button>
+                        <button id="fs-next-btn" class="fs-button" title="Следующий трек"><i class="fas fa-step-forward"></i></button>
+                        <button id="fs-repeat-btn" class="fs-button" title="Повтор"><i class="fas fa-redo"></i></button>
+                        <button id="fs-like-btn" class="fs-button fs-like-btn" title="Лайк"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Аудио и YouTube плеер -->
+        <audio id="audioPlayer"></audio>
+        <input type="file" id="audioFile" accept="audio/*">
+        <div id="youtubePlayerContainer">
+            <div id="youtubePlayer"></div>
+        </div>
+
+        <!-- Панель эквалайзера -->
+        <div id="eq-panel" class="eq-panel">
+            <div class="eq-header">
+                <span>Эквалайзер</span>
+                <label class="eq-switch">
+                    <input type="checkbox" id="eq-enable-switch">
+                    <span class="eq-slider-toggle"></span>
+                </label>
+            </div>
+            <div class="eq-presets">
+                <select id="eq-preset-select"></select>
+            </div>
+            <div class="eq-bands"></div>
+        </div>
+
+        <!-- Модальное окно музыкальных предпочтений -->
+        <div id="music-preference-modal" class="modal">
+            <div class="modal-content">
+                <h2>Выберите любимых исполнителей</h2>
+                <p>Выберите до 10 исполнителей для персонализации рекомендаций</p>
+                <div id="artist-selection" class="artist-selection"></div>
+                <div id="related-artists" class="related-artists"></div>
+                <button id="submit-preferences">Сохранить</button>
+            </div>
+        </div>
+
+        <!-- Модальное окно создания плейлиста -->
+        <div id="create-playlist-modal" class="modal">
+            <div class="modal-content">
+                <h2>Создать плейлист</h2>
+                <input type="text" id="playlist-name-input" placeholder="Название плейлиста">
+                <div class="modal-buttons">
+                    <button id="cancel-playlist-btn">Отмена</button>
+                    <button id="save-playlist-btn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно добавления в плейлист -->
+        <div id="add-to-playlist-modal" class="modal">
+            <div class="modal-content">
+                <h2>Добавить в плейлист</h2>
+                <p>Выберите плейлист для добавления трека</p>
+                <div id="playlist-selection" class="playlist-selection"></div>
+                <div class="modal-buttons">
+                    <button id="cancel-add-to-playlist-btn">Отмена</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контекстное меню для треков -->
+        <div id="track-context-menu" class="context-menu" style="display: none;">
+            <ul id="context-playlists"></ul>
+        </div>
+    </div>
+
+    <!-- Подключение JavaScript -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="pulse.js"></script>
+</body>
+</html>
