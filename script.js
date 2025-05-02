@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const statusTextDelay = 1000; // Задержка перед скрытием текста статуса
         const greetingDelay = 1500; // Задержка перед показом заголовка
         const greetingDuration = 1800; // Длительность анимации заголовка
-        const overlayFadeDelay = greetingDelay + greetingDuration + 300; // Задержка перед скрытием оверлея
+        const overlayFadeDelay = greetingDelay + greetingDuration + 3300; // Задержка перед скрытием оверлея
         const contentFadeDelay = overlayFadeDelay + 200; // Задержка для контента хаба
 
         document.body.classList.add('loading-active');
