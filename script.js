@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (loadingOverlay && hubContainer) {
         const statusTextDelay = 3000; // Задержка перед скрытием текста статуса
-        const greetingDelay = 10500; // Задержка перед показом заголовка
+        const greetingDelay = 100500; // Задержка перед показом заголовка
         const greetingDuration = 1800; // Длительность анимации заголовка
         const overlayFadeDelay = greetingDelay + greetingDuration + 4800; // Задержка перед скрытием оверлея
         const contentFadeDelay = overlayFadeDelay + 200; // Задержка для контента хаба
