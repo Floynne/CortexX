@@ -22,6 +22,7 @@
             <div id="user-profile" class="user-profile">
                 <button id="login-trigger-btn" class="login-trigger-button hidden">Войти</button>
                 <div id="logged-in-user" class="logged-in-user hidden">
+                     <!-- !!! Изменен span на div для background-image !!! -->
                     <div id="logged-in-avatar" class="avatar-display avatar-clickable" title="Сменить аватар">
                         <!-- Содержимое (эмодзи или ничего) будет управляться JS -->
                     </div>
@@ -34,79 +35,53 @@
         </header>
 
         <div class="app-links">
+           <!-- ... (Карточки приложений) ... -->
             <a href="pulse.html" class="app-card music-card"><div class="app-icon"><i class="fas fa-headphones-alt fa-3x"></i></div><div class="app-info"><h2>Pulse Hub</h2><p>Музыкальная площадка с плейлистами и визуализацией.</p></div></a>
             <a href="calendar.html" class="app-card calendar-card"><div class="app-icon"><i class="fas fa-calendar-alt fa-3x"></i></div><div class="app-info"><h2>Календарь</h2><p>Календарь с заметками на каждый день.</p></div></a>
             <a href="notes.html" class="app-card notion-card"><div class="app-icon"><i class="fas fa-pencil-alt fa-3x"></i></div><div class="app-info"><h2>Заметки+</h2><p>Простой редактор заметок с иерархией.</p></div></a>
             <a href="weather.html" class="app-card weather-card"><div class="app-icon"><i class="fas fa-cloud-sun-rain fa-3x"></i></div><div class="app-info"><h2>Погода</h2><p>Прогноз погоды по городу или геолокации на каждый день.</p></div></a>
-            <!-- Изменяем ссылку на чат -->
-            <a href="#" class="app-card chat-card" id="chat-button"><div class="app-icon"><i class="fa-solid fa-comments fa-3x"></i></div><div class="app-info"><h2>Чат</h2><p>В данный момент находится в разработке, возможны ошибки/баги (Beta)</p></div></a>
+            <a href="chat.html" class="app-card chat-card"><div class="app-icon"><i class="fa-solid fa-comments fa-3x"></i></div><div class="app-info"><h2>Чат</h2><p>В данный момент находится в разработке, возможны ошибки/баги (Beta)</p></div></a>
             <div class="app-card in-development"><div class="app-icon"><i class="fas fa-film fa-3x"></i></div><div class="app-info"><h2>Coming Soon...</h2><p>...</p><span class="dev-label">В разработке</span></div></div>
         </div>
 
-        <!-- Добавляем контейнер для чата -->
-        <div id="chat-container" style="display: none;">
-            <div id="root"></div>
-        </div>
-
         <footer class="hub-footer">
-            <p>© 2024 Cortex X. Все права защищены.</p>
+             <p>© 2024 Cortex X. Все права защищены.</p>
         </footer>
     </div>
 
-    <!-- Модальное окно для авторизации -->
+    <!-- Модальное окно для авторизации (без изменений) -->
     <div id="auth-modal-overlay" class="modal-overlay hidden">
-        <div id="auth-modal-content" class="modal-content">
-            <button id="modal-close-btn" class="modal-close-button">×</button>
-            <div id="auth-message-modal" class="auth-message"></div>
-            <form id="login-form" class="auth-form"><h3>Вход</h3><input type="text" id="login-username" placeholder="Имя пользователя" required><input type="password" id="login-password" placeholder="Пароль" required><button type="submit">Войти</button><p class="switch-form">Нет аккаунта? <a href="#" id="show-register">Регистрация</a></p></form>
-            <form id="register-form" class="auth-form hidden"><h3>Регистрация</h3><input type="text" id="register-username" placeholder="Имя пользователя" required><input type="password" id="register-password" placeholder="Пароль" required><input type="password" id="register-password-confirm" placeholder="Повторите пароль" required><button type="submit">Зарегистрироваться</button><p class="switch-form">Уже есть аккаунт? <a href="#" id="show-login">Вход</a></p></form>
+         <div id="auth-modal-content" class="modal-content">
+            <!-- ... (содержимое без изменений) ... -->
+             <button id="modal-close-btn" class="modal-close-button">×</button>
+             <div id="auth-message-modal" class="auth-message"></div>
+             <form id="login-form" class="auth-form"><h3>Вход</h3><input type="text" id="login-username" placeholder="Имя пользователя" required><input type="password" id="login-password" placeholder="Пароль" required><button type="submit">Войти</button><p class="switch-form">Нет аккаунта? <a href="#" id="show-register">Регистрация</a></p></form>
+             <form id="register-form" class="auth-form hidden"><h3>Регистрация</h3><input type="text" id="register-username" placeholder="Имя пользователя" required><input type="password" id="register-password" placeholder="Пароль" required><input type="password" id="register-password-confirm" placeholder="Повторите пароль" required><button type="submit">Зарегистрироваться</button><p class="switch-form">Уже есть аккаунт? <a href="#" id="show-login">Вход</a></p></form>
         </div>
     </div>
 
-    <!-- Модальное окно для выбора аватара -->
+    <!-- Модальное окно для выбора аватара (ИЗМЕНЕНО) -->
     <div id="avatar-select-modal-overlay" class="modal-overlay hidden">
         <div id="avatar-select-modal-content" class="modal-content avatar-modal-content">
-            <button id="avatar-modal-close-btn" class="modal-close-button">×</button>
-            <h3>Выберите аватар</h3>
-            <div id="avatar-choices" class="avatar-choices-grid">
-                <!-- Аватары-эмодзи будут добавлены сюда скриптом -->
-            </div>
-            <div class="avatar-upload-section">
-                <p>Или загрузите свой:</p>
-                <button id="upload-avatar-btn" class="upload-avatar-button">
-                    <i class="fas fa-upload"></i> Загрузить файл
-                </button>
-                <input type="file" id="avatar-file-input" accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
-                <p id="upload-error-message" class="auth-message error" style="margin-top: 10px;"></p>
-            </div>
+             <button id="avatar-modal-close-btn" class="modal-close-button">×</button>
+             <h3>Выберите аватар</h3>
+             <div id="avatar-choices" class="avatar-choices-grid">
+                 <!-- Аватары-эмодзи будут добавлены сюда скриптом -->
+             </div>
+             <!-- !!! НОВОЕ: Раздел для загрузки файла !!! -->
+             <div class="avatar-upload-section">
+                 <p>Или загрузите свой:</p>
+                 <button id="upload-avatar-btn" class="upload-avatar-button">
+                     <i class="fas fa-upload"></i> Загрузить файл
+                 </button>
+                 <!-- Скрытый инпут для выбора файла -->
+                 <input type="file" id="avatar-file-input" accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
+                 <p id="upload-error-message" class="auth-message error" style="margin-top: 10px;"></p> <!-- Место для ошибки загрузки -->
+             </div>
+             <!-- !!! Конец нового раздела !!! -->
         </div>
     </div>
 
     <script src="script.js"></script>
-    <!-- Добавляем скрипт для подгрузки чата -->
-    <script>
-    document.getElementById('chat-button').addEventListener('click', function(event) {
-        event.preventDefault(); // Отменяем переход по ссылке
-
-        // Скрываем основной контент
-        document.querySelector('.hub-container').style.display = 'none';
-        // Показываем контейнер чата
-        document.getElementById('chat-container').style.display = 'block';
-
-        // Подгружаем CSS
-        const cssLink = document.createElement('link');
-        cssLink.rel = 'stylesheet';
-        cssLink.crossOrigin = '';
-        cssLink.href = '/CortexX/assets/index-R-V4mpa.css'; // Правильный путь
-        document.head.appendChild(cssLink);
-
-        // Подгружаем JS
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.crossOrigin = '';
-        script.src = '/CortexX/assets/index-CXtimVLu.js'; // Правильный путь
-        document.body.appendChild(script);
-    });
-</script>
 </body>
 </html>
