@@ -85,28 +85,28 @@
     <script src="script.js"></script>
     <!-- Добавляем скрипт для подгрузки чата -->
     <script>
-        document.getElementById('chat-button').addEventListener('click', function(event) {
-            event.preventDefault(); // Отменяем переход по ссылке
+    document.getElementById('chat-button').addEventListener('click', function(event) {
+        event.preventDefault(); // Отменяем переход по ссылке
 
-            // Скрываем основной контент
-            document.querySelector('.hub-container').style.display = 'none';
-            // Показываем контейнер чата
-            document.getElementById('chat-container').style.display = 'block';
+        // Скрываем основной контент
+        document.querySelector('.hub-container').style.display = 'none';
+        // Показываем контейнер чата
+        document.getElementById('chat-container').style.display = 'block';
 
-            // Подгружаем CSS
-            const cssLink = document.createElement('link');
-            cssLink.rel = 'stylesheet';
-            cssLink.crossOrigin = '';
-            cssLink.href = '/assets/index-R-V4mpa.css'; // Укажите правильный путь
-            document.head.appendChild(cssLink);
+        // Подгружаем CSS
+        const cssLink = document.createElement('link');
+        cssLink.rel = 'stylesheet';
+        cssLink.crossOrigin = '';
+        cssLink.href = '/CortexX/assets/index-R-V4mpa.css'; // Правильный путь
+        document.head.appendChild(cssLink);
 
-            // Подгружаем JS
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.crossOrigin = '';
-            script.src = '/assets/index-CXtimVLu.js'; // Укажите правильный путь
-            document.body.appendChild(script);
-        });
-    </script>
+        // Подгружаем JS
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.crossOrigin = '';
+        script.src = '/CortexX/assets/index-CXtimVLu.js'; // Правильный путь
+        document.body.appendChild(script);
+    });
+</script>
 </body>
 </html>
