@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Создаём и настраиваем аудиоэлемент
         const audio = document.createElement('audio');
-        audio.src = '/1.mp3'; // Путь к вашему файлу в корне GitHub Pages
+        audio.src = '1.mp3'; // Путь к вашему файлу в корне GitHub Pages
         audio.volume = 0.3; // Громкость (0.0 до 1.0, 0.3 = 30%)
         audio.preload = 'auto';
         audio.autoplay = true; // Пытаемся включить автопроигрывание
