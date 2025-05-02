@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex X</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22><stop offset=%220%25%22 style=%22stop-color:rgb(0,224,255);stop-opacity:1%22 /><stop offset=%22100%25%22 style=%22stop-color:rgb(138,127,251);stop-opacity:1%22 /></linearGradient></defs><text y=%22.9em%22 font-size=%2290%22 fill=%22url(%23g)%22>●</text></svg>">
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="loader-container">
+            <div class="loader-graphic">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+            </div>
+            <div class="status-text" id="loading-status-text">Подключение к серверам Cortex X...</div>
+            <div class="greeting-title hidden" id="greeting-title">
+                <span class="char">C</span><span class="char">o</span><span class="char">r</span><span class="char">t</span><span class="char">e</span><span class="char">x</span>
+                <span class="char space"> </span>
+                <span class="char">X</span>
+            </div>
+        </div>
+    </div>
+    <div class="hub-container hidden-initially">
+        <header class="hub-header">
+            <h1>Cortex X</h1>
+            <div id="user-profile" class="user-profile">
+                <button id="login-trigger-btn" class="login-trigger-button hidden">Войти</button>
+                <div id="logged-in-user" class="logged-in-user hidden">
+                    <div id="logged-in-avatar" class="avatar-display avatar-clickable" title="Сменить аватар"></div>
+                    <span id="logged-in-username"></span>
+                    <button id="logout-btn" class="logout-button" title="Выйти"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </div>
+            <h2 id="welcome-message">Загрузка...</h2>
+            <p>Выберите приложение:</p>
+        </header>
+        <div class="app-links">
+            <a href="pulse.html" class="app-card music-card">
+                <div class="card-glow"></div>
+                <div class="app-icon"><i class="fas fa-headphones-alt fa-3x"></i></div>
+                <div class="app-info"><h2>Pulse Hub</h2><p>Музыкальная площадка с плейлистами и визуализацией.</p></div>
+            </a>
+            <a href="calendar.html" class="app-card calendar-card">
+                <div class="card-glow"></div>
+                <div class="app-icon"><i class="fas fa-calendar-alt fa-3x"></i></div>
+                <div class="app-info"><h2>Календарь</h2><p>Календарь с заметками на каждый день.</p></div>
+            </a>
+            <a href="notes.html" class="app-card notion-card">
+                <div class="card-glow"></div>
+                <div class="app-icon"><i class="fas fa-pencil-alt fa-3x"></i></div>
+                <div class="app-info"><h2>Заметки+</h2><p>Простой редактор заметок с иерархией.</p></div>
+            </a>
+            <a href="weather.html" class="app-card weather-card">
+                <div class="card-glow"></div>
+                <div class="app-icon"><i class="fas fa-cloud-sun-rain fa-3x"></i></div>
+                <div class="app-info"><h2>Погода</h2><p>Прогноз погоды по городу или геолокации.</p></div>
+            </a>
+            <a href="chat.html" class="app-card chat-card">
+                <div class="card-glow"></div>
+                <div class="app-icon"><i class="fa-solid fa-comments fa-3x"></i></div>
+                <div class="app-info"><h2>Чат [Beta]</h2><p>Защищенный канал связи.</p></div>
+            </a>
+            <div class="app-card in-development">
+                <div class="card-glow"></div>
+                <div class="app-icon"><i class="fas fa-layer-group fa-3x"></i></div>
+                <div class="app-info"><h2>Скоро...</h2><p>Новый модуль в разработке.</p></div>
+                <span class="dev-label">Разработка</span>
+            </div>
+        </div>
+        <footer class="hub-footer">
+            <p>© 2024-2025 Cortex X Systems</p>
+        </footer>
+    </div>
+    <div id="auth-modal-overlay" class="modal-overlay hidden">
+        <div id="auth-modal-content" class="modal-content">
+            <button id="modal-close-btn" class="modal-close-button">×</button>
+            <div id="auth-message-modal" class="auth-message"></div>
+            <form id="login-form" class="auth-form">
+                <h3>Вход</h3>
+                <input type="text" id="login-username" placeholder="Имя пользователя" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+                <p class="switch-form">Нет аккаунта? <a href="#" id="show-register">Регистрация</a></p>
+            </form>
+            <form id="register-form" class="auth-form hidden">
+                <h3>Регистрация</h3>
+                <input type="text" id="register-username" placeholder="Имя пользователя" required>
+                <input type="password" id="register-password" placeholder="Пароль" required>
+                <input type="password" id="register-password-confirm" placeholder="Повторите пароль" required>
+                <button type="submit">Зарегистрироваться</button>
+                <p class="switch-form">Уже есть аккаунт? <a href="#" id="show-login">Вход</a></p>
+            </form>
+        </div>
+    </div>
+    <div id="avatar-select-modal-overlay" class="modal-overlay hidden">
+        <div id="avatar-select-modal-content" class="modal-content avatar-modal-content">
+            <button id="avatar-modal-close-btn" class="modal-close-button">×</button>
+            <h3>Выберите аватар</h3>
+            <div id="avatar-choices" class="avatar-choices-grid"></div>
+            <div class="avatar-upload-section">
+                <p>Или загрузите свой:</p>
+                <button id="upload-avatar-btn" class="upload-avatar-button"><i class="fas fa-upload"></i> Загрузить файл</button>
+                <input type="file" id="avatar-file-input" accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
+                <p id="upload-error-message" class="auth-message error" style="margin-top: 10px; display: none;"></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
