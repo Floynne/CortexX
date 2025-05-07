@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гайд по Оптимизации Windows - КиберБлог 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Poppins:wght@600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/blog.css">
+</head>
+<body>
+    <div class="site-wrapper">
+        <header class="site-header">
+            <div class="container header-content">
+                <div class="logo animate-pop-in">
+                    <a href="../blog.html">
+                         <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 0L93.3013 25V75L50 100L6.69873 75V25L50 0Z" fill="var(--accent-neon-blue)"/>
+                            <path d="M50 15L77.9423 30V70L50 85L22.0577 70V30L50 15Z" fill="var(--bg-primary)"/>
+                            <path d="M50 22L69.3192 32.5V67.5L50 78L30.6808 67.5V32.5L50 22Z" fill="var(--accent-hot-pink)"/>
+                        </svg>
+                        <span>КиберБлог</span>
+                    </a>
+                </div>
+                <nav class="main-nav animate-slide-in-right">
+                    <a href="../blog.html">Главная</a>
+                    <a href="windows-optimization-guide.html">Гайд Win</a>
+                    <a href="cs2-optimization-guide.html">Гайд CS2</a>
+                    <a href="network-optimization-guide.html" class="active">Гайд Internet</a>
+                    <a href="../blog.html#about-anchor">Об авторе</a>
+                </nav>
+                <div class="header-cta animate-pop-in delay-1">
+                     <a href="../blog.html#subscribe-form-anchor" class="cta-button">Подписка</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main article-page-main">
+            <div class="full-article-hero" style="background-image: url('../images/article-win-optimize-banner.jpg');"> <!-- ЗАМЕНИТЕ НА СВОЙ БАННЕР -->
+                <div class="container">
+                    <h1 class="article-main-title animate-text-reveal">Максимальная Оптимизация Windows: Полное Руководство</h1>
+                    <p class="article-main-meta animate-text-reveal delay-1">
+                        <span>Категория: Системная Оптимизация</span> | <span><time datetime="2026-07-28">05 Мая, 2025</time></span> | <span>Автор: Cortex X</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="container article-body-container">
+                <article class="article-content">
+                    <p class="animate-on-scroll lead-paragraph">
+                        Это руководство проведет вас через все этапы настройки и оптимизации вашей операционной системы Windows (10 22H2 / 11 24H2) для достижения пиковой производительности, стабильности и отзывчивости. Приготовьтесь раскрыть истинный потенциал вашего ПК!
+                    </p>
+
+                    <p class="animate-on-scroll">Переустановка текущей системы на чистый образ Windows 10 22H2 / Windows 11 24H2.
+                        <span class="optional-info">(Опционально, но рекомендуется для максимального эффекта. Рекомендуемая версия Windows - 10 22H2, благодаря её проверенной стабильности и производительности)</span>
+                    </p>
+
+                    <div class="important-note animate-on-scroll">
+                        <div class="icon-wrapper">
+                             <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        </div>
+                        <div>
+                            <p><strong>Критическое Предупреждение Системы:</strong></p>
+                            <p>Перед инициализацией любых процедур оптимизации, настоятельно рекомендуется создать полную резервную копию (BackUp) вашей операционной системы и всех важных данных! Автор не несет ответственности за возможную потерю данных или неисправности системы в результате ваших действий.</p>
+                        </div>
+                    </div>
+
+                    <h2 class="animate-on-scroll">Этап I: Установка / Обновление ПО и Драйверов</h2>
+                    <p class="animate-on-scroll">Актуальные драйверы – фундамент стабильной и быстрой работы вашего оборудования.</p>
+                    <div class="button-group animate-on-scroll">
+                        <a href="https://www.nvidia.com/en-eu/drivers/" target="_blank" rel="noopener noreferrer" class="external-driver-link"><span>Nvidia Drivers</span><svg><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></a>
+                        <a href="https://www.amd.com/en/support/download/drivers.html" target="_blank" rel="noopener noreferrer" class="external-driver-link"><span>AMD Drivers</span><svg><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></a>
+                        <a href="https://www.intel.com/content/www/us/en/download-center/home.html" target="_blank" rel="noopener noreferrer" class="external-driver-link"><span>Intel Drivers</span><svg><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></a>
+                    </div>
+                    <p class="animate-on-scroll">Обязательно обновите драйверы вашей материнской платы, загрузив их с официального сайта производителя (укажите производителя и точную модель вашей платы для поиска).</p>
+
+                    <h2 class="animate-on-scroll">Этап II: Конфигурация 'Безопасность Windows | Windows Defender'</h2>
+                    <p class="animate-on-scroll">Отключение защиты в реальном времени.</p>
+                    <p class="animate-on-scroll"><span class="optional-info">(Опционально | Это действие может повысить производительность в играх за счет снижения фоновой активности сканера. Производите на свой страх и риск, осознавая возможное снижение уровня безопасности.)</span></p>
+
+                    <h2 class="animate-on-scroll">Этап III: Настройка Windows с Использованием Твиков (Продвинутый Уровень)</h2>
+                    <p class="animate-on-scroll">
+                        <span class="optional-info">(Для опытных пользователей, желающих максимально тонко настроить операционную систему. Все действия выполняются под вашу ответственность.)</span><br>
+                        <a href="#ЗАМЕНИТЕ-НА-ССЫЛКУ-АРХИВА" class="download-tweak-button"> <!-- ЗАМЕНИТЕ ССЫЛКУ! -->
+                            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                            <span>Загрузить Пакет Твиков</span>
+                        </a>
+                    </p>
+
+                    <ul class="step-list">
+                        <li class="animate-on-scroll">
+                            <h3>Шаг 1: Папка "Defender Control"</h3>
+                            <p>Открываем <code>dControl.exe</code> и нажимаем кнопку "Отключить Защитник Windows". <span class="optional-info">(В любое время его можно будет включить обратно этой же утилитой!)</span></p>
+                        </li>
+                        <li class="animate-on-scroll">
+                            <h3>Шаг 2: Папка "DirectX, VCRedist, Autoruns"</h3>
+                            <div class="sub-step">
+                                <p>В папке "DirectX" запускаем файл <code># install.bat</code>.</p>
+                                <p>В папке "Visual C++ Redistributable" устанавливаем все представленные дистрибутивы. <span class="recommendation">(Это необходимо для корректной работы большинства программ и игр).</span></p>
+                                <p>Запускаем <code>Autoruns64.exe</code>. Внимательно изучите список и уберите из автозагрузки все ненужные вам программы, которые могут нагружать систему и замедлять её загрузку.</p>
+                                <div class="important-note inline-warning">
+                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></div>
+                                    <div>
+                                        <p><strong>Критически Важно:</strong></p>
+                                        <p>Ни в коем случае не отключайте автозагрузку системных файлов или программ, в назначении которых вы не уверены! Это может привести к полной неработоспособности операционной системы.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="animate-on-scroll">
+                            <h3>Шаг 3: Папка "Tweaks"</h3>
+                            <div class="sub-step">
+                                <h4>3.1 Папка "Spectre, Meltdown"</h4>
+                                <p>Патчи Spectre и Meltdown стоит отключать только если ваш процессор Intel ниже 9xxx серии или процессор AMD ниже 3xxx серии. На более новых процессорах отключение может привести к ухудшению производительности. Также при отключении не будет работать FACEIT AntiCheat.</p>
+                                <p><span class="recommendation">Если ваш процессор соответствует указанным критериям (Intel < 9xxx, AMD < 3xxx), отключаем.</span></p>
+                            </div>
+                            <div class="sub-step">
+                                <h4>3.2 Папка "SystemResponsiveness"</h4>
+                                <p>Применение твика (1) уменьшает резерв CPU для задач низкого приоритета с 20% (по умолчанию) до 10%. <span class="recommendation">Рекомендуется также применить "Additional Tweak".</span></p>
+                            </div>
+                            <div class="sub-step">
+                                <h4>3.3 Папка "Win32PrioritySeparation"</h4>
+                                <p>Содержит .reg файлы для изменения значения Win32PrioritySeparation. Для большинства систем оптимальными являются значения 36 DEC и 40 DEC, но можно экспериментировать. Если заметите ухудшение производительности, просадки FPS или проблемы с откликом мыши, вернитесь к дефолтному значению. Этот параметр настраивается индивидуально.</p>
+                                <p>Дополнительная информация: <a href="https://cryptpad.fr/pad/#/2/pad/view/Wik8tmQ6XC1csjmDNqmMN7dKc-Wfi26-5bOtZzegHCM/embed/" target="_blank" rel="noopener noreferrer" class="external-link-btn" style="font-size:0.8em; padding: 0.5em 1em;">Подробнее</a></p>
+                            </div>
+                            <div class="sub-step"><h4>3.4 "Delete Win Defender"</h4> <p>Полностью удаляет Защитник Windows. <span class="optional-info">(На ваше усмотрение)</span></p></div>
+                            <div class="sub-step"><h4>3.5 "Disable UAC.bat"</h4> <p>Отключение контроля учетных записей (UAC). <span class="recommendation">(Рекомендуется отключить для удобства, если вы знаете, что делаете)</span></p></div>
+                            <div class="sub-step"><h4>3.6 "Disable SmartScreen"</h4> <p>Отключение защиты от фишинга и вредоносных сайтов в реальном времени. <span class="recommendation">(Рекомендуется отключить, если используете сторонний антивирус с веб-защитой)</span></p></div>
+                            <div class="sub-step"><h4>3.7 "Disable Mobsync"</h4> <p>Отключает компонент мобильной синхронизации Internet Explorer. <span class="recommendation">(Рекомендуется Отключить, если не используете IE)</span></p></div>
+                            <div class="sub-step"><h4>3.8 "Disable Auto-Installing apps"</h4> <p>Отключает автоустановку и автообновление приложений из Microsoft Store. <span class="recommendation">(Рекомендуется отключить для контроля над системой)</span></p></div>
+                            <div class="sub-step"><h4>3.9 "Delete UWP-Apps Win 11" | "Delete UWP-Apps Win 10"</h4> <p>Удаляет предустановленные UWP-приложения. <span class="recommendation">(Рекомендуется удалить ненужные, в зависимости от вашей ОС)</span></p></div>
+                            <div class="sub-step"><h4>3.10 "Delete Microsoft Edge"</h4> <p>Полностью удаляет браузер Microsoft Edge. <span class="recommendation">(Рекомендуется, если Edge не является вашим основным браузером)</span></p></div>
+                            <div class="sub-step"><h4>3.11 "System Tweaks"</h4> <p>Применяет набор системных твиков. Содержимое можно изучить, открыв файл. <span class="recommendation">(Рекомендуется применить)</span></p></div>
+                            <div class="sub-step"><h4>3.12 "Disable GameBar"</h4> <p>Отключение Xbox GameBar (Win+G). <span class="recommendation">(Рекомендуется отключить, если не используете)</span></p></div>
+                            <div class="sub-step"><h4>3.13 "Disable FSO"</h4> <p>Отключение полноэкранных оптимизаций (FSO). При отключении могут не работать оверлеи Nvidia/AMD. <span class="optional-info">(На ваше усмотрение)</span></p></div>
+                            <div class="sub-step"><h4>3.14 "No Drivers Auto-Updates"</h4> <p>Отключение автоматического обновления драйверов через Windows Update. <span class="recommendation">(Рекомендуется отключить для ручного контроля версий драйверов)</span></p></div>
+                        </li>
+                        <li class="animate-on-scroll">
+                            <h3>Шаг 4: Папка "Powerplan"</h3>
+                            <p>Переходим в папку "IDLE", запускаем <code>Disable IDLE</code> (отключение индикатора бездействия). Далее, в папке "PowerThrottling" открываем <code>Disable Power Throttling (Only for PC)</code> <span class="important-note inline-warning" style="font-size:0.85em; padding: 0.4em 0.8em; margin:0 0 0 5px; display:inline-block;">(Не для ноутбуков!)</span>. Затем открываем <code>Ultimate PowerPlan</code> (добавляет схему "Максимальная производительность"). После этого в "Панели управления" -> "Электропитание" (или "Powerplans" в папке с твиками) включаем схему "Максимальная производительность". Наконец, открываем <code>Disable Hibernation and Fast Startup</code> для отключения гибернации и быстрой загрузки.</p>
+                        </li>
+                        <li class="animate-on-scroll"><h3>Шаг 5: Папка "Services"</h3> <p>Отключение ненужных системных служб. <span class="optional-info">(Опционально, требует понимания назначения каждой службы)</span></p></li>
+                        <li class="animate-on-scroll">
+                            <h3>Шаг 6: Папка "Affinity"</h3>
+                            <p>Запускаем "Msi Mode Utility". Устанавливаем высокий (High) приоритет для: Сетевого адаптера, Видеоадаптера, NVM Express Controller, SATA AHCI Controller, USB Controller (к которому подключены мышь и клавиатура). Нажимаем "Apply/Применить".</p>
+                        </li>
+                        <li class="animate-on-scroll"><h3>Шаг 7: Папка "No Windows Updates"</h3> <p>Запускаем "Windows Updates Blocker" и устанавливаем галочку "Disable Updates" для блокировки обновлений Windows.</p></li>
+                        <li class="animate-on-scroll"><h3>Шаг 8: Папка "Programms"</h3> <p>Содержит ссылки на часто используемые и популярные программы.</p></li>
+                        <li class="animate-on-scroll"><h3>Шаг 9: Папка "Optimizer (Опционально)"</h3> <p>Программа для оптимизации Windows. Следуйте инструкциям на скриншотах, прилагаемых к программе.</p></li>
+                    </ul>
+
+                    <h2 class="animate-on-scroll">Этап V: Дополнительные Настройки Windows</h2>
+                    <div class="animate-on-scroll">
+                        <h3>Настройки Мыши</h3>
+                        <p>Перейдите в "Параметры" -> "Устройства" -> "Мышь" -> "Дополнительные параметры мыши". На вкладке "Параметры указателя" снимите галочку с <span class="highlight-config">"Включить повышенную точность установки указателя"</span>.</p>
+                        <p><span class="recommendation">(Это отключает акселерацию мыши, обеспечивая линейный и предсказуемый отклик на ваши движения.)</span></p>
+                    </div>
+                    <div class="animate-on-scroll">
+                        <h3>Отключение Уведомлений</h3>
+                        <p>Перейдите в "Параметры" -> "Система" -> "Уведомления и действия". Снимите галочку "Получать уведомления от приложений и других отправителей".</p>
+                        <p><span class="optional-info">(Опционально, для уменьшения отвлекающих факторов.)</span></p>
+                    </div>
+
+                    <p class="animate-on-scroll article-conclusion">Система оптимизирована. Ваш монстр готов к Пиковой Производительности.</p>
+
+                </article>
+            </div>
+        </main>
+
+        <footer class="site-footer animate-on-scroll">
+            <div class="container">
+                <p>© <span id="current-year"></span> Cortex X Blog. Все права защищены квантовым шифрованием.</p>
+                 <div class="footer-links">
+                    <a href="#">Политика данных</a>
+                    <a href="#">Условия использования</a>
+                </div>
+            </div>
+        </footer>
+
+        <aside class="side-panel">
+            <a href="#" class="side-panel-item" title="VK">
+                <svg viewBox="0 0 24 24"><path d="M13.162 18.994c.609 0 .858-.407.858-.407s.11-.576.005-1.166c-.105-.59-.804-1.14-1.183-1.363-.378-.223-.337-.334.114-.934.45-.6.982-1.606.982-2.418 0-.632-.236-.931-.236-.931s-.373-.423-.373-1.095c0-.672.337-.944.507-1.021.17-.077.403-.127.772-.14.47-.013.905-.005 1.188-.005.768 0 .947.226 1.126.568.179.342.194.919.194.919s.055 1.028.488 1.233c.434.205.963.168.963.168s1.068-.058 1.654.526c.586.584.528 1.653.528 1.653s.082 1.958-.73 2.79c-.813.832-1.855.775-1.855.775s-.502-.038-.74.122c-.238.16-.373.476-.373.476s-.215.926-.005 1.179c.21.253.696.428.696.428s1.118.557 1.223 1.218c.105.66-.114 1.252-.114 1.252s-.491.906-1.521.906h-2.617c-1.961 0-2.031-1.031-2.031-1.031s-.032-1.117.902-1.302c.934-.185.977-.605.977-.605s.122-1.127-.342-1.345c-.464-.218-1.2-.137-1.2-.137s-1.628.077-2.248.98c-.62.904-.502 2.245-.502 2.245V19h-.004Z"/></svg>
+            </a>
+            <a href="#" class="side-panel-item" title="Telegram">
+                 <svg viewBox="0 0 24 24"><path d="M21.453 3.488a2.43 2.43 0 0 0-1.576-.915c-1.429-.312-15.162 5.552-15.162 5.552S3.29 8.608 3.01 9.43c-.28 1.11.89 1.514.89 1.514l3.354 1.043s.487 1.536.556 1.623c.14.29.038.243.038.243s-.297.572.296.756c.594.184.774-.056.774-.056l1.503-1.407s2.474 2.214 4.08 3.56c.52.345 1.22.29 1.22.29s.716-.086.97-.784c.07-.19.75-3.46.75-3.46s2.687-12.103 2.687-12.103a1.344 1.344 0 0 0-.225-.808Z"/></svg>
+            </a>
+             <input type="checkbox" id="themeToggle" class="theme-toggle-checkbox">
+             <label for="themeToggle" class="side-panel-item theme-toggle-label" title="Сменить тему">
+                <svg class="sun" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM20.36 10.64l-1.41-1.41a.996.996 0 0 0-1.41 0l-1.06 1.06c-.98-.69-2.12-1.07-3.48-1.07-2.76 0-5 2.24-5 5s2.24 5 5 5c1.36 0 2.5-.38 3.48-1.07l1.06 1.06a.996.996 0 0 0 1.41 0l1.41-1.41a.996.996 0 0 0 0-1.41l-1.06-1.06c.69-.98 1.07-2.12 1.07-3.48s-.38-2.5-1.07-3.48l1.06-1.06a.996.996 0 0 0 0-1.41zM12 3c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1s1-.45 1-1V4c0-.55-.45-1-1-1zm0 14c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1zm-7-6c0-.55-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1h2c.55 0 1-.45-1-1zm14 0c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1h2c.55 0 1-.45-1-1zM4.22 5.64c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L4.22 5.64zm12.73 12.73c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41l-1.06-1.06z"/></svg>
+                <svg class="moon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.62-.14 2.37-.38-.3-.64-.47-1.37-.47-2.12 0-2.48 2.02-4.5 4.5-4.5.75 0 1.48.17 2.12.47-.24-.75-.38-1.54-.38-2.37 0-4.97-4.03-9-9-9z"/></svg>
+            </label>
+        </aside>
+    </div>
+
+    <button id="scrollToTopBtn" class="scroll-to-top-btn" title="Наверх">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"/></svg>
+    </button>
+
+    <script src="/blog.js"></script>
+</body>
+</html>

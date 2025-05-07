@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Максимальный FPS в CS2: Полный Гайд по Оптимизации - КиберБлог 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Poppins:wght@600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/blog.css">
+</head>
+<body>
+    <div class="site-wrapper">
+        <header class="site-header">
+            <div class="container header-content">
+                <div class="logo animate-pop-in">
+                    <a href="../blog.html">
+                         <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 0L93.3013 25V75L50 100L6.69873 75V25L50 0Z" fill="var(--accent-neon-blue)"/>
+                            <path d="M50 15L77.9423 30V70L50 85L22.0577 70V30L50 15Z" fill="var(--bg-primary)"/>
+                            <path d="M50 22L69.3192 32.5V67.5L50 78L30.6808 67.5V32.5L50 22Z" fill="var(--accent-hot-pink)"/>
+                        </svg>
+                        <span>КиберБлог</span>
+                    </a>
+                </div>
+                <nav class="main-nav animate-slide-in-right">
+                    <a href="../blog.html">Главная</a>
+                    <a href="windows-optimization-guide.html">Гайд Win</a>
+                    <a href="cs2-optimization-guide.html">Гайд CS2</a>
+                    <a href="network-optimization-guide.html" class="active">Гайд Internet</a>
+                    <a href="../blog.html#about-anchor">Об авторе</a>
+                </nav>
+                <div class="header-cta animate-pop-in delay-1">
+                     <a href="../blog.html#subscribe-form-anchor" class="cta-button">Подписка</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main article-page-main">
+            <div class="full-article-hero" style="background-image: url('../images/article-cs2-optimize-banner.jpg');"> <!-- ЗАМЕНИТЕ НА СВОЙ БАННЕР -->
+                <div class="container">
+                    <h1 class="article-main-title animate-text-reveal">CS2: Гайд по Оптимизации для Максимального FPS и Плавности</h1>
+                    <p class="article-main-meta animate-text-reveal delay-1">
+                        <span>Категория: Игровая Оптимизация</span> | <span><time datetime="2026-08-05">05 Мая, 2025</time></span> | <span>Автор: Cortex X</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="container article-body-container">
+                <article class="article-content">
+                    <p class="animate-on-scroll lead-paragraph">
+                        Counter-Strike 2 принес множество улучшений, но и повышенные требования к системе. Это руководство поможет вам настроить игру и ваш ПК для достижения максимально возможного FPS, стабильности и минимальной задержки ввода, чтобы доминировать на поле боя.
+                    </p>
+
+                    <div class="important-note animate-on-scroll">
+                        <div class="icon-wrapper">
+                             <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        </div>
+                        <div>
+                            <p><strong>Важное Замечание:</strong></p>
+                            <p>Некоторые настройки могут значительно повлиять на визуальное качество игры. Цель этого гайда - максимальная производительность. Экспериментируйте, чтобы найти баланс, который подходит именно вам. Перед любыми серьезными изменениями в системе (как в гайде по Windows) рекомендуется создать резервную копию.</p>
+                        </div>
+                    </div>
+
+                    <h2 class="animate-on-scroll">Этап I: Оптимизация Вне Игры</h2>
+
+                    <h3 class="animate-on-scroll">1. Обновление Драйверов Видеокарты</h3>
+                    <p class="animate-on-scroll">Это самый первый и один из важнейших шагов. Производители регулярно выпускают обновления драйверов с оптимизациями под новые игры, включая CS2.</p>
+                    <div class="button-group animate-on-scroll">
+                        <a href="https://www.nvidia.com/Download/index.aspx" target="_blank" rel="noopener noreferrer" class="external-driver-link"><span>Драйверы Nvidia</span><svg><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></a>
+                        <a href="https://www.amd.com/en/support" target="_blank" rel="noopener noreferrer" class="external-driver-link"><span>Драйверы AMD</span><svg><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></a>
+                    </div>
+                    <p class="animate-on-scroll"><span class="recommendation">Рекомендуется выбирать "чистую установку" драйвера, если такая опция доступна.</span></p>
+
+                    <h3 class="animate-on-scroll">2. Настройки Электропитания Windows</h3>
+                    <p class="animate-on-scroll">Убедитесь, что ваш ПК работает в режиме максимальной производительности.</p>
+                    <ol class="step-list simple-list"> <!-- Используем простой список для таких шагов -->
+                        <li class="animate-on-scroll">Откройте "Панель управления" (можно найти через поиск Windows).</li>
+                        <li class="animate-on-scroll">Перейдите в "Электропитание" (или "Оборудование и звук" -> "Электропитание").</li>
+                        <li class="animate-on-scroll">Выберите схему <span class="highlight-config">"Высокая производительность"</span> или <span class="highlight-config">"Максимальная производительность"</span>. Если таких схем нет, создайте свою или измените параметры текущей, установив максимальную производительность для процессора.</li>
+                    </ol>
+
+                    <h3 class="animate-on-scroll">3. Оптимизация Windows (Общие Рекомендации)</h3>
+                    <p class="animate-on-scroll">Для глубокой оптимизации самой ОС, обратитесь к нашему <a href="windows-optimization-guide.html">Гайду по Оптимизации Windows</a>. Ключевые моменты для CS2:</p>
+                    <ul class="styled-list">
+                        <li class="animate-on-scroll">Отключение ненужных фоновых приложений и автозагрузки.</li>
+                        <li class="animate-on-scroll">Отключение Xbox Game Bar и игрового режима Windows (иногда может вызывать проблемы, тестируйте).</li>
+                        <li class="animate-on-scroll">Очистка временных файлов и диска.</li>
+                    </ul>
+
+                    <h3 class="animate-on-scroll">4. Настройки Панели Управления Nvidia / AMD Software</h3>
+                    <p class="animate-on-scroll">Здесь можно выставить глобальные или специфичные для CS2 настройки для максимальной производительности.</p>
+                    <div class="sub-step">
+                        <h4>Для Nvidia:</h4>
+                        <ul class="styled-list">
+                            <li class="animate-on-scroll"><strong>Режим управления электропитанием:</strong> Предпочтителен режим максимальной производительности.</li>
+                            <li class="animate-on-scroll"><strong>Фильтрация текстур - Качество:</strong> Высокая производительность.</li>
+                            <li class="animate-on-scroll"><strong>Вертикальный синхроимпульс (V-Sync):</strong> Выключить (для минимальной задержки ввода, если нет сильных разрывов экрана).</li>
+                            <li class="animate-on-scroll"><strong>Потоковая оптимизация:</strong> Вкл.</li>
+                            <li class="animate-on-scroll"><strong>Режим низкой задержки (Nvidia Reflex):</strong> Включено + Boost (если доступно и стабильно). Это одна из важнейших настроек для CS2.</li>
+                        </ul>
+                    </div>
+                    <div class="sub-step">
+                        <h4>Для AMD:</h4>
+                        <ul class="styled-list">
+                            <li class="animate-on-scroll"><strong>Radeon Anti-Lag:</strong> Включить (аналог Reflex).</li>
+                            <li class="animate-on-scroll"><strong>Radeon Chill:</strong> Выключить (может ограничивать FPS).</li>
+                            <li class="animate-on-scroll"><strong>Radeon Image Sharpening:</strong> Можно использовать для улучшения четкости при низких настройках, но может немного влиять на FPS. Тестируйте.</li>
+                            <li class="animate-on-scroll"><strong>Качество фильтрации текстур:</strong> Производительность.</li>
+                            <li class="animate-on-scroll"><strong>Морфологическая фильтрация:</strong> Выключить.</li>
+                        </ul>
+                    </div>
+                    <p class="animate-on-scroll"><span class="recommendation">Всегда применяйте настройки специфично для `cs2.exe`, если ваша панель управления это позволяет.</span></p>
+
+
+                    <h2 class="animate-on-scroll">Этап II: Параметры Запуска CS2 в Steam</h2>
+                    <p class="animate-on-scroll">Параметры запуска могут дать небольшой прирост производительности или изменить некоторые аспекты игры.</p>
+                    <ol class="step-list simple-list">
+                        <li class="animate-on-scroll">В библиотеке Steam кликните правой кнопкой мыши по Counter-Strike 2.</li>
+                        <li class="animate-on-scroll">Выберите "Свойства...".</li>
+                        <li class="animate-on-scroll">На вкладке "Общие" найдите поле "Параметры запуска".</li>
+                    </ol>
+                    <p class="animate-on-scroll">Рекомендуемые параметры (выбирайте те, что подходят вам):</p>
+                    <p class="animate-on-scroll"><code>-novid -nojoy -high -tickrate 128 +fps_max 0 +cl_interp_ratio 1 +cl_interp 0.015625 +violence_hblood 0</code></p>
+                    <div class="sub-step">
+                        <h4>Расшифровка параметров:</h4>
+                        <ul class="styled-list">
+                            <li class="animate-on-scroll"><code>-novid</code>: Пропускает вступительное видео.</li>
+                            <li class="animate-on-scroll"><code>-nojoy</code>: Отключает поддержку джойстика (освобождает немного ресурсов).</li>
+                            <li class="animate-on-scroll"><code>-high</code>: Запускает игру с высоким приоритетом.</li>
+                            <li class="animate-on-scroll"><code>-tickrate 128</code>: Устанавливает тикрейт для локальных серверов и оффлайн-игры (на официальных серверах тикрейт свой).</li>
+                            <li class="animate-on-scroll"><code>+fps_max 0</code>: Снимает ограничение FPS (0 - без лимита). Можно поставить конкретное значение, например, <code>+fps_max 300</code>.</li>
+                            <li class="animate-on-scroll"><code>+cl_interp_ratio 1</code> и <code>+cl_interp 0.015625</code>: Настройки интерполяции, могут улучшить "попадания". Требуют тестирования, значения могут зависеть от вашего пинга.</li>
+                            <li class="animate-on-scroll"><code>+violence_hblood 0</code>: Отключает кровь (может немного повысить FPS в перестрелках).</li>
+                        </ul>
+                    </div>
+                    <p class="animate-on-scroll"><span class="optional-info">Другие параметры, такие как <code>-threads X</code> (где X - количество потоков вашего CPU) или <code>-freq Y</code> / <code>-refresh Y</code> (где Y - частота обновления монитора), могут быть полезны, но требуют индивидуального тестирования.</span></p>
+
+                    <h2 class="animate-on-scroll">Этап III: Настройки Графики в Самой Игре CS2</h2>
+                    <p class="animate-on-scroll">Это основной раздел, где мы будем жертвовать красотой ради производительности. Зайдите в "Настройки" -> "Изображение" -> "Расширенные настройки изображения".</p>
+                    <ul class="step-list settings-list"> <!-- Специальный класс для списка настроек -->
+                        <li class="animate-on-scroll"><strong>Повышенный контраст игроков:</strong> <span class="setting-value">Включено</span> (Улучшает видимость моделей).</li>
+                        <li class="animate-on-scroll"><strong>Ждать вертикальной синхронизации:</strong> <span class="setting-value">Отключено</span>.</li>
+                        <li class="animate-on-scroll"><strong>Текущий шаблон настроек графики:</strong> <span class="setting-value">Пользовательский</span>.</li>
+                        <li class="animate-on-scroll"><strong>Режим сглаживания множественной выборкой:</strong> <span class="setting-value">Нет</span> или <span class="setting-value">2x MSAA</span> (сильно влияет на FPS, "Нет" даст больше всего).</li>
+                        <li class="animate-on-scroll"><strong>Общее качество теней:</strong> <span class="setting-value">Низкое</span> или <span class="setting-value">Среднее</span> (Очень низкое может мешать видеть тени игроков, среднее - компромисс).</li>
+                        <li class="animate-on-scroll"><strong>Детализация моделей и текстур:</strong> <span class="setting-value">Низкое</span> или <span class="setting-value">Среднее</span>.</li>
+                        <li class="animate-on-scroll"><strong>Режим фильтрации текстур:</strong> <span class="setting-value">Билинейная</span> или <span class="setting-value">Трилинейная</span>.</li>
+                        <li class="animate-on-scroll"><strong>Детализация шейдеров:</strong> <span class="setting-value">Низкое</span>.</li>
+                        <li class="animate-on-scroll"><strong>Детализация частиц:</strong> <span class="setting-value">Низкое</span>.</li>
+                        <li class="animate-on-scroll"><strong>Глобальное затенение (Ambient Occlusion):</strong> <span class="setting-value">Отключено</span> (Сильно влияет на FPS).</li>
+                        <li class="animate-on-scroll"><strong>Расширенный динамический диапазон (HDR):</strong> <span class="setting-value">Производительность</span>.</li>
+                        <li class="animate-on-scroll"><strong>FidelityFX Super Resolution (FSR):</strong> <span class="setting-value">Отключено</span> (если у вас не очень слабый ПК). Если FPS критически низок, можно попробовать "Ультра производительность" или "Производительность", но картинка сильно замылится.</li>
+                        <li class="animate-on-scroll"><strong>NVIDIA Reflex Low Latency:</strong> <span class="setting-value">Включено + Ускорение</span> (если есть видеокарта Nvidia и нет проблем).</li>
+                    </ul>
+                    <p class="animate-on-scroll"><span class="recommendation">Разрешение экрана: Используйте нативное разрешение вашего монитора для лучшей четкости. Снижение разрешения повысит FPS, но ухудшит картинку. Популярный компромисс у про-игроков - 4:3 растянутое (например, 1280x960), но это дело вкуса.</span></p>
+
+                    <h2 class="animate-on-scroll">Этап IV: Консольные Команды и Autoexec.cfg (Опционально)</h2>
+                    <p class="animate-on-scroll">Некоторые команды могут дополнительно настроить игру. Их можно вводить в консоль (клавиша `~`) или создать файл `autoexec.cfg` в папке `Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg` (путь может немного отличаться для CS2, проверяйте актуальные гайды по расположению конфига).</p>
+                    <p class="animate-on-scroll">Примеры полезных команд:</p>
+                    <pre class="animate-on-scroll code-block"><code>
+fps_max 0 // Снять ограничение FPS (или ваше значение)
+engine_low_latency_sleep_after_client_tick true // Может помочь с отзывчивостью
+r_drawtracers_firstperson 0 // Отключить трассеры от первого лица (меньше визуального шума)
+// Сетевые настройки (подбираются индивидуально, могут быть нестабильны)
+// rate 786432
+// cl_updaterate 128
+// cl_cmdrate 128
+// cl_interp_ratio 1
+// cl_interp 0.015625 // или 0.03125
+                    </code></pre>
+                    <p class="animate-on-scroll"><span class="important-note inline-warning">Используйте консольные команды с осторожностью. Некоторые команды из CS:GO могут не работать или работать иначе в CS2. Всегда проверяйте актуальность информации.</span></p>
+
+                    <h2 class="animate-on-scroll">Этап V: Регулярное Обслуживание</h2>
+                    <ul class="styled-list">
+                        <li class="animate-on-scroll"><strong>Чистка ПК от пыли:</strong> Перегрев компонентов снижает производительность.</li>
+                        <li class="animate-on-scroll"><strong>Мониторинг температур:</strong> Используйте программы типа MSI Afterburner или HWMonitor для отслеживания температур CPU и GPU во время игры.</li>
+                        <li class="animate-on-scroll"><strong>Закрытие фоновых программ:</strong> Браузеры, Discord (если не используется для связи), торрент-клиенты и т.д., потребляют ресурсы.</li>
+                    </ul>
+
+                    <p class="animate-on-scroll article-conclusion">Оптимизация CS2 — это процесс, требующий терпения и экспериментов. Не бойтесь пробовать разные настройки, чтобы найти идеальный баланс между качеством картинки и производительностью для вашей системы. Удачи на серверах!</p>
+
+                </article>
+            </div>
+        </main>
+
+        <footer class="site-footer animate-on-scroll">
+            <div class="container">
+                <p>© <span id="current-year"></span> Cortex X Blog. Все права защищены квантовым шифрованием.</p>
+                 <div class="footer-links">
+                    <a href="#">Политика данных</a>
+                    <a href="#">Условия использования</a>
+                </div>
+            </div>
+        </footer>
+
+        <aside class="side-panel">
+            <!-- Иконки как на главной -->
+            <a href="#" class="side-panel-item" title="VK"><svg>...</svg></a>
+            <a href="#" class="side-panel-item" title="Telegram"><svg>...</svg></a>
+             <input type="checkbox" id="themeToggle" class="theme-toggle-checkbox">
+             <label for="themeToggle" class="side-panel-item theme-toggle-label" title="Сменить тему">
+                <svg class="sun">...</svg>
+                <svg class="moon">...</svg>
+            </label>
+        </aside>
+    </div>
+
+    <button id="scrollToTopBtn" class="scroll-to-top-btn" title="Наверх">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"/></svg>
+    </button>
+
+    <script src="/blog.js"></script>
+</body>
+</html>
