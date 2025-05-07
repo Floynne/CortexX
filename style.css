@@ -22,6 +22,8 @@
     --accent-randomizer: #9A59FF; --accent-randomizer-rgb: 154, 89, 255; /* Немного изменен */
     --accent-wpm: #33A1FF; --accent-wpm-rgb: 51, 161, 255; /* Немного изменен */
     --accent-markdown: #6A7BA2; --accent-markdown-rgb: 106, 123, 162; /* Немного изменен */
+    --accent-blog: #1abc9c; --accent-blog-rgb: 26, 188, 156; /* Акцент для блога (бирюзовый) */
+
 
     --accent-confirm: var(--accent-chat); --accent-confirm-rgb: var(--accent-chat-rgb);
     --accent-error: #ff6b6b; --accent-error-rgb: 255, 107, 107;
@@ -40,6 +42,7 @@
     --gradient-card-randomizer: linear-gradient(135deg, var(--accent-randomizer), color-mix(in srgb, var(--accent-randomizer) 70%, #ffffff 30%));
     --gradient-card-wpm: linear-gradient(135deg, var(--accent-wpm), color-mix(in srgb, var(--accent-wpm) 70%, #ffffff 30%));
     --gradient-card-markdown: linear-gradient(135deg, var(--accent-markdown), color-mix(in srgb, var(--accent-markdown) 70%, #ffffff 30%));
+    --gradient-card-blog: linear-gradient(135deg, var(--accent-blog), color-mix(in srgb, var(--accent-blog) 70%, #ffffff 30%)); /* Градиент для блога */
 
 
     --gradient-button: linear-gradient(120deg, #4dabff 0%, #a070ff 100%);
@@ -93,7 +96,7 @@ body {
     font-size: var(--font-size-base);
     background-color: var(--bg-primary);
     background-image: radial-gradient(ellipse at top left, rgba(var(--accent-calendar-rgb), 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(var(--accent-music-rgb), 0.15) 0%, transparent 50%);
-    background-attachment: fixed; /* <--- ДОБАВЬТЕ ЭТУ СТРОКУ */
+    background-attachment: fixed;
     color: var(--text-primary);
     display: flex;
     justify-content: center;
@@ -206,7 +209,7 @@ body.loading-active { overflow: hidden; }
     background: linear-gradient(45deg, var(--accent-music), var(--accent-calendar), var(--accent-notion));
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: inherit;
+    -webkit-text-fill-color: inherit; /* Было transparent, исправлено на inherit для работы с background-clip */
     filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
     position: relative;
     animation: glowPulse 2s ease-in-out infinite paused;
@@ -446,7 +449,8 @@ body.loading-active { overflow: hidden; }
 .hub-container.visible .app-card:nth-child(8) { animation-delay: calc(var(--card-animation-delay-step) * 7); }
 .hub-container.visible .app-card:nth-child(9) { animation-delay: calc(var(--card-animation-delay-step) * 8); }
 .hub-container.visible .app-card:nth-child(10) { animation-delay: calc(var(--card-animation-delay-step) * 9); }
-.hub-container.visible .app-card:nth-child(11) { animation-delay: calc(var(--card-animation-delay-step) * 10); } /* Для "Скоро..." */
+.hub-container.visible .app-card:nth-child(11) { animation-delay: calc(var(--card-animation-delay-step) * 10); } /* Блог */
+.hub-container.visible .app-card:nth-child(12) { animation-delay: calc(var(--card-animation-delay-step) * 11); } /* Для "Скоро..." */
 
 
 @keyframes popInCard {
@@ -556,6 +560,7 @@ body.loading-active { overflow: hidden; }
 .app-card.randomizer-card { --card-color-rgb: var(--accent-randomizer-rgb); --card-color: var(--accent-randomizer); --accent-glow-rgb: var(--accent-randomizer-rgb); }
 .app-card.wpm-card { --card-color-rgb: var(--accent-wpm-rgb); --card-color: var(--accent-wpm); --accent-glow-rgb: var(--accent-wpm-rgb); }
 .app-card.markdown-card { --card-color-rgb: var(--accent-markdown-rgb); --card-color: var(--accent-markdown); --accent-glow-rgb: var(--accent-markdown-rgb); }
+.app-card.blog-card { --card-color-rgb: var(--accent-blog-rgb); --card-color: var(--accent-blog); --accent-glow-rgb: var(--accent-blog-rgb); }
 
 
 .app-card.in-development {
