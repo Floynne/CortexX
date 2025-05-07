@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task ToDo- Ваши задачи</title>
+    <link rel="stylesheet" href="todo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Добавим Favicon (пример) -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body class="dark-theme"> <!-- Тема по умолчанию -->
+    <div class="app-container">
+        <!-- Боковая панель (Сайдбар) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="material-symbols-outlined logo-icon">task_alt</span>
+                <h1 class="logo-text">Task ToDo</h1>
+                <!-- Переключатель темы -->
+                <button class="theme-toggle-btn" id="theme-toggle-btn" title="Сменить тему">
+                    <span class="material-symbols-outlined light-icon">light_mode</span>
+                    <span class="material-symbols-outlined dark-icon">dark_mode</span>
+                </button>
+            </div>
+            <nav class="navigation">
+                 <div class="nav-section-header">Списки</div>
+                <ul class="nav-list" id="project-list">
+                    <!-- Проекты будут загружаться сюда JS -->
+                     <li class="nav-item active" data-project-id="inbox">
+                         <span class="material-symbols-outlined project-icon">inbox</span>
+                         <span class="project-name">Главня</span>
+                         <span class="task-count" data-count-for="inbox">0</span>
+                     </li>
+                     <!-- Динамический список проектов -->
+                </ul>
+                 <div class="no-projects-message hidden" id="no-projects-message">
+                    <span class="material-symbols-outlined">create_new_folder</span>
+                    <span>Создайте свой первый список!</span>
+                 </div>
+            </nav>
+            <!-- Кнопка Добавить проект -->
+            <button class="add-project-btn" id="add-project-btn">
+                <span class="material-symbols-outlined">add</span>
+                <span>Новый список</span>
+            </button>
+            <!-- Скрытое поле для ввода имени нового проекта -->
+            <div class="add-project-input-container hidden" id="add-project-input-container">
+                 <input type="text" id="new-project-name" placeholder="Имя списка...">
+                 <!-- Выбор иконки (простой селект) -->
+                 <select id="new-project-icon" title="Выбрать иконку">
+                     <option value="list">📄</option>
+                     <option value="label">🏷️</option>
+                     <option value="folder">📁</option>
+                     <option value="lightbulb">💡</option>
+                     <option value="person">👤</option>
+                     <option value="work">💼</option>
+                     <option value="home">🏠</option>
+                     <option value="star">⭐</option>
+                     <option value="flag">🚩</option>
+                 </select>
+                 <button id="save-project-btn" title="Сохранить"><span class="material-symbols-outlined">check</span></button>
+                 <button id="cancel-project-btn" title="Отмена"><span class="material-symbols-outlined">close</span></button>
+            </div>
+        </aside>
+
+        <!-- Основное содержимое -->
+        <main class="main-content">
+            <header class="main-header">
+                 <div class="header-left">
+                     <h2 id="current-list-title">Главная</h2>
+                 </div>
+                <!-- Элементы управления -->
+                <div class="header-right">
+                    <!-- Поиск -->
+                    <div class="search-container">
+                        <span class="material-symbols-outlined search-icon">search</span>
+                        <input type="search" placeholder="Поиск задач..." id="search-input">
+                    </div>
+                    <!-- Фильтр/Сортировка -->
+                    <div class="view-options">
+                        <label class="filter-toggle">
+                            <input type="checkbox" id="filter-active-toggle">
+                            <span>Только активные</span>
+                        </label>
+                        <select id="sort-options" title="Сортировка">
+                            <option value="dateAdded">По дате добавления</option>
+                            <option value="dueDate">По дате выполнения</option>
+                            <option value="priority">По приоритету</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <div class="task-area">
+                <ul class="task-list" id="task-list-container">
+                     <!-- Сообщение об отсутствии задач -->
+                     <li class="no-tasks-message">
+                         <span class="material-symbols-outlined">playlist_add_check</span>
+                         <span class="message-title">Всё чисто!</span>
+                         <span class="message-subtitle">Похоже, все задачи выполнены, или вы еще не добавили ни одной.</span>
+                         <button class="add-first-task-btn">
+                             <span class="material-symbols-outlined">add_circle</span>
+                             Добавить задачу
+                         </button>
+                    </li>
+                </ul>
+
+                <!-- Кнопка для показа формы добавления -->
+                 <button class="show-add-task-form-btn" id="show-add-task-form-btn">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span>Добавить задачу</span>
+                </button>
+
+                <!-- Модальное окно для добавления/редактирования задачи -->
+                <div class="task-form-modal hidden" id="task-form-modal">
+                    <!-- Содержимое формы остаётся прежним -->
+                     <div class="task-form-content">
+                        <h3 id="task-form-title">Новая задача</h3>
+                        <input type="hidden" id="task-id-edit">
+
+                        <input type="text" id="task-name-input" placeholder="Название задачи (обязательно)">
+                        <textarea id="task-desc-input" placeholder="Описание (необязательно)"></textarea>
+
+                        <div class="task-form-row">
+                            <div class="form-field">
+                                <label for="task-due-date-input">
+                                    <span class="material-symbols-outlined">calendar_month</span> Дата выполнения:
+                                </label>
+                                <input type="date" id="task-due-date-input">
+                            </div>
+                            <div class="form-field">
+                                <label for="task-priority-select">
+                                     <span class="material-symbols-outlined">flag</span> Приоритет:
+                                </label>
+                                <select id="task-priority-select">
+                                    <option value="4">P4 (Низкий)</option>
+                                    <option value="3">P3 (Средний)</option>
+                                    <option value="2">P2 (Высокий)</option>
+                                    <option value="1">P1 (Высший)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                         <div class="form-actions">
+                             <button id="save-task-modal-btn">Сохранить</button>
+                             <button id="cancel-task-modal-btn" type="button">Отмена</button>
+                         </div>
+                         <button class="close-modal-btn" id="close-modal-btn" title="Закрыть">×</button>
+                    </div>
+                </div>
+
+
+            </div> <!-- /task-area -->
+        </main>
+    </div>
+
+    <!-- Шаблон для элемента задачи (Обновлен) -->
+    <template id="task-item-template">
+        <li class="task-item" data-task-id="">
+            <div class="task-priority-indicator"></div>
+            <div class="task-content">
+                <button class="complete-btn">
+                    <span class="material-symbols-outlined unchecked-icon">radio_button_unchecked</span>
+                    <span class="material-symbols-outlined checked-icon">check_circle</span>
+                </button>
+                <div class="task-details">
+                    <span class="task-name"></span>
+                    <p class="task-description"></p>
+                    <!-- Подзадачи -->
+                    <div class="subtask-section">
+                        <ul class="subtask-list">
+                            <!-- Подзадачи сюда -->
+                        </ul>
+                         <!-- Добавление подзадачи (появляется при фокусе на задаче?) -->
+                         <div class="add-subtask-inline hidden">
+                             <input type="text" class="add-subtask-input" placeholder="Добавить подзадачу...">
+                             <button class="save-subtask-btn"><span class="material-symbols-outlined">add</span></button>
+                         </div>
+                         <button class="toggle-add-subtask-btn" title="Добавить подзадачу">
+                              <span class="material-symbols-outlined">add_task</span>
+                         </button>
+                    </div>
+                    <!-- Мета-информация (дата, прогресс) -->
+                    <div class="task-meta">
+                        <span class="due-date">
+                            <span class="material-symbols-outlined">calendar_month</span>
+                            <span class="date-text"></span>
+                        </span>
+                         <span class="subtask-progress">
+                             <span class="material-symbols-outlined">checklist</span>
+                             <span class="progress-text"></span>
+                         </span>
+                    </div>
+                </div>
+            </div>
+            <div class="task-actions">
+                <button class="edit-btn" title="Редактировать">
+                    <span class="material-symbols-outlined">edit</span>
+                </button>
+                <button class="delete-btn" title="Удалить">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+            </div>
+        </li>
+    </template>
+
+    <!-- Шаблон для элемента подзадачи (Новый) -->
+    <template id="subtask-item-template">
+         <li class="subtask-item" data-subtask-id="">
+             <button class="complete-subtask-btn">
+                 <span class="material-symbols-outlined unchecked-icon">check_box_outline_blank</span>
+                 <span class="material-symbols-outlined checked-icon">check_box</span>
+             </button>
+             <span class="subtask-name"></span>
+             <button class="delete-subtask-btn" title="Удалить подзадачу">×</button>
+         </li>
+    </template>
+
+    <!-- Шаблон для элемента списка проектов (Обновлен) -->
+    <template id="project-item-template">
+         <li class="nav-item" data-project-id="">
+            <span class="material-symbols-outlined project-icon">list</span> <!-- Иконка проекта -->
+            <span class="project-name"></span>
+            <span class="task-count">0</span>
+             <button class="delete-project-btn" title="Удалить список">×</button>
+        </li>
+    </template>
+
+    <div class="modal-backdrop hidden" id="modal-backdrop"></div>
+
+    <!-- Простое уведомление (для сохранения и т.д.) -->
+    <div class="notification-toast hidden" id="notification-toast">
+        <span id="toast-message"></span>
+    </div>
+
+
+    <script src="todo.js"></script>
+</body>
+</html>

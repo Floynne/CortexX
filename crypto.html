@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Prices</title>
+    <link rel="stylesheet" href="crypto.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Crypto Dashboard</h1>
+        <div class="controls">
+            <div class="search-container">
+                <input type="search" id="search-input" placeholder="Поиск по названию/символу...">
+                <span class="search-icon">🔍</span>
+            </div>
+            <button id="refresh-btn" title="Обновить данные">🔄</button>
+            <button id="theme-toggle-btn" title="Переключить тему">
+                <span class="icon-light">☀️</span>
+                <span class="icon-dark">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="table-container">
+            <div id="loading-indicator">✨ Загрузка данных...</div>
+            <div id="error-indicator" style="display: none; color: var(--accent-negative); padding: 1rem; text-align: center;"></div>
+             <table id="crypto-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Название</th>
+                        <th>Цена</th>
+                        <th>24ч %</th>
+                        <th>Рын. кап.</th>
+                        <th>Объем (24ч)</th>
+                        <th>График (7д)</th>
+                    </tr>
+                </thead>
+                <tbody id="crypto-table-body">
+                    <!-- Строки будут добавлены с помощью JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Пагинация -->
+        <div class="pagination" id="pagination-controls" style="display: none;">
+             <button id="prev-page-btn" disabled>◀ Назад</button>
+             <span id="page-info">Страница 1</span>
+             <button id="next-page-btn">Вперед ▶</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>Данные от CoinGecko ✨</p>
+    </footer>
+
+    <script src="crypto.js"></script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+/* --- CSS Переменные (Корневые - для светлой темы по умолчанию) --- */
+:root {
+    --bg-primary: #f8f9fa;         /* Основной фон страницы */
+    --bg-secondary: #ffffff;       /* Фон карточек, таблиц */
+    --bg-header: #ffffff;          /* Фон хедера */
+    --text-primary: #212529;       /* Основной цвет текста */
+    --text-secondary: #6c757d;     /* Вторичный текст (символы, подвал, заголовки табл) */
+    --text-link: #007bff;          /* Цвет ссылок, подсветка фокуса */
+    --border-color: #dee2e6;       /* Цвет рамок, разделителей */
+    --shadow-color: rgba(0, 0, 0, 0.07); /* Цвет тени */
+    --accent-positive: #28a745;    /* Зеленый для роста */
+    --accent-negative: #dc3545;    /* Красный для падения */
+    --accent-positive-bg: rgba(40, 167, 69, 0.1); /* Фон для зеленого */
+    --accent-negative-bg: rgba(220, 53, 69, 0.1); /* Фон для красного */
+    --hover-bg-color: #f1f3f5;     /* Фон строки при наведении */
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a8a8a8;
+    --button-bg: #e9ecef;
+    --button-text: #495057;
+    --button-hover-bg: #ced4da;
+    --icon-light-display: block;   /* Показываем солнце */
+    --icon-dark-display: none;     /* Скрываем луну */
+}
+
+/* --- Переменные для ТЕМНОЙ ТЕМЫ --- */
+:root[data-theme="dark"] {
+    --bg-primary: #121212;         /* Очень темный фон */
+    --bg-secondary: #1e1e1e;       /* Фон карточек чуть светлее */
+    --bg-header: #1e1e1e;          /* Фон хедера */
+    --text-primary: #e0e0e0;       /* Светлый основной текст */
+    --text-secondary: #a0a0a0;     /* Светлый вторичный текст */
+    --text-link: #64b5f6;          /* Светло-синий для ссылок */
+    --border-color: #333333;       /* Темные рамки */
+    --shadow-color: rgba(255, 255, 255, 0.05); /* Светлая тень */
+    --accent-positive: #4caf50;    /* Ярче зеленый */
+    --accent-negative: #f44336;    /* Ярче красный */
+    --accent-positive-bg: rgba(76, 175, 80, 0.15);
+    --accent-negative-bg: rgba(244, 67, 54, 0.15);
+    --hover-bg-color: #2a2a2a;     /* Темный фон при наведении */
+    --scrollbar-track: #2c2c2c;
+    --scrollbar-thumb: #555555;
+    --scrollbar-thumb-hover: #777777;
+    --button-bg: #333333;
+    --button-text: #e0e0e0;
+    --button-hover-bg: #444444;
+    --icon-light-display: none;    /* Скрываем солнце */
+    --icon-dark-display: block;    /* Показываем луну */
+}
+
+/* --- Базовые стили --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 16px; /* Базовый размер шрифта */
+}
+
+/* Кастомный скроллбар */
+body::-webkit-scrollbar { width: 8px; }
+body::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+body::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 10px; }
+body::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
+
+/* --- Шапка --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-header);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px var(--shadow-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    position: sticky; /* Прилипающая шапка */
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap; /* Разрешаем перенос на маленьких экранах */
+    gap: 1rem; /* Расстояние между заголовком и блоком управления */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700; /* Жирнее */
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+/* --- Стили для элементов управления в шапке --- */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; /* Расстояние между кнопками и поиском */
+    flex-wrap: wrap;
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#search-input {
+    padding: 0.6rem 1rem 0.6rem 2.5rem; /* Отступ слева для иконки */
+    border: 1px solid var(--border-color);
+    border-radius: 20px; /* Закругленное поле */
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    min-width: 200px; /* Минимальная ширина */
+    transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.2s ease;
+}
+#search-input:focus {
+    outline: none;
+    border-color: var(--text-link); /* Подсветка при фокусе */
+    box-shadow: 0 0 0 3px rgba(var(--text-link), 0.1); /* Используем RGBA для совместимости с темной темой */
+}
+#search-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+#search-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--hover-bg-color);
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    pointer-events: none; /* Иконка не мешает клику на input */
+    z-index: 1; /* Поверх инпута */
+}
+
+/* Кнопка обновления */
+#refresh-btn {
+    background: transparent; /* Прозрачный фон */
+    color: var(--text-secondary); /* Цвет иконки */
+    border: none;
+    padding: 0.6rem; /* Квадратная кнопка */
+    border-radius: 50%; /* Круглая кнопка */
+    cursor: pointer;
+    font-size: 1.3rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.3s ease;
+}
+#refresh-btn:hover:not(:disabled) {
+    background-color: var(--hover-bg-color);
+    color: var(--text-primary);
+    transform: rotate(180deg);
+}
+#refresh-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    background-color: transparent;
+}
+
+
+/* Кнопка переключения темы */
+#theme-toggle-btn {
+    background: transparent; /* Прозрачный фон */
+    color: var(--text-secondary); /* Цвет иконки */
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 20px; /* Закругленная кнопка */
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1; /* Убрать лишнюю высоту */
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+#theme-toggle-btn:hover {
+    background-color: var(--hover-bg-color);
+    color: var(--text-primary);
+    transform: scale(1.05); /* Небольшое увеличение при наведении */
+}
+#theme-toggle-btn .icon-light { display: var(--icon-light-display); }
+#theme-toggle-btn .icon-dark { display: var(--icon-dark-display); }
+
+/* --- Основной контент --- */
+main {
+    padding: 2rem;
+    max-width: 1300px; /* Широкий контейнер */
+    margin: 2rem auto;
+}
+
+.table-container {
+    background-color: var(--bg-secondary);
+    border-radius: 12px; /* Сильнее закругление */
+    box-shadow: 0 6px 12px var(--shadow-color);
+    overflow: hidden; /* Скрыть все, что выходит за рамки радиуса */
+    transition: background-color 0.3s ease;
+    position: relative; /* Для позиционирования индикаторов */
+    min-height: 200px; /* Минимальная высота, чтобы индикаторы были видны */
+}
+
+#loading-indicator {
+    position: absolute; /* Позиционируем поверх */
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.8); /* Полупрозрачный фон */
+    backdrop-filter: blur(3px); /* Эффект размытия */
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    z-index: 10; /* Поверх таблицы */
+    transition: opacity 0.3s ease;
+    border-radius: 12px; /* Наследуем скругление */
+}
+/* Добавим RGB версии цветов для rgba() */
+:root { --bg-secondary-rgb: 255, 255, 255; }
+:root[data-theme="dark"] { --bg-secondary-rgb: 30, 30, 30; }
+
+
+#error-indicator {
+    display: none; /* Скрыт по умолчанию */
+    background-color: var(--accent-negative-bg);
+    border: 1px solid var(--accent-negative);
+    border-radius: 8px;
+    margin: 1rem; /* Отступы внутри контейнера */
+    padding: 1rem;
+    color: var(--accent-negative);
+    text-align: center;
+    font-weight: 500;
+}
+
+
+/* --- Стили таблицы --- */
+#crypto-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem; /* Чуть меньше шрифт в таблице */
+    display: table; /* Чтобы display: none/table работало */
+}
+
+#crypto-table thead {
+    background-color: transparent; /* Убираем фон, чтобы был виден фон контейнера */
+    position: sticky; /* Прилипающий заголовок таблицы */
+    top: 0; /* Прилипает к верху контейнера .table-container */
+    z-index: 5; /* Под индикатором загрузки, но над строками */
+    background-color: var(--bg-secondary); /* Нужен фон, чтобы перекрывать строки */
+}
+
+#crypto-table th,
+#crypto-table td {
+    padding: 1rem 1.2rem; /* Больше паддинги */
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: border-color 0.3s ease;
+}
+
+#crypto-table th {
+    font-weight: 600;
+    color: var(--text-secondary); /* Заголовки - вторичным цветом */
+    font-size: 0.8rem; /* Меньше шрифт заголовков */
+    text-transform: uppercase; /* ЗАГЛАВНЫЕ */
+    letter-spacing: 0.5px;
+}
+
+/* Последняя строка без нижней рамки */
+#crypto-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Ранк - выравнивание по центру */
+#crypto-table th:first-child,
+#crypto-table td:first-child {
+    text-align: center;
+    width: 60px;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* --- Стили ячеек --- */
+.coin-info {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Больше расстояние */
+}
+
+.coin-info img {
+    width: 32px; /* Крупнее иконки */
+    height: 32px;
+    border-radius: 50%; /* Круглые иконки */
+    background-color: var(--hover-bg-color); /* Фон на случай прозрачности */
+    padding: 2px;
+}
+
+.coin-name {
+    font-weight: 600; /* Жирнее название */
+    font-size: 1rem; /* Чуть крупнее */
+    color: var(--text-primary);
+}
+
+.coin-symbol {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+/* Проценты с фоном */
+.percentage-cell span {
+    padding: 3px 8px;
+    border-radius: 6px; /* Закругление для плашки процента */
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-block; /* Чтобы padding работал */
+    min-width: 50px; /* Минимальная ширина для выравнивания */
+    text-align: right;
+}
+
+.positive-change {
+    color: var(--accent-positive);
+    background-color: var(--accent-positive-bg);
+}
+
+.negative-change {
+    color: var(--accent-negative);
+    background-color: var(--accent-negative-bg);
+}
+
+/* Цена, капитализация, объем - основной цвет текста */
+.price-cell, .market-cap-cell, .volume-cell {
+     color: var(--text-primary);
+     font-weight: 500;
+     text-align: right; /* Выравниваем числа по правому краю */
+}
+#crypto-table th:nth-child(3), /* Цена */
+#crypto-table th:nth-child(5), /* Кап. */
+#crypto-table th:nth-child(6) { /* Объем */
+    text-align: right;
+}
+#crypto-table th:nth-child(4) { /* 24ч % */
+    text-align: center;
+}
+#crypto-table td:nth-child(4) { /* 24ч % */
+    text-align: center;
+}
+
+
+/* График */
+.sparkline-cell {
+    width: 160px;
+    height: 55px; /* Немного выше */
+    text-align: center; /* Центрируем график */
+}
+.sparkline-container {
+    width: 100%;
+    height: 100%;
+    display: inline-block; /* Чтобы занимал только свою ширину */
+}
+
+/* Эффект наведения на строку */
+#crypto-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+#crypto-table tbody tr:hover {
+    background-color: var(--hover-bg-color);
+}
+
+
+/* --- Стили пагинации --- */
+.pagination {
+    display: flex; /* Показываем/скрываем через JS */
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.pagination button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: var(--button-hover-bg);
+    border-color: var(--button-hover-bg);
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#page-info {
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+/* --- Подвал --- */
+footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+/* --- Адаптивность --- */
+@media (max-width: 992px) {
+    /* Скрываем менее важные колонки на средних экранах */
+    #crypto-table th:nth-child(6), /* Объем */
+    #crypto-table td:nth-child(6) {
+        display: none;
+    }
+    .sparkline-cell { width: 120px; }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 0.8rem 1rem;
+        flex-direction: column; /* Элементы друг под другом */
+        align-items: flex-start; /* Выравнивание по левому краю */
+    }
+    .controls {
+        width: 100%; /* Занять всю ширину */
+        justify-content: space-between; /* Растянуть кнопки */
+        margin-top: 0.5rem;
+    }
+    #search-input {
+        min-width: 0; /* Убрать мин. ширину */
+        flex-grow: 1; /* Занять доступное место */
+    }
+    main { padding: 1rem; margin: 1rem auto; }
+    .table-container { border-radius: 8px; } /* Меньше скругление */
+    #crypto-table th,
+    #crypto-table td { padding: 0.8rem 0.6rem; }
+    .coin-info { gap: 8px; }
+    .coin-info img { width: 24px; height: 24px; }
+    .coin-name { font-size: 0.9rem; }
+
+    /* Скрываем еще одну колонку */
+    #crypto-table th:nth-child(5), /* Капитализация */
+    #crypto-table td:nth-child(5) {
+        display: none;
+    }
+    .sparkline-cell { width: 100px; }
+
+    .pagination { gap: 0.5rem; }
+    .pagination button { padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+    #page-info { font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+     /* Скрываем график на самых маленьких экранах */
+    #crypto-table th:nth-child(7), /* График */
+    #crypto-table td:nth-child(7) {
+        display: none;
+    }
+     /* Уменьшаем шрифт в таблице */
+     #crypto-table { font-size: 0.85rem; }
+     .coin-name { font-size: 0.85rem; }
+     .coin-symbol { font-size: 0.75em; }
+     .percentage-cell span { font-size: 0.75rem; padding: 2px 5px; min-width: 40px;}
+     #crypto-table th,
+     #crypto-table td { padding: 0.6rem 0.4rem; }
+     .coin-info img { width: 20px; height: 20px; }
+
+     header h1 { font-size: 1.4rem; }
+     .controls { gap: 0.5rem;}
+     #search-input { font-size: 0.85rem; padding: 0.5rem 0.8rem 0.5rem 2rem; }
+     .search-icon { font-size: 1rem; left: 0.6rem;}
+     #refresh-btn { font-size: 1.1rem; padding: 0.5rem; }
+     #theme-toggle-btn { font-size: 1rem; padding: 0.4rem 0.6rem; }
+}

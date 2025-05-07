@@ -1,0 +1,980 @@
+/* === Переменные и Базовые Стили === */
+:root {
+    /* Светлая тема (по умолчанию) */
+    --bg-color: #f4f7f6;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --text-muted-color: #666666;
+    --border-color: #e0e0e0;
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --input-focus-border: var(--accent-color-1);
+    --input-focus-shadow: rgba(52, 152, 219, 0.2);
+    --button-primary-bg: #2ecc71; /* Зеленый */
+    --button-primary-hover: #27ae60;
+    --button-secondary-bg: #3498db; /* Синий */
+    --button-secondary-hover: #2980b9;
+    --button-danger-bg: #e74c3c; /* Красный (для очистки) */
+    --button-danger-hover: #c0392b;
+    --button-disabled-bg: #bdc3c7;
+    --button-text-color: #ffffff;
+    --accent-color-1: #3498db; /* Синий */
+    --accent-color-2: #e74c3c; /* Красный */
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --shadow-inset-color: rgba(0, 0, 0, 0.04);
+    --wheel-border-color: #adb5bd;
+    --wheel-center-color: #adb5bd;
+    --rng-display-bg: #f0f2f5;
+    --history-item-bg: #f8f9fa;
+
+    /* Размеры и Переходы */
+    --wheel-size: 350px;
+    --spin-duration: 5s;
+    --transition-speed: 0.3s;
+    --transition-timing: ease;
+
+    /* Шрифты */
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+}
+
+body.dark-theme {
+    /* Темная тема */
+    --bg-color: #1a1a1a;
+    --container-bg: #2d2d2d;
+    --text-color: #e0e0e0;
+    --text-muted-color: #a0a0a0;
+    --border-color: #444444;
+    --input-bg: #3a3a3a;
+    --input-border: #555555;
+    --input-focus-border: var(--accent-color-1);
+    --input-focus-shadow: rgba(52, 152, 219, 0.3);
+    --button-primary-bg: #27ae60; /* Немного другой зеленый */
+    --button-primary-hover: #2ecc71;
+    --button-secondary-bg: #2980b9; /* Немного другой синий */
+    --button-secondary-hover: #3498db;
+    --button-danger-bg: #c0392b; /* Немного другой красный */
+    --button-danger-hover: #e74c3c;
+    --button-disabled-bg: #5a5a5a;
+    --button-text-color: #ffffff;
+    --accent-color-1: #4a90e2; /* Светлее синий */
+    --accent-color-2: #e57373; /* Светлее красный */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-inset-color: rgba(0, 0, 0, 0.2);
+    --wheel-border-color: #777777;
+    --wheel-center-color: #777777;
+    --rng-display-bg: #383838;
+    --history-item-bg: #3f3f3f;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    transition: background-color var(--transition-speed) var(--transition-timing),
+                color var(--transition-speed) var(--transition-timing),
+                border-color var(--transition-speed) var(--transition-timing),
+                box-shadow var(--transition-speed) var(--transition-timing),
+                opacity var(--transition-speed) var(--transition-timing);
+}
+/* Исключаем transform из глобального transition для анимаций */
+.wheel, .rng-digit-inner, .tab-pane, .result-display {
+     transition: background-color var(--transition-speed) var(--transition-timing),
+                color var(--transition-speed) var(--transition-timing),
+                border-color var(--transition-speed) var(--transition-timing),
+                box-shadow var(--transition-speed) var(--transition-timing),
+                opacity var(--transition-speed) var(--transition-timing);
+    /* Не добавляем transform сюда */
+}
+.wheel {
+     transition: background-color var(--transition-speed) var(--transition-timing),
+                 border-color var(--transition-speed) var(--transition-timing),
+                 box-shadow var(--transition-speed) var(--transition-timing),
+                 /* Добавляем transform отдельно */
+                 transform var(--spin-duration) cubic-bezier(0.15, 0.85, 0.4, 1);
+}
+.rng-digit-inner {
+     /* transform transition будет управляться через JS */
+}
+.result-display { /* Для результата колеса и RNG и Ника */
+     transition: opacity 0.5s ease, transform 0.3s ease;
+}
+.tab-pane {
+    /* Анимация появления вкладки будет управляться через keyframes */
+}
+
+
+body {
+    font-family: var(--font-sans);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 20px;
+    color: var(--text-color);
+}
+
+/* === Общий контейнер приложения === */
+.app-container {
+    background-color: var(--container-bg);
+    padding: 30px 40px;
+    border-radius: 16px; /* Чуть больше скругление */
+    box-shadow: 0 12px 35px var(--shadow-color);
+    width: 100%;
+    max-width: 900px; /* Еще немного шире */
+    margin: 20px auto;
+    border: 1px solid var(--border-color);
+}
+
+/* === Шапка и Переключатель Темы === */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.8em;
+    color: var(--text-color);
+}
+
+.theme-toggle-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted-color);
+    transition: color var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+}
+.theme-toggle-button:hover {
+    color: var(--text-color);
+    background-color: rgba(128, 128, 128, 0.1);
+}
+.theme-toggle-button svg {
+    width: 24px;
+    height: 24px;
+}
+/* Показываем нужную иконку в зависимости от темы */
+.sun-icon { display: block; }
+.moon-icon { display: none; }
+body.dark-theme .sun-icon { display: none; }
+body.dark-theme .moon-icon { display: block; }
+
+
+/* === Стили Вкладок === */
+.tab-navigation {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tab-button {
+    padding: 10px 25px;
+    font-size: 1.05em;
+    font-weight: 500;
+    color: var(--text-muted-color);
+    background-color: transparent;
+    border: none;
+    border-radius: 8px; /* Скругляем кнопки */
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: color var(--transition-speed) var(--transition-timing),
+                background-color var(--transition-speed) var(--transition-timing),
+                border-color var(--transition-speed) var(--transition-timing);
+    margin: 0;
+}
+
+.tab-button:hover {
+    color: var(--text-color);
+    background-color: var(--history-item-bg); /* Легкий фон при наведении */
+}
+
+.tab-button.active {
+    color: var(--accent-color-2); /* Красный для активной */
+    font-weight: 600;
+    background-color: transparent; /* Убираем фон у активной */
+    border-bottom-color: var(--accent-color-2);
+    border-radius: 0; /* Убираем скругление у активной, чтобы линия была видна */
+}
+
+/* Панели вкладок */
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.6s ease-out; /* Чуть дольше анимация */
+}
+.tab-pane.active { display: block; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* === Сообщения об ошибках и счетчики === */
+.error-message {
+    color: var(--accent-color-2); /* Красный */
+    font-size: 0.9em;
+    margin-top: 8px;
+    min-height: 1.2em; /* Резервируем место */
+    text-align: left; /* Выравниваем по левому краю под полем */
+}
+.options-counter {
+    font-size: 0.85em;
+    color: var(--text-muted-color);
+    text-align: right;
+    margin-top: -10px; /* Поднимаем ближе к textarea */
+    margin-bottom: 10px;
+}
+
+
+/* === Стили Колеса Фортуны === */
+.fortune-wheel-app { /* Стили контейнера самой вкладки */
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.wheel-and-options { /* Контейнер для колеса и настроек */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Контейнер блока с колесом */
+.wheel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-basis: var(--wheel-size);
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.wheel-wrapper {
+    position: relative;
+    width: var(--wheel-size);
+    height: var(--wheel-size);
+    margin-bottom: 30px; /* Больше отступ до кнопки */
+}
+
+/* Стрелка */
+.wheel-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -12px; /* Чуть выше */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 28px solid var(--accent-color-2); /* Красный */
+    z-index: 10;
+    filter: drop-shadow(0 -3px 3px rgba(0,0,0,0.2)); /* Чуть заметнее тень */
+    pointer-events: none;
+}
+
+/* Колесо */
+.wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    border: 8px solid var(--wheel-border-color); /* Толще граница */
+    box-shadow: 0 0 0 10px var(--container-bg),
+                0 0 25px var(--shadow-inset-color) inset,
+                0 8px 20px var(--shadow-color);
+    background-color: var(--border-color); /* Фоллбек */
+    /* transition для transform определен глобально для .wheel */
+}
+
+/* ИСПРАВЛЕННЫЙ стиль текста на Колесе */
+.wheel .option-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform-origin: bottom center; /* Вращаем относительно центра НИЖНЕЙ грани */
+    height: 50%; /* Высота равна радиусу */
+    width: 100px; /* Задаем явную ширину (можно настроить) */
+    margin-left: -50px; /* Центрируем по горизонтали (половина ширины) */
+    display: flex;
+    align-items: center; /* Центрируем текст по ВЕРТИКАЛИ */
+    justify-content: center; /* Центрируем текст по ГОРИЗОНТАЛИ */
+    font-size: clamp(9px, calc(var(--wheel-size) / 30), 14px);
+    font-weight: 500; /* Нормальный вес */
+    color: #ffffff; /* По умолчанию белый */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Усилим тень */
+    padding: 0 5px; /* Небольшие отступы по бокам текста */
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+    pointer-events: none;
+    /* transform будет задан через JS (только rotate) */
+}
+/* Цвет текста для светлых секторов */
+.wheel .option-text.light-text {
+     color: #222; /* Темный текст */
+     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* Центр колеса */
+.wheel-center-cover {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(var(--wheel-size) * 0.18); /* Чуть больше */
+    height: calc(var(--wheel-size) * 0.18);
+    background-color: var(--wheel-center-color);
+    border-radius: 50%;
+    border: 5px solid var(--container-bg); /* Толще обводка */
+    box-shadow: 0 0 12px rgba(0,0,0,0.25);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Кнопка "Крутить" */
+.spin-button {
+    display: block;
+    width: 85%; /* Шире */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 14px 20px; /* Выше */
+    font-size: 1.25em; /* Больше */
+    font-weight: 700; /* Жирнее */
+    color: var(--button-text-color);
+    background-color: var(--button-primary-bg);
+    border: none;
+    border-radius: 10px; /* Больше скругление */
+    cursor: pointer;
+    box-shadow: 0 5px 8px var(--shadow-color);
+}
+.spin-button:hover { background-color: var(--button-primary-hover); box-shadow: 0 7px 10px rgba(0,0,0,0.18); }
+.spin-button:active { transform: translateY(2px); box-shadow: 0 3px 5px rgba(0,0,0,0.15); }
+.spin-button:disabled { background-color: var(--button-disabled-bg); cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* Дисплей результата (общий класс) */
+.result-display {
+    min-height: 1.5em; /* Резервируем место */
+    opacity: 0; /* Скрыт по умолчанию */
+    transform: translateY(10px); /* Сдвинут для анимации */
+    /* transition определен глобально */
+}
+.result-display.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Специфичные стили для результата колеса */
+.wheel-result {
+    margin-top: 25px;
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--accent-color-1); /* Синий */
+}
+
+
+/* Контейнер настроек колеса */
+.options-container {
+    flex-basis: 320px; /* Чуть шире */
+    flex-grow: 1;
+    text-align: left;
+    background: var(--input-bg); /* Фон как у инпутов */
+    padding: 30px; /* Больше паддинг */
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 6px 15px var(--shadow-inset-color) inset;
+}
+.options-container h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-muted-color); /* Приглушенный цвет заголовка */
+    font-size: 1.3em;
+}
+.options-container label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-muted-color);
+    font-size: 0.95em;
+    font-weight: 500;
+}
+.options-container textarea {
+    width: 100%;
+    padding: 15px; /* Больше паддинг */
+    margin-bottom: 5px; /* Уменьшаем отступ до счетчика/ошибки */
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg); /* Фон инпута */
+    color: var(--text-color); /* Цвет текста инпута */
+    border-radius: 8px;
+    font-size: 1em;
+    font-family: var(--font-sans);
+    resize: vertical;
+    min-height: 160px; /* Выше */
+    transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
+}
+.options-container textarea:focus {
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 3px var(--input-focus-shadow);
+    outline: none;
+}
+
+/* Кнопка "Обновить колесо" */
+#updateWheelButton {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--button-text-color);
+    background-color: var(--button-secondary-bg); /* Синий */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    margin-top: 15px; /* Отступ после счетчика/ошибки */
+}
+#updateWheelButton:hover { background-color: var(--button-secondary-hover); box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+#updateWheelButton:active { transform: translateY(1px); box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+
+.options-container .hint {
+    text-align: center;
+    font-size: 0.85em;
+    color: var(--text-muted-color);
+    margin-top: 20px;
+}
+
+
+/* === Стили Генератора Чисел (RNG) === */
+.rng-app {
+    padding: 10px 5px; /* Уменьшаем внутренний паддинг */
+    text-align: center;
+}
+.rng-app h2 {
+    margin-top: 0;
+    margin-bottom: 35px;
+    font-weight: 600;
+    font-size: 1.6em;
+    color: var(--text-color);
+}
+
+.rng-controls {
+    display: flex;
+    flex-wrap: wrap; /* Перенос на мобильных */
+    justify-content: center;
+    align-items: center; /* Выравниваем по вертикали */
+    gap: 20px; /* Пространство между элементами */
+    margin-bottom: 20px; /* Уменьшаем отступ до ошибки */
+}
+
+.rng-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.rng-input-group label {
+    font-size: 1em;
+    color: var(--text-muted-color);
+    font-weight: 500;
+}
+.rng-controls input[type="number"] {
+    padding: 12px 15px; /* Больше паддинг */
+    font-size: 1.1em;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-radius: 8px;
+    text-align: center;
+    width: 180px; /* Шире поля ввода */
+    transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
+    /* Убираем стрелки инпута */
+    -moz-appearance: textfield;
+}
+.rng-controls input[type="number"]::-webkit-outer-spin-button,
+.rng-controls input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.rng-controls input[type="number"]:focus {
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 3px var(--input-focus-shadow);
+    outline: none;
+}
+
+/* Кнопка "Генерировать Число" */
+#generateNumberButton {
+    display: inline-block;
+    width: auto;
+    padding: 14px 35px; /* Выше и шире */
+    font-size: 1.15em;
+    font-weight: 700;
+    color: var(--button-text-color);
+    background-color: var(--button-secondary-bg); /* Синяя кнопка */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 5px 8px var(--shadow-color);
+}
+#generateNumberButton:hover { background-color: var(--button-secondary-hover); box-shadow: 0 7px 10px rgba(0,0,0,0.18); }
+#generateNumberButton:active { transform: translateY(2px); box-shadow: 0 3px 5px rgba(0,0,0,0.15); }
+#generateNumberButton:disabled { background-color: var(--button-disabled-bg); cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* Область результата RNG */
+.rng-result-area {
+    margin-top: 35px;
+    margin-bottom: 40px;
+}
+.rng-result-area p {
+    font-size: 1.1em;
+    color: var(--text-muted-color);
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* Дисплей Результата RNG */
+.rng-result-display { /* Общий класс с result-display */
+    font-family: var(--font-mono);
+    font-size: clamp(3.5em, 12vw, 7em); /* Еще больше */
+    font-weight: 700;
+    color: var(--accent-color-2); /* Красный */
+    background-color: var(--rng-display-bg);
+    padding: 25px 20px;
+    border-radius: 12px;
+    /* min-height убран, т.к. есть общий .result-display */
+    line-height: 1.05; /* Еще плотнее */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 6px 12px var(--shadow-inset-color) inset;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+/* Класс для дисплеев чисел */
+.rng-number-display .rng-digit-slot {
+    height: 1.05em;
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+    margin: 0 0.02em;
+}
+.rng-number-display .rng-digit-inner {
+    display: flex;
+    flex-direction: column;
+}
+.rng-number-display .rng-digit {
+    height: 1.05em;
+    line-height: 1.05em;
+    text-align: center;
+    flex-shrink: 0;
+}
+.rng-number-display.spinning .rng-digit-inner {
+     /* JS управляет transform без transition */
+}
+/* Общий плейсхолдер для всех result-display */
+.result-display .placeholder {
+    color: var(--text-muted-color);
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+/* === Область Истории RNG === */
+.rng-history-area {
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border-color);
+}
+.rng-history-area h3 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--text-muted-color);
+    margin-bottom: 15px;
+}
+.rng-history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    max-height: 150px; /* Ограничиваем высоту */
+    overflow-y: auto; /* Добавляем скролл */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color); /* Фон списка */
+}
+.rng-history-list li {
+    padding: 10px 15px;
+    font-family: var(--font-mono);
+    font-size: 1.1em;
+    background-color: var(--history-item-bg);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+.rng-history-list li:last-child { border-bottom: none; }
+.rng-history-list li:empty { display: none; }
+/* Стиль для скроллбара */
+.rng-history-list::-webkit-scrollbar { width: 8px; }
+.rng-history-list::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 4px; }
+.rng-history-list::-webkit-scrollbar-thumb { background-color: var(--text-muted-color); border-radius: 4px; border: 2px solid var(--bg-color); }
+.rng-history-list::-webkit-scrollbar-thumb:hover { background-color: var(--text-color); }
+
+/* Кнопка очистки истории */
+.clear-history-button {
+    display: inline-block;
+    padding: 8px 18px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--button-text-color);
+    background-color: var(--button-danger-bg); /* Красный */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.8; /* Немного прозрачная */
+}
+.clear-history-button:hover { background-color: var(--button-danger-hover); opacity: 1; }
+.clear-history-button:disabled { background-color: var(--button-disabled-bg); opacity: 0.5; cursor: not-allowed; }
+
+
+/* === Стили Генератора Никнеймов === */
+.nickname-app {
+    padding: 20px 10px;
+    text-align: center;
+}
+.nickname-app h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 1.6em;
+    color: var(--text-color);
+}
+.nickname-app .description {
+    color: var(--text-muted-color);
+    margin-bottom: 30px;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+/* Общий стиль для кнопок генерации */
+.generate-button {
+    display: inline-block;
+    padding: 14px 35px;
+    font-size: 1.15em;
+    font-weight: 700;
+    color: var(--button-text-color);
+    background-color: var(--button-secondary-bg); /* Синий по умолчанию */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 5px 8px var(--shadow-color);
+    transition: background-color var(--transition-speed) var(--transition-timing), transform 0.1s ease, box-shadow var(--transition-speed) var(--transition-timing);
+    margin-bottom: 30px;
+}
+.generate-button:hover { background-color: var(--button-secondary-hover); box-shadow: 0 7px 10px rgba(0,0,0,0.18); }
+.generate-button:active { transform: translateY(2px); box-shadow: 0 3px 5px rgba(0,0,0,0.15); }
+.generate-button:disabled { background-color: var(--button-disabled-bg); cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* Область результата */
+.nickname-result-area, .password-result-area {
+    margin-top: 30px;
+}
+.nickname-result-area p, .password-result-area p {
+    font-size: 1.1em;
+    color: var(--text-muted-color);
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+/* Дисплей ника */
+.nickname-display { /* Используем общий класс .result-display */
+    font-family: var(--font-sans); /* Обычный шрифт для ника */
+    font-size: clamp(1.8em, 5vw, 2.5em); /* Умеренный размер */
+    font-weight: 600;
+    color: var(--accent-color-1); /* Синий */
+    background-color: var(--rng-display-bg);
+    padding: 15px 50px 15px 20px; /* Отступ справа для кнопки копирования */
+    border-radius: 10px;
+    /* min-height убран, т.к. есть общий */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    position: relative; /* Для кнопки копирования */
+    word-break: break-all; /* Перенос длинных ников */
+}
+/* Общий стиль кнопок копирования */
+.copy-button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: rgba(128, 128, 128, 0.1);
+    border: none;
+    border-radius: 6px;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--text-muted-color);
+    opacity: 0.7;
+    transition: opacity var(--transition-speed) ease, background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+.copy-button:hover {
+    opacity: 1;
+    background-color: rgba(128, 128, 128, 0.2);
+    color: var(--text-color);
+}
+.copy-button svg { display: block; }
+.copy-button.copied {
+    color: var(--button-primary-bg); /* Зеленый при копировании */
+    background-color: rgba(46, 204, 113, 0.1);
+}
+
+
+/* === Стили Генератора Паролей === */
+.password-app {
+    padding: 10px 5px;
+    text-align: center;
+}
+.password-app h2 {
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-weight: 600;
+    font-size: 1.6em;
+    color: var(--text-color);
+}
+.password-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 25px;
+    margin-bottom: 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.control-group {
+    text-align: left;
+    padding: 20px; /* Больше паддинг */
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--input-bg);
+}
+.control-group label { /* Общий лейбл группы */
+    display: block;
+    margin-bottom: 15px; /* Больше отступ */
+    font-weight: 500;
+    color: var(--text-muted-color);
+}
+/* Контрол длины */
+.length-control {
+    display: flex;
+    flex-direction: column;
+}
+.length-control label { margin-bottom: 15px; }
+#passwordLengthValue {
+    font-weight: 700;
+    color: var(--accent-color-1); /* Синий */
+    margin-left: 5px;
+    display: inline-block;
+    min-width: 2em; /* Резервируем место */
+    text-align: right;
+}
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    height: 10px; /* Чуть толще */
+    background: linear-gradient(to right, var(--accent-color-1) 0%, var(--accent-color-1) var(--value-percent, 50%), var(--border-color) var(--value-percent, 50%), var(--border-color) 100%);
+    border-radius: 5px; /* Более скругленный */
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    transition: background var(--transition-speed) ease;
+}
+/* Стили ползунка */
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 22px; /* Больше */
+    height: 22px;
+    background: var(--accent-color-1);
+    border-radius: 50%;
+    border: 3px solid var(--container-bg); /* Заметнее граница */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    margin-top: -6px; /* Центрируем ползунок */
+}
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--accent-color-1);
+    border-radius: 50%;
+    border: 3px solid var(--container-bg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    cursor: pointer;
+}
+
+/* Контрол чекбоксов */
+.checkboxes-control {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Адаптивная сетка */
+    gap: 18px; /* Больше расстояние */
+}
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Больше расстояние */
+}
+.checkbox-group input[type="checkbox"] {
+    width: 20px; /* Больше */
+    height: 20px;
+    accent-color: var(--accent-color-1);
+    cursor: pointer;
+    margin: 0; /* Убираем дефолтные маргины */
+    flex-shrink: 0; /* Чтобы чекбокс не сжимался */
+}
+.checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: 400;
+    display: inline-flex; /* Используем inline-flex для лучшего контроля */
+    align-items: center;
+    gap: 5px;
+    line-height: 1.3; /* Улучшаем читаемость при переносе */
+}
+.char-example {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--text-muted-color);
+    opacity: 0.8;
+    margin-left: 3px; /* Небольшой отступ от текста */
+}
+
+/* Кнопка генерации пароля */
+#generatePasswordButton {
+    /* Использует общий стиль .generate-button */
+    background-color: var(--button-primary-bg); /* Зеленая кнопка для пароля */
+}
+#generatePasswordButton:hover { background-color: var(--button-primary-hover); }
+
+
+/* Область результата пароля */
+.password-display-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+.password-display { /* Используем input[type="text"] */
+    font-family: var(--font-mono);
+    font-size: clamp(1.2em, 4vw, 1.8em);
+    font-weight: 400;
+    color: var(--accent-color-2); /* Красный */
+    background-color: var(--rng-display-bg);
+    padding: 15px 50px 15px 15px; /* Отступ справа для кнопки */
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    text-align: left;
+    box-shadow: 0 4px 8px var(--shadow-inset-color) inset;
+    word-break: break-all;
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    line-height: 1.4; /* Немного увеличим для читаемости */
+}
+.password-display::placeholder {
+    color: var(--text-muted-color);
+    opacity: 0.7;
+    font-size: 0.8em; /* Меньше плейсхолдер */
+}
+
+/* Инфо о взломе */
+.password-strength-info {
+    margin-top: 25px;
+    font-size: 0.95em;
+    color: var(--text-muted-color);
+    padding: 12px 15px; /* Больше паддинг */
+    background-color: var(--history-item-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    max-width: 550px; /* Шире */
+    margin-left: auto;
+    margin-right: auto;
+}
+#crackTimeEstimate {
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 5px 0;
+    line-height: 1.4; /* На случай переноса */
+}
+.password-strength-info small {
+    font-size: 0.85em;
+}
+
+
+/* === Адаптивность === */
+@media (max-width: 900px) {
+     .app-container { max-width: 95%; padding: 25px 20px; }
+}
+@media (max-width: 768px) {
+    .app-header h1 { font-size: 1.5em; }
+    .theme-toggle-button svg { width: 22px; height: 22px; }
+    .tab-navigation { margin-bottom: 25px; }
+    .tab-button { font-size: 1em; padding: 8px 18px; }
+
+    .wheel-and-options { flex-direction: column; align-items: center; gap: 35px; }
+    .options-container { width: 100%; max-width: 450px; flex-basis: auto; padding: 25px; }
+     :root { --wheel-size: 320px; }
+     .spin-button { width: 75%; font-size: 1.15em; padding: 13px; }
+     .options-container textarea { min-height: 130px; }
+
+    .rng-controls { gap: 15px; }
+    .rng-input-group { flex-basis: 45%; justify-content: center; } /* Ставим по 2 в ряд */
+    .rng-controls input[type="number"] { width: 140px; font-size: 1em; padding: 10px; }
+    #generateNumberButton { width: 90%; margin-top: 10px; flex-basis: 90%; font-size: 1.1em; padding: 12px;} /* Кнопка генерации числа на всю ширину */
+    .rng-result-display { padding: 20px 15px; }
+
+    /* Никнейм */
+    .nickname-app .description { max-width: 90%; }
+
+    /* Пароль */
+    .password-controls { max-width: 100%; gap: 20px; }
+    .checkboxes-control { grid-template-columns: 1fr; } /* Чекбоксы в один столбец */
+    .generate-button { /* Общий стиль кнопок генерации на мобильных */
+        width: 90%; margin-top: 10px; flex-basis: 90%; font-size: 1.1em; padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+     :root { --wheel-size: 280px; }
+     .app-header h1 { font-size: 1.3em; }
+     .app-container { padding: 20px 15px; }
+     .wheel-wrapper::before { border-left-width: 14px; border-right-width: 14px; border-top-width: 22px; top: -10px; }
+     .wheel-center-cover { border-width: 4px; }
+     .tab-button { font-size: 0.9em; padding: 8px 12px; }
+     .options-container { padding: 20px; }
+     #updateWheelButton { font-size: 1em; padding: 11px; }
+     .spin-button { width: 80%; font-size: 1.1em; }
+     .rng-controls input[type="number"] { width: 120px; }
+     .rng-result-display { font-size: clamp(2.8em, 10vw, 5em); }
+     .rng-history-list { max-height: 120px; }
+     /* Никнейм / Пароль */
+    .generate-button { width: 90%; font-size: 1.1em; padding: 12px; }
+    .nickname-display { font-size: clamp(1.5em, 5vw, 2em); }
+    .password-display { font-size: clamp(1em, 4vw, 1.5em); padding-right: 45px; }
+    .copy-button { right: 5px; padding: 6px; }
+    .copy-button svg { width: 16px; height: 16px; }
+    .checkbox-group label { font-size: 0.95em; }
+    .password-strength-info { font-size: 0.9em; }
+    .rng-input-group { flex-basis: 100%; justify-content: center; } /* В один столбец */
+    #generateNumberButton { width: 80%; flex-basis: auto; } /* Кнопка RNG не на всю */
+}

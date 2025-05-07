@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light"> <!-- Начальная тема устанавливается JS из localStorage -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ультимативная Веб-песочница V4.2</title>
+    <link rel="stylesheet" href="markdown.css">
+    <!-- Библиотеки CDN (defer - загрузка после парсинга HTML) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.6.0/tinycolor.min.js" defer></script>
+    <!-- Скрипт для применения темы ДО рендеринга -->
+    <script>
+        (function() {
+            const STORAGE_PREFIX = 'ultraSandbox_'; // Должен совпадать с JS
+            try {
+                const savedTheme = localStorage.getItem(STORAGE_PREFIX + 'theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } catch (e) {
+                console.error("Error setting initial theme:", e);
+                document.documentElement.setAttribute('data-theme', 'light'); // Fallback
+            }
+        })();
+    </script>
+    <!-- Основной скрипт (defer - выполнение после парсинга HTML и загрузки библиотек) -->
+    <script src="markdown.js" defer></script>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <span id="logo-icon-placeholder" class="icon">
+                <!-- Заполнитель для иконки лого -->
+            </span>
+            <h1>Веб-песочница <sup>V4.2</sup></h1>
+        </div>
+        <div class="header-controls">
+            <button id="export-state-btn" class="icon-btn" title="Экспортировать состояние">
+                <span id="export-icon-placeholder" class="icon"></span>
+            </button>
+            <label for="import-state-input" id="import-state-label" class="icon-btn" title="Импортировать состояние">
+                 <span id="import-icon-placeholder" class="icon"></span>
+            </label>
+            <input type="file" id="import-state-input" accept=".json" style="display: none;">
+            <button id="settings-btn" class="icon-btn" title="Настройки">
+                 <span id="settings-icon-placeholder" class="icon"></span>
+            </button>
+            <button id="theme-toggle-btn" class="icon-btn" title="Переключить тему">
+                 <span id="theme-icon-placeholder" class="icon"></span> <!-- JS вставит иконку темы -->
+            </button>
+            <button id="clear-storage-btn" class="icon-btn danger-btn" title="Очистить всё">
+                 <span id="clear-icon-placeholder" class="icon"></span>
+            </button>
+        </div>
+    </header>
+
+    <main id="main-container">
+        <!-- Основная сетка редакторов -->
+        <div id="main-grid">
+            <!-- Колонка HTML -->
+            <div class="grid-column code-column">
+                <div class="editor-header">
+                    <h3><span id="html-icon-placeholder" class="icon"></span> HTML</h3>
+                    <button class="reset-btn small-btn icon-btn" data-target="html-input" data-default-key="htmlInput" title="Сбросить HTML">
+                        <span class="icon reset-icon-placeholder"></span>
+                    </button>
+                </div>
+                <textarea id="html-input" class="code-input" spellcheck="false" placeholder="HTML код..."></textarea>
+            </div>
+
+            <!-- Разделитель 1 -->
+            <div class="resizer v-resizer" data-resizer-col1="0" data-resizer-col2="2"></div>
+
+            <!-- Колонка CSS -->
+            <div class="grid-column code-column">
+                <div class="editor-header">
+                     <h3><span id="css-icon-placeholder" class="icon"></span> CSS</h3>
+                     <button class="reset-btn small-btn icon-btn" data-target="css-input" data-default-key="cssInput" title="Сбросить CSS">
+                         <span class="icon reset-icon-placeholder"></span>
+                     </button>
+                </div>
+                <textarea id="css-input" class="code-input" spellcheck="false" placeholder="CSS код..."></textarea>
+            </div>
+
+             <!-- Разделитель 2 -->
+             <div class="resizer v-resizer" data-resizer-col1="2" data-resizer-col2="4"></div>
+
+            <!-- Колонка JS -->
+            <div class="grid-column code-column js-column"> <!-- Скрывается на малых экранах -->
+                 <div class="editor-header">
+                    <h3><span id="js-icon-placeholder" class="icon"></span> JavaScript</h3>
+                     <button id="run-js-btn" class="icon-btn primary-btn small-btn" title="Выполнить JS (Ctrl+Enter)">
+                          <span id="run-js-icon-placeholder" class="icon"></span>
+                     </button>
+                    <button class="reset-btn small-btn icon-btn" data-target="js-input" data-default-key="jsInput" title="Сбросить JS">
+                         <span class="icon reset-icon-placeholder"></span>
+                    </button>
+                </div>
+                <textarea id="js-input" class="code-input" spellcheck="false" placeholder="JavaScript код..."></textarea>
+                 <div class="js-output-container">
+                    <h4><span id="console-icon-placeholder" class="icon"></span> Консоль JS:</h4>
+                    <pre id="js-output" class="content-box js-console-output"></pre>
+                </div>
+            </div>
+
+             <!-- Разделитель 3 -->
+             <div class="resizer v-resizer" data-resizer-col1="4" data-resizer-col2="6"></div>
+
+             <!-- Колонка Превью -->
+            <div class="grid-column preview-column">
+                 <div class="editor-header">
+                    <h3><span id="preview-icon-placeholder" class="icon"></span> Превью</h3>
+                     <span class="spacer"></span>
+                </div>
+                <div class="live-preview-wrapper">
+                     <iframe id="live-preview" sandbox="allow-scripts allow-same-origin" title="Live Preview"></iframe>
+                </div>
+            </div>
+            <!-- Горизонтальный ресайзер (для < 1200px) -->
+            <div class="resizer h-resizer" style="display: none;"></div>
+        </div> <!-- Конец #main-grid -->
+
+        <!-- Секция Инструментов -->
+        <section class="playground-section tools-section">
+             <h2><span id="tools-icon-placeholder" class="icon"></span> Инструменты и Генераторы</h2>
+             <div class="tools-grid">
+
+                <!-- Markdown -->
+                <div class="tool-card markdown-tool">
+                    <div class="tool-header">
+                         <h4><span id="markdown-icon-placeholder" class="icon"></span> Markdown</h4>
+                         <button class="reset-btn small-btn icon-btn" data-target="markdown-input" data-default-key="markdownInput" title="Сбросить Markdown">
+                              <span class="icon reset-icon-placeholder"></span>
+                         </button>
+                    </div>
+                     <div class="tool-content editor-layout-horizontal"> <!-- Используем горизонтальный макет -->
+                         <div class="editor-pane">
+                            <div class="toolbar" id="markdown-toolbar">
+                                <!-- Плейсхолдеры для иконок, JS их заполнит -->
+                                <button title="Жирный (Ctrl+B)" data-md="**" class="icon-btn"><span class="icon markdown-bold-placeholder"></span></button>
+                                <button title="Курсив (Ctrl+I)" data-md="*" class="icon-btn"><span class="icon markdown-italic-placeholder"></span></button>
+                                <button title="Зачеркнутый" data-md="~~" class="icon-btn"><span class="icon markdown-strike-placeholder"></span></button>
+                                <button title="Заголовок 1" data-md="# " class="text-btn">H1</button>
+                                <button title="Заголовок 2" data-md="## " class="text-btn">H2</button>
+                                <button title="Цитата" data-md="\n> " class="icon-btn"><span class="icon markdown-quote-placeholder"></span></button>
+                                <button title="Код (строка)" data-md="`" class="icon-btn"><span class="icon markdown-codeinline-placeholder"></span></button>
+                                <button title="Код (блок)" data-md="\n```\n$1\n```\n" class="icon-btn"><span class="icon markdown-codeblock-placeholder"></span></button>
+                                <button title="Нумерованный список" data-md="\n1. " class="icon-btn"><span class="icon markdown-listol-placeholder"></span></button>
+                                <button title="Маркированный список (Ctrl+L)" data-md="\n* " class="icon-btn"><span class="icon markdown-listul-placeholder"></span></button>
+                                <button title="Ссылка (Ctrl+K)" data-md="[Текст](URL)" class="icon-btn"><span class="icon markdown-link-placeholder"></span></button>
+                                <button title="Изображение" data-md="![Alt](URL)" class="icon-btn"><span class="icon markdown-image-placeholder"></span></button>
+                                <button title="Горизонтальная линия" data-md="\n---\n" class="icon-btn"><span class="icon markdown-hr-placeholder"></span></button>
+                                <button title="Таблица" data-md="\n| Col1 | Col2 |\n|---|---|\n| R1C1 | R1C2 |\n| R2C1 | R2C2 |\n" class="icon-btn"><span class="icon markdown-table-placeholder"></span></button>
+                            </div>
+                            <textarea id="markdown-input" class="code-input tool-textarea" spellcheck="false" placeholder="Markdown..."></textarea>
+                        </div>
+                        <div class="preview-pane">
+                            <h5>Превью:</h5>
+                            <div id="markdown-output" class="markdown-body content-box tool-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Генератор Градиентов -->
+                 <div class="tool-card generator-tool">
+                     <div class="tool-header">
+                         <h4><span id="gradient-icon-placeholder" class="icon"></span> Градиенты</h4>
+                          <button class="reset-btn small-btn icon-btn" data-generator="gradient" title="Сбросить">
+                               <span class="icon reset-icon-placeholder"></span>
+                          </button>
+                     </div>
+                     <div class="tool-content generator-layout-horizontal">
+                        <div class="controls-pane tool-controls">
+                            <div class="control-group"> <label for="grad-type">Тип:</label> <select id="grad-type"> <option value="linear-gradient">Линейный</option> <option value="radial-gradient">Радиальный</option><option value="conic-gradient">Конический</option> </select> </div>
+                            <div class="control-group" id="grad-angle-control"> <label for="grad-angle">Угол:</label> <input type="range" id="grad-angle" min="0" max="360" value="90" step="1"> <span id="grad-angle-value" class="value-display">90deg</span> </div>
+                            <div class="control-group" id="grad-position-control" style="display: none;"> <label for="grad-position">Позиция:</label> <input type="text" id="grad-position" value="50% 50%" placeholder="50% 50%"></div>
+                            <div class="control-group"> <label for="grad-color1">Цвет 1:</label> <input type="color" id="grad-color1" value="#4dabf7"> </div>
+                            <div class="control-group"> <label for="grad-color2">Цвет 2:</label> <input type="color" id="grad-color2" value="#f783ac"> </div>
+                            <div class="control-group"> <label for="grad-color3">Цвет 3:</label> <input type="color" id="grad-color3" value="#ffa94d"> <input type="checkbox" id="use-color3"> Исп.? </div>
+                            <div class="output-code"> <textarea id="gradient-css-output" rows="2" readonly></textarea> <button class="copy-btn icon-btn" data-target="gradient-css-output" title="Копировать CSS"><span class="icon copy-icon-placeholder"></span></button> </div>
+                        </div>
+                        <div class="preview-pane-gen tool-preview-area"> <div id="gradient-preview" class="content-box gradient-preview-box tool-preview"></div> </div>
+                     </div>
+                 </div>
+
+                <!-- Генератор Теней -->
+                <div class="tool-card generator-tool">
+                     <div class="tool-header">
+                         <h4><span id="shadow-icon-placeholder" class="icon"></span> Тени</h4>
+                         <button class="reset-btn small-btn icon-btn" data-generator="shadow" title="Сбросить">
+                              <span class="icon reset-icon-placeholder"></span>
+                         </button>
+                     </div>
+                     <div class="tool-content generator-layout-horizontal">
+                         <div class="controls-pane tool-controls">
+                            <div class="control-group"> <label for="shadow-offset-x">X:</label> <input type="range" id="shadow-offset-x" min="-50" max="50" value="4" step="1"> <span id="shadow-offset-x-value" class="value-display">4px</span> </div>
+                            <div class="control-group"> <label for="shadow-offset-y">Y:</label> <input type="range" id="shadow-offset-y" min="-50" max="50" value="4" step="1"> <span id="shadow-offset-y-value" class="value-display">4px</span> </div>
+                            <div class="control-group"> <label for="shadow-blur">Blur:</label> <input type="range" id="shadow-blur" min="0" max="100" value="12" step="1"> <span id="shadow-blur-value" class="value-display">12px</span> </div>
+                            <div class="control-group"> <label for="shadow-spread">Spread:</label> <input type="range" id="shadow-spread" min="-50" max="50" value="0" step="1"> <span id="shadow-spread-value" class="value-display">0px</span> </div>
+                            <div class="control-group"> <label for="shadow-color">Цвет:</label> <input type="color" id="shadow-color" value="#000000"> <input type="range" id="shadow-opacity" min="0" max="1" value="0.25" step="0.01"> <span id="shadow-opacity-value" class="value-display">0.25</span> </div>
+                            <div class="control-group"> <label for="shadow-inset">Внутр.:</label> <input type="checkbox" id="shadow-inset"> </div>
+                            <div class="output-code"> <textarea id="shadow-css-output" rows="2" readonly></textarea> <button class="copy-btn icon-btn" data-target="shadow-css-output" title="Копировать CSS"><span class="icon copy-icon-placeholder"></span></button> </div>
+                        </div>
+                         <div class="preview-pane-gen tool-preview-area"> <div id="shadow-preview-box" class="content-box shadow-preview-box tool-preview">Тень</div> </div>
+                     </div>
+                 </div>
+
+                 <!-- Генератор Transform -->
+                 <div class="tool-card generator-tool">
+                     <div class="tool-header">
+                         <h4><span id="transform-icon-placeholder" class="icon"></span> Transform</h4>
+                         <button class="reset-btn small-btn icon-btn" data-generator="transform" title="Сбросить">
+                               <span class="icon reset-icon-placeholder"></span>
+                         </button>
+                     </div>
+                     <div class="tool-content generator-layout-horizontal">
+                          <div class="controls-pane tool-controls">
+                            <div class="control-group"> <label for="trans-scale">Scale:</label> <input type="range" id="trans-scale" min="0.1" max="3" value="1" step="0.05"> <span id="trans-scale-value" class="value-display">1</span> </div>
+                            <div class="control-group"> <label for="trans-rotate">Rotate:</label> <input type="range" id="trans-rotate" min="-360" max="360" value="0" step="1"> <span id="trans-rotate-value" class="value-display">0deg</span> </div>
+                            <div class="control-group"> <label for="trans-translate-x">X:</label> <input type="range" id="trans-translate-x" min="-100" max="100" value="0" step="1"> <span id="trans-translate-x-value" class="value-display">0px</span> </div>
+                            <div class="control-group"> <label for="trans-translate-y">Y:</label> <input type="range" id="trans-translate-y" min="-100" max="100" value="0" step="1"> <span id="trans-translate-y-value" class="value-display">0px</span> </div>
+                            <div class="control-group"> <label for="trans-skew-x">SkewX:</label> <input type="range" id="trans-skew-x" min="-45" max="45" value="0" step="1"> <span id="trans-skew-x-value" class="value-display">0deg</span> </div>
+                            <div class="control-group"> <label for="trans-skew-y">SkewY:</label> <input type="range" id="trans-skew-y" min="-45" max="45" value="0" step="1"> <span id="trans-skew-y-value" class="value-display">0deg</span> </div>
+                             <div class="output-code"> <textarea id="transform-css-output" rows="2" readonly></textarea> <button class="copy-btn icon-btn" data-target="transform-css-output" title="Копировать CSS"><span class="icon copy-icon-placeholder"></span></button> </div>
+                         </div>
+                          <div class="preview-pane-gen tool-preview-area"> <div id="transform-preview-box" class="content-box transform-preview-box tool-preview">Transform</div> </div>
+                     </div>
+                 </div>
+
+                  <!-- Генератор Filter -->
+                 <div class="tool-card generator-tool">
+                     <div class="tool-header">
+                         <h4><span id="filter-icon-placeholder" class="icon"></span> Фильтры</h4>
+                         <button class="reset-btn small-btn icon-btn" data-generator="filter" title="Сбросить">
+                               <span class="icon reset-icon-placeholder"></span>
+                         </button>
+                     </div>
+                     <div class="tool-content generator-layout-horizontal">
+                          <div class="controls-pane tool-controls filter-controls">
+                            <div class="control-group"> <label for="filter-blur">Blur:</label> <input type="range" id="filter-blur" min="0" max="20" value="0" step="0.5"> <span id="filter-blur-value" class="value-display">0px</span> </div>
+                            <div class="control-group"> <label for="filter-brightness">Bright:</label> <input type="range" id="filter-brightness" min="0" max="300" value="100" step="5"> <span id="filter-brightness-value" class="value-display">100%</span> </div>
+                            <div class="control-group"> <label for="filter-contrast">Contrast:</label> <input type="range" id="filter-contrast" min="0" max="300" value="100" step="5"> <span id="filter-contrast-value" class="value-display">100%</span> </div>
+                            <div class="control-group"> <label for="filter-saturate">Saturate:</label> <input type="range" id="filter-saturate" min="0" max="300" value="100" step="5"> <span id="filter-saturate-value" class="value-display">100%</span> </div>
+                            <div class="control-group"> <label for="filter-grayscale">Grayscale:</label> <input type="range" id="filter-grayscale" min="0" max="100" value="0" step="1"> <span id="filter-grayscale-value" class="value-display">0%</span> </div>
+                            <div class="control-group"> <label for="filter-sepia">Sepia:</label> <input type="range" id="filter-sepia" min="0" max="100" value="0" step="1"> <span id="filter-sepia-value" class="value-display">0%</span> </div>
+                            <div class="control-group"> <label for="filter-hue-rotate">Hue:</label> <input type="range" id="filter-hue-rotate" min="0" max="360" value="0" step="5"> <span id="filter-hue-rotate-value" class="value-display">0deg</span> </div>
+                            <div class="control-group"> <label for="filter-invert">Invert:</label> <input type="range" id="filter-invert" min="0" max="100" value="0" step="1"> <span id="filter-invert-value" class="value-display">0%</span> </div>
+                            <div class="output-code"> <textarea id="filter-css-output" rows="2" readonly></textarea> <button class="copy-btn icon-btn" data-target="filter-css-output" title="Копировать CSS"><span class="icon copy-icon-placeholder"></span></button> </div>
+                         </div>
+                          <div class="preview-pane-gen tool-preview-area filter-preview-area">
+                              <img id="filter-preview-image" src="https://picsum.photos/id/1062/150/150" alt="Filter Preview" class="filter-preview-image tool-preview">
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- Генератор Палитры -->
+                 <div class="tool-card generator-tool">
+                     <div class="tool-header">
+                         <h4><span id="palette-icon-placeholder" class="icon"></span> Палитры</h4>
+                         <button class="reset-btn small-btn icon-btn" data-generator="palette" title="Сбросить">
+                               <span class="icon reset-icon-placeholder"></span>
+                         </button>
+                     </div>
+                     <div class="tool-content generator-layout-vertical">
+                         <div class="controls-pane tool-controls palette-controls">
+                             <div class="control-group"> <label for="palette-base-color">База:</label> <input type="color" id="palette-base-color" value="#3498db"> </div>
+                             <div class="control-group"> <label for="palette-scheme">Схема:</label> <select id="palette-scheme"> <option value="analogous">Аналогичная</option> <option value="monochromatic">Монохромная</option> <option value="splitcomplement">Сплит-Комп.</option> <option value="triad">Триада</option> <option value="tetrad">Тетрада</option> <option value="complement">Комплемент.</option> </select> </div>
+                             <div class="control-group"> <label for="palette-count">Кол-во:</label> <input type="number" id="palette-count" min="3" max="10" value="5"> </div>
+                         </div>
+                         <div class="preview-pane-gen tool-preview-area palette-preview-pane">
+                             <div id="palette-output" class="palette-output-container tool-preview"></div>
+                         </div>
+                     </div>
+                 </div>
+
+                <!-- Генератор Анимаций -->
+                <div class="tool-card generator-tool">
+                    <div class="tool-header">
+                        <h4><span id="animation-icon-placeholder" class="icon"></span> Анимации</h4>
+                        <button class="reset-btn small-btn icon-btn" data-generator="animation" title="Сбросить">
+                             <span class="icon reset-icon-placeholder"></span>
+                        </button>
+                    </div>
+                    <div class="tool-content generator-layout-horizontal">
+                        <div class="controls-pane tool-controls animation-controls">
+                            <div class="control-group"> <label for="anim-name">Анимация:</label> <select id="anim-name"> <option value="fadeIn">fadeIn</option> <option value="slideInLeft">slideInLeft</option> <option value="bounce">bounce</option> <option value="pulse">pulse</option> <option value="tada">tada</option> </select> </div>
+                            <div class="control-group"> <label for="anim-duration">Длит.(s):</label> <input type="number" id="anim-duration" min="0.1" max="10" value="1" step="0.1"> <span id="anim-duration-value" class="value-display">1s</span> </div>
+                            <div class="control-group"> <label for="anim-timing">Время:</label> <select id="anim-timing"> <option value="ease">ease</option> <option value="linear">linear</option> <option value="ease-in">ease-in</option> <option value="ease-out">ease-out</option> <option value="ease-in-out">ease-in-out</option> <option value="cubic-bezier(0.68, -0.55, 0.27, 1.55)">easeInBack</option> </select> </div>
+                            <div class="control-group"> <label for="anim-delay">Задер.(s):</label> <input type="number" id="anim-delay" min="0" max="5" value="0" step="0.1"> <span id="anim-delay-value" class="value-display">0s</span> </div>
+                            <div class="control-group"> <label for="anim-iteration">Повтор:</label> <input type="number" id="anim-iteration" min="1" max="10" value="1" step="1"> <input type="checkbox" id="anim-infinite" title="Бесконечно"> <span class="icon">∞</span> </div>
+                            <div class="control-group"> <label for="anim-direction">Направ.:</label> <select id="anim-direction"> <option value="normal">normal</option> <option value="reverse">reverse</option> <option value="alternate">alternate</option> <option value="alternate-reverse">alt-rev</option> </select> </div>
+                            <div class="control-group"> <label for="anim-fill-mode">Заполн.:</label> <select id="anim-fill-mode"> <option value="none">none</option> <option value="forwards">forwards</option> <option value="backwards">backwards</option> <option value="both">both</option> </select> </div>
+                            <div class="output-code"> <textarea id="animation-css-output" rows="2" readonly></textarea> <button class="copy-btn icon-btn" data-target="animation-css-output" title="Копировать CSS"><span class="icon copy-icon-placeholder"></span></button> </div>
+                        </div>
+                        <div class="preview-pane-gen tool-preview-area animation-preview-pane">
+                            <div id="animation-preview-box" class="content-box animation-preview-box tool-preview">Анимация!</div>
+                            <button id="restart-animation-btn" class="small-btn icon-btn" title="Запустить анимацию">
+                                <span id="restart-anim-icon-placeholder" class="icon"></span>
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+
+                <!-- SVG Редактор -->
+                <div class="tool-card generator-tool">
+                     <div class="tool-header">
+                        <h4><span id="svg-icon-placeholder" class="icon"></span> SVG Редактор</h4>
+                        <button class="reset-btn small-btn icon-btn" data-generator="svg" title="Сбросить">
+                            <span class="icon reset-icon-placeholder"></span>
+                        </button>
+                    </div>
+                     <div class="tool-content generator-layout-horizontal">
+                         <div class="controls-pane tool-controls">
+                             <div class="control-group"> <label for="svg-select">Иконка:</label> <select id="svg-select"> <option value="heart">Сердце</option> <option value="star">Звезда</option> <option value="circle">Круг</option> <option value="zap">Молния</option> <option value="settings">Настройки</option> <option value="code">Код</option></select> </div>
+                             <div class="control-group"> <label for="svg-fill-color">Заливка:</label> <input type="color" id="svg-fill-color" value="#fcc419"> </div>
+                             <div class="control-group"> <label for="svg-stroke-color">Обводка:</label> <input type="color" id="svg-stroke-color" value="#343a40"> </div>
+                             <div class="control-group"> <label for="svg-stroke-width">Толщина:</label> <input type="range" id="svg-stroke-width" min="0" max="10" value="1.5" step="0.5"> <span id="svg-stroke-width-value" class="value-display">1.5px</span> </div>
+                             <div class="control-group"> <label for="svg-size">Размер:</label> <input type="range" id="svg-size" min="20" max="150" value="60" step="5"> <span id="svg-size-value" class="value-display">60px</span> </div>
+                         </div>
+                         <div class="preview-pane-gen tool-preview-area svg-preview-pane"> <div id="svg-icon-container" class="content-box tool-preview svg-preview"></div> </div>
+                     </div>
+                 </div>
+
+                 <!-- Утилиты -->
+                 <div class="tool-card utility-tool">
+                      <div class="tool-header"><h4><span id="utils-icon-placeholder" class="icon"></span> Утилиты</h4></div>
+                      <div class="tool-content utility-layout">
+                            <!-- Lorem Ipsum -->
+                            <div class="utility-group">
+                                <h5><span id="lorem-icon-placeholder" class="icon"></span> Lorem Ipsum</h5>
+                                <div class="control-group">
+                                     <label for="lorem-count">Кол-во:</label> <input type="number" id="lorem-count" value="3" min="1" max="20">
+                                     <select id="lorem-unit"> <option value="paragraphs">Параграфы</option> <option value="sentences">Предложения</option> <option value="words">Слова</option> </select>
+                                     <button id="generate-lorem-btn" class="small-btn">Ген.</button>
+                                </div>
+                                <div class="utility-output-wrapper">
+                                    <textarea id="lorem-output" rows="4" readonly class="utility-output"></textarea>
+                                    <button class="copy-btn small-btn icon-btn" data-target="lorem-output" title="Копировать"><span class="icon copy-icon-placeholder"></span></button>
+                                </div>
+                            </div>
+                            <!-- JSON Formatter -->
+                            <div class="utility-group">
+                                <h5><span id="json-icon-placeholder" class="icon"></span> JSON Форматтер</h5>
+                                <textarea id="json-input" rows="4" spellcheck="false" placeholder="Вставьте JSON..." class="utility-input code-input"></textarea>
+                                <div class="utility-actions">
+                                     <button id="format-json-btn" class="small-btn">Формат</button>
+                                     <button id="minify-json-btn" class="small-btn">Миниф.</button>
+                                     <button class="copy-btn small-btn icon-btn" data-target="json-input" title="Копировать"><span class="icon copy-icon-placeholder"></span></button>
+                                </div>
+                            </div>
+                            <!-- Base64 -->
+                             <div class="utility-group">
+                                <h5><span id="base64-icon-placeholder" class="icon"></span> Base64</h5>
+                                <textarea id="base64-input" rows="3" spellcheck="false" placeholder="Текст или Base64..." class="utility-input"></textarea>
+                                <div class="utility-actions">
+                                     <button id="encode-base64-btn" class="small-btn">Encode</button>
+                                     <button id="decode-base64-btn" class="small-btn">Decode</button>
+                                     <button class="copy-btn small-btn icon-btn" data-target="base64-input" title="Копировать"><span class="icon copy-icon-placeholder"></span></button>
+                                </div>
+                            </div>
+                      </div>
+                 </div> <!-- Конец Утилит -->
+
+                 <!-- Карточка для JS Редактора на малых экранах -->
+                 <div class="tool-card js-tool-card" style="display: none;">
+                     <div class="tool-header">
+                         <h4><span id="js-card-icon-placeholder" class="icon"></span> JavaScript</h4>
+                          <button id="run-js-card-btn" class="icon-btn primary-btn small-btn" title="Выполнить JS (Ctrl+Enter)">
+                               <span id="run-js-card-icon-placeholder" class="icon"></span>
+                          </button>
+                         <button class="reset-btn small-btn icon-btn" data-target="js-card-input" data-default-key="jsInput" title="Сбросить JS">
+                              <span class="icon reset-icon-placeholder"></span>
+                         </button>
+                     </div>
+                     <div class="tool-content">
+                         <textarea id="js-card-input" class="code-input tool-textarea" spellcheck="false" placeholder="JavaScript код..."></textarea>
+                         <div class="js-output-container">
+                             <h4><span id="console-card-icon-placeholder" class="icon"></span> Консоль JS:</h4>
+                             <pre id="js-card-output" class="content-box js-console-output tool-preview"></pre>
+                         </div>
+                     </div>
+                 </div>
+
+
+             </div> <!-- Конец #tools-grid -->
+        </section> <!-- Конец .tools-section -->
+
+    </main> <!-- Конец #main-container -->
+
+    <footer class="main-footer">
+        <p>© <span id="current-year">2024</span> Ультимативная Веб-песочница V4.2.</p>
+    </footer>
+
+    <!-- Модальное окно настроек -->
+    <div id="settings-modal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="settings-modal-title"><span id="settings-modal-icon-placeholder" class="icon"></span> Настройки</h2>
+                <button id="close-settings-btn" class="icon-btn close-btn" title="Закрыть" aria-label="Закрыть настройки">
+                     <span id="close-settings-icon-placeholder" class="icon"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 <div class="setting-item">
+                     <label for="setting-debounce-delay">Задержка обновления (ms):</label>
+                     <input type="number" id="setting-debounce-delay" min="100" max="2000" step="50">
+                     <span class="setting-description">Время ожидания перед обновлением превью после ввода.</span>
+                 </div>
+                 <div class="setting-item">
+                     <label for="setting-autoclose-brackets">Автозакрытие скобок:</label>
+                     <input type="checkbox" id="setting-autoclose-brackets">
+                     <span class="setting-description">(), {}, [], "", '', ``</span>
+                 </div>
+                 <div class="setting-item">
+                     <label for="setting-soft-tabs">Мягкая табуляция:</label>
+                     <input type="checkbox" id="setting-soft-tabs" checked>
+                     <span class="setting-description">Использовать пробелы вместо символа Tab.</span>
+                 </div>
+                  <div class="setting-item">
+                     <label for="setting-tab-size">Размер табуляции:</label>
+                     <input type="number" id="setting-tab-size" min="1" max="8" value="2">
+                      <span class="setting-description">Количество пробелов для таба.</span>
+                 </div>
+            </div>
+             <div class="modal-footer">
+                <button id="save-settings-btn" class="primary-btn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Шаблон для палитры -->
+    <template id="palette-color-template">
+        <div class="palette-color-swatch">
+            <div class="color-display"></div>
+            <span class="color-code"></span>
+            <button class="copy-color-btn small-btn icon-btn" title="Копировать цвет">
+                 <span class="icon copy-icon-placeholder"></span>
+            </button>
+        </div>
+    </template>
+
+</body>
+</html>

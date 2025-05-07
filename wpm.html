@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniFlow - Твоя Тренировка</title>
+    <link rel="stylesheet" href="wpm.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+</head>
+<body>
+
+    <!-- Основной контейнер приложения -->
+    <div class="app-container">
+
+        <!-- Динамический фон -->
+        <div class="dynamic-background"></div>
+
+        <!-- Экран 1: Главное Меню / Хаб -->
+        <section id="hub" class="screen">
+            <h1 class="hub-title">CogniFlow</h1>
+            <nav class="hub-navigation">
+                <button class="nav-button" data-target="mind-match">
+                    <span class="button-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-brain"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v1a2.5 2.5 0 0 1-2.5 2.5h-1A2.5 2.5 0 0 0 6 10.5v1.083c0 .94.558 1.78 1.395 2.143 1.486.62 3.24.028 4.105-1.05.866-1.077 1.193-2.618.83-4.115a2.5 2.5 0 0 1 .83-4.114c.865-1.078 2.619-.62 4.105-1.05C17.442 6.363 18 5.522 18 4.583V3.5a2.5 2.5 0 0 0-2.5-2.5h-1A2.5 2.5 0 0 0 12 3.5V5a2.5 2.5 0 0 1-2.5 2.5h-1A2.5 2.5 0 0 1 7 5V3.5a2.5 2.5 0 0 1 2.5-2.5z"></path><path d="M12 8.5v1a2.5 2.5 0 0 1-2.5 2.5h-1A2.5 2.5 0 0 0 6 14.5v1a2.5 2.5 0 0 0 2.5 2.5h1A2.5 2.5 0 0 1 12 20.5v1a2.5 2.5 0 0 0 2.5 2.5h1a2.5 2.5 0 0 0 2.5-2.5v-1a2.5 2.5 0 0 1-2.5-2.5h-1a2.5 2.5 0 0 1-2.5-2.5v-1a2.5 2.5 0 0 1 2.5-2.5z"></path></svg>
+                    </span>
+                    <span class="button-text">MindMatch</span>
+                    <span class="button-subtext">Тренировка памяти</span>
+                </button>
+                <button class="nav-button" data-target="type-flow">
+                    <span class="button-icon">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-terminal"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                    </span>
+                    <span class="button-text">TypeFlow</span>
+                    <span class="button-subtext">Скорость печати</span>
+                </button>
+                <button class="nav-button" data-target="geo-quiz">
+                    <span class="button-icon">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-globe"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </span>
+                    <span class="button-text">GeoQuiz</span>
+                    <span class="button-subtext">Страны и Столицы</span>
+                </button>
+            </nav>
+            <div class="hub-footer">
+                 <button class="icon-button settings-button" aria-label="Настройки">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                 </button>
+                 <button class="icon-button stats-button" aria-label="Статистика" data-target="statistics">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                 </button>
+            </div>
+        </section>
+
+        <!-- Экран 2: Тренажер Памяти (MindMatch) -->
+        <section id="mind-match" class="screen">
+            <header class="game-header">
+                <button class="back-button" data-target="hub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Назад
+                </button>
+                <h2>MindMatch</h2>
+                <div class="game-stats">
+                    <span>Время: <span id="mind-match-timer">00:00</span></span>
+                    <span>Ходы: <span id="mind-match-moves">0</span></span>
+                </div>
+            </header>
+            <div class="game-board" id="mind-match-board">
+                <!-- Карточки будут генерироваться здесь с помощью JS -->
+            </div>
+            <div class="game-controls">
+                 <button id="mind-match-restart">Начать заново</button>
+                 <!-- Сюда можно добавить выбор сложности (позже) -->
+            </div>
+        </section>
+
+        <!-- Экран 3: Тренажер Скорости Печати (TypeFlow) -->
+        <section id="type-flow" class="screen">
+             <header class="game-header">
+                <button class="back-button" data-target="hub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Назад
+                </button>
+                <h2>TypeFlow</h2>
+                 <div class="game-stats">
+                    <span>WPM: <span id="type-flow-wpm">0</span></span>
+                    <span>Точность: <span id="type-flow-accuracy">100%</span></span>
+                    <span>Время: <span id="type-flow-timer">00:00</span></span>
+                </div>
+            </header>
+            <div class="text-display-area"> <!-- Обертка для текста -->
+                <p id="type-flow-text-to-type">Загрузка текста...</p>
+            </div>
+             <textarea id="type-flow-input" rows="1" placeholder="Начинайте печатать здесь..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+            <div class="game-controls">
+                 <button id="type-flow-restart">Другой текст</button>
+            </div>
+        </section>
+
+        <!-- Экран 4: Тренажер по Странам/Столицам (GeoQuiz) -->
+        <section id="geo-quiz" class="screen">
+             <header class="game-header">
+                <button class="back-button" data-target="hub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Назад
+                </button>
+                <h2>GeoQuiz</h2>
+                <div class="game-stats">
+                    <span>Счет: <span id="geo-quiz-score">0/0</span></span>
+                </div>
+            </header>
+            <div class="quiz-area">
+                <div id="geo-quiz-question-display">
+                    <!-- Сюда JS будет вставлять вопрос -->
+                </div>
+                <div id="geo-quiz-options" class="quiz-options">
+                    <!-- Сюда JS будет вставлять кнопки с вариантами -->
+                </div>
+            </div>
+             <div id="geo-quiz-feedback" class="feedback-area">
+                 <!-- Сообщение о правильном/неправильном ответе с иконкой -->
+            </div>
+            <div class="game-controls">
+                 <button id="geo-quiz-next" style="display: none;">Дальше</button>
+            </div>
+        </section>
+
+        <!-- Экран 5: Статистика -->
+        <section id="statistics" class="screen">
+            <header class="game-header">
+                 <button class="back-button" data-target="hub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Назад
+                 </button>
+                 <h2>Статистика</h2>
+            </header>
+            <div class="stats-content">
+                <article class="stat-card">
+                    <h3>MindMatch</h3>
+                    <p>Лучшее время: <span id="stats-mm-time">N/A</span></p>
+                    <p>Мин. ходов: <span id="stats-mm-moves">N/A</span></p>
+                </article>
+                 <article class="stat-card">
+                    <h3>TypeFlow</h3>
+                    <p>Рекорд WPM: <span id="stats-tf-wpm">N/A</span></p>
+                    <p>Лучшая точность: <span id="stats-tf-accuracy">N/A</span></p>
+                </article>
+                 <article class="stat-card">
+                    <h3>GeoQuiz</h3>
+                    <p>Лучший счет: <span id="stats-gq-score">N/A</span></p>
+                    <p>Общая точность: <span id="stats-gq-accuracy">N/A</span></p>
+                </article>
+            </div>
+            <div class="game-controls">
+                <button id="reset-stats">Сбросить всю статистику</button>
+            </div>
+        </section>
+
+        <!-- Модальное окно Настроек (изначально скрыто) -->
+        <div id="settings-modal" class="modal">
+             <div class="modal-content">
+                 <button class="close-modal-button" aria-label="Закрыть настройки">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                 </button>
+                 <h2>Настройки</h2>
+                 <div class="setting-group">
+                     <h4>Общие</h4>
+                     <div class="setting-option">
+                         <label for="theme-select">Цветовая схема:</label>
+                         <select id="theme-select">
+                             <option value="default">Стандартная</option>
+                             <option value="pastel">Пастель</option>
+                             <option value="neon">Неон</option>
+                             <option value="dark">Темная</option>
+                         </select>
+                     </div>
+                     <div class="setting-option">
+                         <label for="sound-toggle">Звуковые эффекты:</label>
+                         <input type="checkbox" id="sound-toggle" checked>
+                     </div>
+                 </div>
+                  <!-- Раздел настроек сложности (пока закомментирован) -->
+                 <!--
+                 <div class="setting-group">
+                    <h4>MindMatch - Сложность</h4>
+                    <div class="setting-option">
+                        <label for="mm-grid-size">Размер поля:</label>
+                        <select id="mm-grid-size">
+                            <option value="4x3">Легко (4x3)</option>
+                            <option value="4x4" selected>Нормально (4x4)</option>
+                            <option value="5x4">Сложно (5x4)</option>
+                        </select>
+                    </div>
+                 </div>
+                 <div class="setting-group">
+                     <h4>TypeFlow - Настройки</h4>
+                     <div class="setting-option">
+                         <label for="tf-language">Язык текста:</label>
+                         <select id="tf-language">
+                             <option value="ru" selected>Русский</option>
+                             <option value="en">English</option>
+                         </select>
+                     </div>
+                 </div>
+                  <div class="setting-group">
+                     <h4>GeoQuiz - Настройки</h4>
+                     <div class="setting-option">
+                         <label for="gq-questions">Вопросов в раунде:</label>
+                         <select id="gq-questions">
+                             <option value="5">5</option>
+                             <option value="10" selected>10</option>
+                             <option value="15">15</option>
+                         </select>
+                     </div>
+                 </div>
+                 -->
+            </div>
+        </div>
+
+    </div><!-- конец .app-container -->
+
+    <script src="wpm.js"></script>
+</body>
+</html>
