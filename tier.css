@@ -1,0 +1,417 @@
+/* style.css */
+:root {
+    --bg-primary: #0d0e1b;
+    --bg-secondary: #1a1b2f;
+    --bg-tertiary: #292a45;
+    
+    --accent-primary: #7b40f5;
+    --accent-secondary: #5050d7;
+    --accent-gradient: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-primary) 100%);
+
+    --text-primary: #e8e8f0;
+    --text-secondary: #b0b0d0;
+    --text-placeholder: #707090;
+
+    --border-color: #353652;
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --shadow-light: rgba(123, 64, 245, 0.15);
+
+    --success-color: #33c880;
+    --danger-color: #f44336;
+    --warning-color: #ff9800;
+
+    --font-main: 'Roboto', sans-serif;
+    --border-radius-main: 12px;
+    --border-radius-small: 8px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-primary);
+    background-image: radial-gradient(circle at top left, rgba(123, 64, 245, 0.1), transparent 40%),
+                      radial-gradient(circle at bottom right, rgba(80, 80, 215, 0.1), transparent 40%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    background-color: rgba(26, 27, 47, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 15px var(--shadow-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.4em;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+.logo-title i {
+    color: var(--accent-primary);
+    font-size: 1.2em;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+}
+
+.control-btn {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 10px 18px;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.control-btn:hover {
+    background: var(--accent-gradient);
+    border-color: var(--accent-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-light);
+}
+.control-btn:active {
+    transform: translateY(0px) scale(0.98);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.control-btn.danger-btn:hover {
+    background: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+
+.main-content {
+    display: flex;
+    flex-grow: 1;
+    padding: 25px;
+    gap: 25px;
+}
+
+.tier-list-area-wrapper {
+    flex: 3;
+    background-color: var(--bg-secondary);
+    padding: 20px;
+    border-radius: var(--border-radius-main);
+    box-shadow: 0 5px 25px var(--shadow-color);
+    overflow-y: auto;
+}
+.tier-list-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tier-row {
+    display: flex;
+    min-height: 120px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-main);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.1s ease, opacity 0.2s ease;
+    /* draggable="false" is default, but will be controlled by JS for the handle */
+}
+.tier-row.dragging-tier {
+    opacity: 0.6;
+    box-shadow: 0 0 20px var(--accent-primary);
+    transform: scale(1.01); /* Меньше масштаб для лучшего вида */
+    z-index: 100;
+}
+
+.tier-label-container {
+    min-width: 200px;
+    max-width: 250px;
+    padding: 0 15px; /* Уменьшил вертикальный padding, т.к. handle теперь внутри */
+    display: flex; /* Для выравнивания handle и text-wrapper */
+    align-items: center;
+    /* justify-content: center; Удалено, т.к. handle слева, текст по центру */
+    font-weight: bold;
+    font-size: 1.25em;
+    text-align: center;
+    border-right: 1px solid var(--border-color);
+    color: var(--bg-primary);
+    position: relative;
+    transition: filter 0.2s ease;
+}
+.tier-label-container:hover {
+    filter: brightness(1.1);
+}
+
+.tier-drag-handle {
+    /* position: absolute; Удалено, теперь в потоке flex */
+    /* left: 10px; */
+    /* top: 50%; */
+    /* transform: translateY(-50%); */
+    padding: 15px 10px 15px 0; /* Отступы вокруг ручки */
+    cursor: grab;
+    color: rgba(0,0,0,0.3);
+    font-size: 1.1em;
+    align-self: stretch; /* Растянуть по высоте label-container */
+    display: flex;
+    align-items: center;
+    margin-right: 10px; /* Отступ от текста */
+}
+.tier-drag-handle:hover {
+    color: rgba(0,0,0,0.6);
+}
+.tier-drag-handle:active {
+    cursor: grabbing;
+}
+
+.tier-label-text-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 15px 0; /* Вертикальный padding для текста */
+}
+.tier-label-container input.tier-name-input {
+    width: 90%; /* Шире инпут внутри label-text-wrapper */
+    padding: 8px;
+    font-size: 1em; /* Такой же как у span */
+    font-weight: bold;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-radius: var(--border-radius-small);
+    text-align: center;
+}
+
+
+.tier-items {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding: 15px;
+    gap: 12px;
+    min-height: 120px; /* Соответствует min-height tier-row */
+}
+
+.tier-item {
+    width: 300px;
+    height: 180px;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    display: flex; /* Для img это не так важно, если img сам display: block */
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+.tier-item:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 6px 15px var(--shadow-light);
+    border-color: var(--accent-primary);
+}
+.tier-item:active {
+    cursor: grabbing;
+}
+
+.tier-item img {
+    display: block; /* Убирает лишнее пространство под изображением */
+    width: 100%;   /* Изображение растягивается на всю ширину .tier-item */
+    height: 100%;  /* Изображение растягивается на всю высоту .tier-item */
+    object-fit: cover; /* Сохраняет пропорции, заполняет контейнер, обрезая лишнее */
+    border-radius: calc(var(--border-radius-small) - 2px); /* Внутренний радиус */
+    pointer-events: none; /* Позволяет событиям мыши проходить "сквозь" изображение к .tier-item */
+}
+
+.tier-item .delete-item-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(244, 67, 54, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.8);
+}
+.tier-item:hover .delete-item-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+.tier-item .delete-item-btn:hover {
+    background-color: var(--danger-color);
+    transform: scale(1.1);
+}
+
+
+.tier-item.dragging {
+    opacity: 0.6;
+    border: 2px dashed var(--accent-primary);
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 0 15px var(--accent-primary);
+}
+
+.dropzone.drag-over {
+    background-color: rgba(123, 64, 245, 0.1) !important;
+    border: 2px dashed var(--accent-primary);
+}
+
+.item-pool-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    background-color: var(--bg-secondary);
+    padding: 20px;
+    border-radius: var(--border-radius-main);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 25px var(--shadow-color);
+}
+
+.item-pool-header {
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+.item-pool-header h2 {
+    font-size: 1.4em;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+.item-pool-header h2 i {
+    margin-right: 10px;
+    color: var(--accent-secondary);
+}
+.item-pool-header .drop-hint {
+    font-size: 0.9em;
+    color: var(--text-placeholder);
+}
+
+.item-pool {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+    min-height: 200px;
+    background-color: var(--bg-primary);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-small);
+    align-items: flex-start;
+    align-content: flex-start;
+    overflow-y: auto;
+    transition: border-color 0.2s ease;
+}
+.item-pool:hover {
+    border-color: var(--accent-secondary);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.context-menu {
+    position: absolute;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    box-shadow: 0 5px 20px var(--shadow-color);
+    padding: 8px 0;
+    z-index: 1001;
+    display: none;
+    min-width: 200px;
+    animation: fadeInContextMenu 0.15s ease-out;
+}
+@keyframes fadeInContextMenu {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.context-menu ul { list-style: none; }
+.context-menu li {
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.context-menu li:hover {
+    background-color: var(--accent-primary);
+    color: white;
+}
+.context-menu li i { width: 16px; text-align: center; }
+
+.notifications-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.notification {
+    padding: 12px 20px;
+    border-radius: var(--border-radius-small);
+    box-shadow: 0 3px 10px var(--shadow-color);
+    color: white;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    min-width: 250px;
+}
+.notification.show { opacity: 1; transform: translateX(0); }
+.notification.success { background: var(--success-color); }
+.notification.error { background: var(--danger-color); }
+.notification.info { background: var(--accent-secondary); }
+.notification.warning { background: var(--warning-color); color: var(--bg-primary); }

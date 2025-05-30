@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tier List Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tier.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-title">
+                <i class="fas fa-cubes"></i>
+                <h1>Tier List Game</h1>
+            </div>
+            <div class="controls">
+                <label for="upload-image-input" class="control-btn upload-btn">
+                    <i class="fas fa-upload"></i> Загрузить
+                </label>
+                <input type="file" id="upload-image-input" accept="image/*" multiple style="display: none;">
+                <button id="add-tier-btn" class="control-btn"><i class="fas fa-layer-group"></i> Добавить тир</button>
+                <button id="save-state-btn" class="control-btn"><i class="fas fa-save"></i> Сохранить</button>
+                <button id="clear-storage-btn" class="control-btn danger-btn"><i class="fas fa-trash-alt"></i> Сбросить всё</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="tier-list-area-wrapper">
+                <div class="tier-list-area" id="tier-list-area">
+                    <!-- Тиры будут генерироваться JS -->
+                </div>
+            </div>
+
+            <div class="item-pool-container">
+                <div class="item-pool-header">
+                    <h2><i class="fas fa-images"></i> Элементы</h2>
+                    <p class="drop-hint">Перетаскивайте или вставьте (Ctrl+V) изображения сюда.</p>
+                </div>
+                <div class="item-pool dropzone" id="item-pool">
+                    <!-- Сюда будут добавляться загруженные и вставленные изображения -->
+                </div>
+            </div>
+        </main>
+
+        <div id="context-menu" class="context-menu">
+            <ul>
+                <li data-action="edit-name"><i class="fas fa-pen"></i> Редактировать имя</li>
+                <li data-action="change-color"><i class="fas fa-palette"></i> Изменить цвет</li>
+                <li data-action="delete-tier"><i class="fas fa-trash"></i> Удалить тир</li>
+            </ul>
+        </div>
+        <input type="color" id="tier-color-picker" style="display: none;">
+
+        <div class="notifications-container" id="notifications-container">
+            <!-- Уведомления будут здесь -->
+        </div>
+
+    </div>
+
+    <script src="tier.js"></script>
+</body>
+</html>
