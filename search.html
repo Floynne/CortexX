@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex Space Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ЭКРАН 1: СТАРТОВЫЙ (без изменений) -->
+    <div id="home-screen" class="view-container active">
+        <div class="center-content">
+            <h1 id="animated-title">Cortex Space</h1>
+            <form id="home-search-form" class="search-bar">
+                <input type="search" id="home-search-input" placeholder="Исследовать вселенную...">
+                <div class="search-bar-icons">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z"/></svg>
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M9.52 2.54c-1.29.3-2.43 1.09-3.21 2.13l-.01.01c-.13.17-.23.36-.32.55h6.04c-.1-.2-.2-.39-.33-.56-.78-1.04-1.92-1.83-3.21-2.13zM4 11.45v-1c0-.61.34-1.15.86-1.44l.01-.01c.17-.1.36-.18.55-.25v3.4c-.19-.07-.38-.15-.55-.25-.52-.29-.87-.83-.87-1.45zM12 3.5c-1.9 0-3.62.76-4.95 2h9.9c-1.33-1.24-3.05-2-4.95-2zM4.18 13c.01.03.02.06.03.09.28.84.78 1.57 1.45 2.14l.09.08c.17.13.36.25.55.36V12.2a4.45 4.45 0 0 1-.55-.36l-.09-.08c-.67-.57-1.17-1.3-1.45-2.14a4.48 4.48 0 0 1-.03-.18zm1.45 4.92c.78 1.04 1.92 1.83 3.21 2.13 1.29-.3 2.43-1.09 3.21-2.13.78-1.04 1.25-2.31 1.25-3.68h-9c0 1.37.47 2.64 1.25 3.68zM15.82 13a4.48 4.48 0 0 1 .03.18c-.28.84-.78 1.57-1.45 2.14l-.09.08a4.45 4.45 0 0 1-.55.36v-3.47c.19.08.38.17.55.36l.09.08c.67-.57 1.17 1.3 1.45 2.14zM20 10.45v1c0 .61-.34 1.15-.86 1.44l-.01-.01c-.17-.1-.36-.18-.55-.25v-3.4c.19.07.38.15.55.25.52.29.87.83.87-1.45zm-1.18-4.78c-.78-1.04-1.92-1.83-3.21-2.13 1.29.3 2.43 1.09 3.21 2.13.13.17.23.36.32.55h-6.04c.1-.2.2-.39.33-.56zM12 19.5c1.9 0 3.62-.76 4.95-2h-9.9c1.33 1.24 3.05 2 4.95 2zm5.82-7.5h.01c.01-.03.02-.06.03-.09.28-.84.78-1.57 1.45-2.14l.09-.08c.17-.13.36-.25.55-.36v3.47c-.19-.08-.38-.17-.55-.36l-.09-.08c-.67-.57-1.17-1.3-1.45-2.14zM12 12.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+                </div>
+            </form>
+            <div class="info-widgets">
+                <span id="usd-rate">USD --.--</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ЭКРАН 2: РЕЗУЛЬТАТЫ -->
+    <div id="results-page" class="view-container">
+        <header class="results-header">
+            <form id="results-search-form" class="search-bar small">
+                <input type="search" id="results-search-input">
+                <button type="submit">Найти</button>
+            </form>
+        </header>
+        
+        <main class="results-content">
+            <div id="filter-panel" class="filter-panel">
+                <button class="filter-btn active" data-type="web">Все</button>
+                <button class="filter-btn" data-type="image">Картинки</button>
+                <!-- ⭐ КНОПКА ВИДЕО ТЕПЕРЬ РАБОТАЕТ ⭐ -->
+                <button class="filter-btn" data-type="video">Видео</button>
+            </div>
+
+            <div id="stats-container"></div>
+            <div id="results-container"></div>
+            <div id="pagination-container"></div>
+        </main>
+    </div>
+
+    <!-- ⭐ НОВЫЙ ЭЛЕМЕНТ: LIGHTBOX ДЛЯ КАРТИНОК ⭐ -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">×</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
