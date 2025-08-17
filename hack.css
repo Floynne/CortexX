@@ -1,0 +1,741 @@
+/* ========================================================================= */
+/* --- ГЛОБАЛЬНЫЕ СТИЛИ И ПЕРЕМЕННЫЕ --- */
+/* ========================================================================= */
+:root {
+    --black: #0a0a0a;
+    --dark-grey: #1a1a1a;
+    --grey: #333333;
+    --off-white: #E0E0E0;
+    --white: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--black);
+    color: var(--off-white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+}
+
+/* ========================================================================= */
+/* --- СТИЛИ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ (index.html) --- */
+/* ========================================================================= */
+
+/* --- Фон с частицами --- */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* --- Шапка --- */
+header {
+    position: fixed;
+    width: 100%;
+    padding: 25px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--white);
+}
+
+nav a {
+    color: var(--off-white);
+    text-decoration: none;
+    margin-left: 40px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--white);
+}
+
+/* --- Главный экран (Hero) --- */
+#hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.hero-content h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem); /* Адаптивный размер шрифта */
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -2px;
+}
+
+.typing-effect {
+    color: var(--white);
+}
+
+.cursor {
+    display: inline-block;
+    color: var(--white);
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.subtitle {
+    margin-top: 20px;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    max-width: 600px;
+    line-height: 1.6;
+    color: #c5c5c5;
+}
+
+.cta-button {
+    display: inline-block;
+    margin-top: 50px;
+    padding: 18px 35px;
+    border: 1px solid var(--grey);
+    border-radius: 50px;
+    color: var(--off-white);
+    background-color: transparent;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+}
+
+/* --- Общие стили секций на главной --- */
+main > section {
+    padding: 120px 8%;
+}
+
+section h2 {
+    font-size: 3em;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 50px;
+    text-align: center;
+}
+section#about p {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 1.8;
+    font-size: 1.1em;
+}
+
+/* --- Анимация появления при скролле --- */
+.hidden {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, filter 0.6s ease-out;
+}
+
+.visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
+
+/* --- Подвал --- */
+footer {
+    text-align: center;
+    padding: 50px;
+    color: #666;
+    border-top: 1px solid var(--grey);
+}
+
+
+/* ========================================================================= */
+/* --- СТИЛИ ДЛЯ СТРАНИЦЫ КУРСОВ (courses.html) --- */
+/* ========================================================================= */
+
+body.courses-page {
+    counter-reset: accordion-counter;
+}
+
+#course-hero {
+    padding-top: 150px;
+    padding-bottom: 80px;
+    text-align: center;
+}
+
+#course-hero h1 {
+    font-size: 3.5em;
+    font-weight: 800;
+    color: var(--white);
+}
+
+#course-hero p {
+    font-size: 1.2em;
+    color: #c5c5c5;
+    margin-top: 10px;
+}
+
+#course-list {
+    padding: 40px 8% 120px 8%;
+}
+
+.accordion-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+.section-title:first-of-type {
+    margin-top: 0;
+}
+
+.accordion-item {
+    background-color: var(--dark-grey);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--grey);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.accordion-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    border-color: #666;
+}
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    cursor: pointer;
+    position: relative;
+}
+
+.accordion-header::before {
+    counter-increment: accordion-counter;
+    content: "0" counter(accordion-counter);
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-size: 3.5em;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.05);
+    transition: color 0.3s ease;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+}
+.accordion-item:hover .accordion-header::before {
+    color: rgba(255, 255, 255, 0.08);
+}
+
+.title-group {
+    padding-left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.accordion-header h3 {
+    color: var(--white);
+    font-size: 1.6em;
+    font-weight: 700;
+    line-height: 1.2;
+    transition: color 0.3s;
+}
+
+.duration {
+    color: #a0a0a0;
+    font-size: 1em;
+    margin-left: auto;
+    padding-left: 20px;
+    flex-shrink: 0;
+}
+
+.accordion-toggle {
+    background: var(--grey);
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.3s;
+    flex-shrink: 0;
+}
+
+.accordion-toggle svg {
+    stroke: var(--off-white);
+    width: 24px;
+    height: 24px;
+    stroke-width: 2.5;
+    fill: none;
+}
+
+.accordion-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.7s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease-out;
+    padding: 0 30px 0 75px;
+}
+
+.accordion-content p {
+    color: #c5c5c5;
+    line-height: 1.7;
+    margin: 15px 0 25px 0;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
+}
+
+.accordion-content ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.accordion-content ul li {
+    color: var(--off-white);
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 25px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.accordion-content ul li::before {
+    content: '>';
+    font-family: monospace;
+    color: var(--white);
+    font-weight: bold;
+    font-size: 1.2em;
+    position: absolute;
+    left: 0;
+    top: 1px;
+}
+
+.accordion-item.active {
+    border-color: var(--white);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.accordion-item.active .accordion-toggle {
+    transform: rotate(180deg);
+    background-color: var(--white);
+}
+.accordion-item.active .accordion-toggle svg {
+    stroke: var(--black);
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 1200px;
+    opacity: 1;
+    padding-bottom: 30px;
+}
+
+.accordion-item.active .accordion-content p,
+.accordion-item.active .accordion-content ul li {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.accordion-item.active .accordion-content ul li:nth-child(1) { transition-delay: 0.25s; }
+.accordion-item.active .accordion-content ul li:nth-child(2) { transition-delay: 0.30s; }
+.accordion-item.active .accordion-content ul li:nth-child(3) { transition-delay: 0.35s; }
+.accordion-item.active .accordion-content ul li:nth-child(4) { transition-delay: 0.40s; }
+
+.checkmark {
+    color: var(--white);
+    font-size: 1.5em;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.accordion-item.completed .checkmark {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.accordion-item.completed .accordion-header h3 {
+    color: #a0a0a0;
+}
+.accordion-item.completed:hover .accordion-header h3 {
+    color: var(--white);
+}
+
+.lesson-link {
+    display: inline-block;
+    text-decoration: none;
+    margin-top: 25px;
+    padding: 12px 25px;
+    border: 1px solid var(--grey);
+    border-radius: 5px;
+    color: var(--off-white);
+    background-color: var(--dark-grey);
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.lesson-link:hover {
+    background-color: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+}
+
+/* ========================================================================= */
+/* --- СТИЛИ ДЛЯ СТРАНИЦ УРОКОВ (lesson-*.html) --- */
+/* ========================================================================= */
+
+.lesson-page header {
+    border-bottom: 1px solid var(--grey);
+}
+
+.lesson-hero {
+    background-color: var(--dark-grey);
+    padding: 100px 8%;
+    border-bottom: 1px solid var(--grey);
+}
+.lesson-hero-content {
+    max-width: 900px;
+}
+.lesson-meta {
+    display: inline-block;
+    background-color: var(--grey);
+    color: var(--white);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.lesson-hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+.lesson-hero p {
+    font-size: 1.25em;
+    color: #c5c5c5;
+    line-height: 1.6;
+    max-width: 800px;
+}
+
+.lesson-container {
+    display: flex;
+    gap: 60px;
+    padding: 60px 8%;
+    align-items: flex-start;
+}
+
+.lesson-nav {
+    position: sticky;
+    top: 120px;
+    width: 250px;
+    flex-shrink: 0;
+}
+.lesson-nav h3 {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--white);
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--grey);
+    margin-bottom: 15px;
+}
+.lesson-nav ul { list-style: none; }
+.lesson-nav li { margin-bottom: 5px; }
+.lesson-nav a {
+    display: block;
+    text-decoration: none;
+    color: #a0a0a0;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s, border-left-color 0.3s;
+    border-left: 3px solid transparent;
+}
+.lesson-nav a:hover {
+    color: var(--white);
+    background-color: var(--dark-grey);
+}
+.lesson-nav a.active {
+    color: var(--white);
+    background-color: var(--grey);
+    font-weight: 600;
+    border-left: 3px solid var(--white);
+}
+
+.lesson-content {
+    flex-grow: 1;
+    min-width: 0;
+}
+.lesson-content section {
+    margin-bottom: 80px;
+    padding-top: 20px;
+}
+.lesson-content h2 {
+    font-size: 2.4em;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--grey);
+    text-align: left;
+}
+.lesson-content h3 {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--off-white);
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+.lesson-content p, .lesson-content li {
+    font-size: 1.1em;
+    line-height: 1.9;
+    color: var(--off-white);
+    margin-bottom: 1.2em;
+}
+.lesson-content a {
+    color: #58a6ff;
+    text-decoration: none;
+    border-bottom: 1px dotted #58a6ff;
+    transition: color 0.3s, border-bottom-color 0.3s;
+}
+.lesson-content a:hover {
+    color: var(--white);
+    border-bottom-color: var(--white);
+}
+.lesson-content strong {
+    color: var(--white);
+    font-weight: 700;
+}
+.lesson-content ul, .lesson-content ol {
+    padding-left: 30px;
+}
+.lesson-content ul li::marker, .lesson-content ol li::marker {
+    color: #888;
+}
+
+.code-block {
+    background-color: #0d0d0d;
+    border: 1px solid var(--grey);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 30px 0;
+    position: relative;
+    overflow-x: auto;
+}
+.code-block code {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1em;
+    color: #e0e0e0;
+    white-space: pre;
+}
+.copy-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--grey);
+    color: var(--off-white);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s, background-color 0.3s;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+}
+.code-block:hover .copy-btn {
+    opacity: 1;
+}
+.copy-btn:hover {
+    background-color: #555;
+}
+
+.info-box, .warning-box, .pro-tip-box {
+    padding: 20px 25px;
+    margin: 30px 0;
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+.info-box p, .warning-box p, .pro-tip-box p { margin: 0; }
+.info-box {
+    background-color: rgba(52, 152, 219, 0.1);
+    border-color: #3498db;
+}
+.warning-box {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-color: #e74c3c;
+}
+.pro-tip-box {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: #888;
+}
+
+.ascii-diagram {
+    background-color: transparent;
+    font-family: 'Roboto Mono', monospace;
+    color: #a0a0a0;
+    padding: 20px 0;
+    font-size: 1em;
+    line-height: 1.5;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+.lesson-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+}
+.lesson-content th, .lesson-content td {
+    padding: 15px;
+    border: 1px solid var(--grey);
+    text-align: left;
+}
+.lesson-content th {
+    background-color: var(--dark-grey);
+    color: var(--white);
+    font-weight: 700;
+}
+.lesson-content tbody tr:nth-child(even) {
+    background-color: #111;
+}
+
+/* ========================================================================= */
+/* --- АДАПТИВНОСТЬ --- */
+/* ========================================================================= */
+@media (max-width: 1024px) {
+    .lesson-container {
+        flex-direction: column;
+    }
+    .lesson-nav {
+        position: static;
+        width: 100%;
+        margin-bottom: 40px;
+        border-bottom: 1px solid var(--grey);
+        padding-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 20px 5%;
+        flex-direction: column;
+        gap: 15px;
+    }
+    nav a { 
+        margin: 0 15px;
+    }
+    main > section, #course-list, .lesson-container { 
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+/* Контейнер-сетка для карточек */
+.roadmap-grid {
+    display: grid;
+    /* Адаптивная сетка: создает столько колонок, сколько помещается, 
+       при минимальной ширине колонки 320px */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px; /* Отступ между карточками */
+}
+
+/* Стили для новой карточки */
+.roadmap-card-new {
+    display: block; /* Чтобы тег <a> вел себя как блок */
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
+    padding: 35px;
+    
+    /* Эффект "матового стекла" */
+    background-color: rgba(26, 26, 26, 0.7); /* Полупрозрачный фон */
+    backdrop-filter: blur(5px); /* Размытие фона под карточкой */
+    
+    border: 1px solid var(--grey);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+/* Эффект при наведении */
+.roadmap-card-new:hover {
+    transform: translateY(-8px); /* Карточка "приподнимается" */
+    border-color: var(--white); /* Рамка становится белой */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Добавляем тень для объема */
+}
+
+/* Номер модуля */
+.card-number {
+    display: block;
+    font-size: 1em;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* Заголовок модуля */
+.roadmap-card-new h3 {
+    color: var(--white);
+    font-size: 1.6em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+/* Описание модуля */
+.roadmap-card-new p {
+    color: #a0a0a0;
+    line-height: 1.7;
+    font-size: 1.05em;
+}

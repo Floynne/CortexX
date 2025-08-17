@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex Academy - Ваш путь в кибербезопасности</title>
+    <link rel="stylesheet" href="hack.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <canvas id="particle-canvas"></canvas>
+
+    <header>
+        <div class="logo">Cortex X</div>
+        <nav>
+            <a href="#about">О нас</a>
+            <a href="courses.html">Программа</a>
+            <a href="#">Войти</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h1>Искусство цифровой <span class="typing-effect"></span><span class="cursor">_</span></h1>
+                <p class="subtitle">Бесплатный курс по этичному хакингу, который изменит ваше представление о кибербезопасности.</p>
+                <a href="courses.html" class="cta-button">Начать свой путь</a>
+            </div>
+        </section>
+
+        <section id="about" class="hidden">
+            <h2>Наша философия</h2>
+            <p>Знания не должны иметь цены. Cortex Academy создана энтузиастами для будущих профессионалов. Мы предоставляем структурированный, глубокий и абсолютно бесплатный доступ к миру кибербезопасности, убирая финансовые барьеры на пути к вашей цели.</p>
+        </section>
+
+        <!-- ОБНОВЛЕННАЯ СЕКЦИЯ ПРОГРАММЫ С НОВЫМИ КАРТОЧКАМИ -->
+        <section id="roadmap" class="hidden">
+            <h2>Программа обучения</h2>
+            
+            <div class="roadmap-grid">
+                <!-- Каждая карточка - это ссылка на страницу с курсами -->
+                <a href="courses.html" class="roadmap-card-new">
+                    <span class="card-number">01</span>
+                    <h3>Фундамент: ОС и Администрирование</h3>
+                    <p>Глубокое погружение в Linux и Windows. От командной строки и PowerShell до управления пользователями в Active Directory.</p>
+                </a>
+                <a href="courses.html" class="roadmap-card-new">
+                    <span class="card-number">02</span>
+                    <h3>Сети: от OSI до Firewall</h3>
+                    <p>Изучите, как устроен интернет. Освойте протоколы, маршрутизацию, VPN и научитесь настраивать сетевую защиту.</p>
+                </a>
+                <a href="courses.html" class="roadmap-card-new">
+                    <span class="card-number">03</span>
+                    <h3>Программирование и AppSec</h3>
+                    <p>Напишите свои инструменты на Python. Научитесь находить и устранять уязвимости в коде, такие как SQLi и XSS.</p>
+                </a>
+                <a href="courses.html" class="roadmap-card-new">
+                    <span class="card-number">04</span>
+                    <h3>Процессы защиты (Blue Team)</h3>
+                    <p>Поймите, как работает SOC. Освойте мониторинг, реагирование на инциденты, аудит и compliance.</p>
+                </a>
+                <a href="courses.html" class="roadmap-card-new">
+                    <span class="card-number">05</span>
+                    <h3>Анализ защищенности (Red Team)</h3>
+                    <p>Думайте как хакер. Пройдите все этапы пентеста: от OSINT-разведки до взлома Active Directory.</p>
+                </a>
+                <a href="courses.html" class="roadmap-card-new">
+                    <span class="card-number">06</span>
+                    <h3>Итоговые проекты</h3>
+                    <p>Примените все знания на практике в двух масштабных симуляциях: проведите полный внутренний пентест и расследуйте сложный киберинцидент.</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Cortex Academy. Знания — это свобода.</p>
+    </footer>
+
+    <script src="hack.js"></script>
+</body>
+</html>
