@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок 3: Администрирование Windows и PowerShell - Cortex Academy</title>
+    <link rel="stylesheet" href="/hack.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+
+    <header>
+        <div class="logo">Cortex X</div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="courses.html">Программа</a>
+            <a href="#">Войти</a>
+        </nav>
+    </header>
+
+    <div class="lesson-hero">
+        <div class="lesson-hero-content">
+            <span class="lesson-meta">Модуль 1 • Урок 3</span>
+            <h1>Администрирование Windows и PowerShell</h1>
+            <p>Откройте всю мощь управления корпоративной средой Windows. От Active Directory до автоматизации задач с помощью PowerShell — станьте архитектором домена.</p>
+        </div>
+    </div>
+
+    <main class="lesson-container">
+        <!-- Боковая навигация по уроку -->
+        <aside class="lesson-nav">
+            <h3>Содержание урока</h3>
+            <ul>
+                <li><a href="#powershell-intro" class="nav-link active">1. PowerShell: Язык Админов</a></li>
+                <li><a href="#ad-intro" class="nav-link">2. Доменные службы Active Directory</a></li>
+                <li><a href="#accounts-management" class="nav-link">3. Управление учётными записями</a></li>
+                <li><a href="#passwords-policies" class="nav-link">4. Хранение паролей и политики доступа</a></li>
+                <li><a href="#gpo" class="nav-link">5. Управление групповыми политиками (GPO)</a></li>
+                <li><a href="#registry" class="nav-link">6. Строение реестра и его возможности</a></li>
+                <li><a href="#audit" class="nav-link">7. Службы аудита: Кто, что, когда?</a></li>
+                <li><a href="#signatures" class="nav-link">8. Цифровые подписи и сертификаты</a></li>
+                <li><a href="#task" class="nav-link">9. Итоговое практическое задание</a></li>
+            </ul>
+        </aside>
+
+        <!-- Основной контент урока -->
+        <article class="lesson-content">
+            <section id="powershell-intro">
+                <h2>1. PowerShell: Больше, чем просто командная строка</h2>
+                <p>Если в Linux мы работали с текстом, то в PowerShell мы работаем с <strong>объектами</strong>. Это главное отличие и невероятное преимущество. Каждая команда (здесь она называется <strong>командлет</strong>) возвращает не просто текст, а структурированный объект со свойствами и методами.</p>
+                <p><strong>Основы синтаксиса:</strong></p>
+                <ul>
+                    <li><strong>Структура "Глагол-Существительное":</strong> Все командлеты построены по интуитивно понятной схеме: <code>Get-Process</code>, <code>Stop-Service</code>, <code>New-Item</code>.</li>
+                    <li><strong>Конвейер `|`:</strong> Как и в Linux, передает результат одной команды другой. Но здесь передаются целые объекты, а не текст!</li>
+                    <li><strong>Справка:</strong> Команда <code>Get-Help [имя_командлета] -Full</code> — ваш лучший друг. Она покажет полное описание и примеры.</li>
+                </ul>
+                <div class="code-block">
+                    <code># Получить список всех процессов, отсортировать по использованию памяти и показать топ-5
+Get-Process | Sort-Object -Property WS -Descending | Select-Object -First 5
+
+# Получить информацию о службе 'Spooler' (Диспетчер печати)
+Get-Service -Name Spooler
+
+# Узнать IP-адрес компьютера
+Get-NetIPAddress</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <p>Мы будем использовать PowerShell для выполнения всех задач в этом уроке. Забудьте про клики мышкой — автоматизация наш путь.</p>
+            </section>
+
+            <section id="ad-intro">
+                <h2>2. Доменные службы Active Directory (AD)</h2>
+                <p>Active Directory — это мозг и сердце корпоративной сети на Windows. Это централизованная база данных, которая хранит информацию обо всем: пользователях, компьютерах, принтерах, файловых ресурсах, политиках безопасности.</p>
+                <div class="info-box">
+                    <p><strong>Домен vs Рабочая группа:</strong> В рабочей группе каждый компьютер сам по себе. В домене есть центральный сервер (<strong>контроллер домена</strong>), который управляет всем. Это обеспечивает централизованную аутентификацию и управление.</p>
+                </div>
+                <p><strong>Ключевые компоненты AD:</strong></p>
+                <ul>
+                    <li><strong>Объекты:</strong> Пользователи, группы, компьютеры.</li>
+                    <li><strong>Контроллер домена (DC):</strong> Сервер, на котором работает AD. В сети их должно быть как минимум два для отказоустойчивости.</li>
+                    <li><strong>Организационные единицы (OU - Organizational Units):</strong> Это "папки" внутри AD для логической группировки объектов (например, OU "Бухгалтерия", OU "Серверы"). На OU применяются групповые политики.</li>
+                </ul>
+                <p>Для работы с AD в PowerShell используется специальный модуль. Его нужно установить на ваш управляющий компьютер или использовать прямо на контроллере домена.</p>
+            </section>
+
+            <section id="accounts-management">
+                <h2>3. Управление учётными записями</h2>
+                <p>В доменной среде создание пользователя — это не просто локальная запись, а создание объекта в глобальной базе данных AD. Все команды для работы с AD начинаются с префикса `AD`.</p>
+                <div class="code-block">
+                    <code># Найти пользователя 'b.gates' в Active Directory
+Get-ADUser -Identity b.gates
+
+# Создать нового пользователя. -Path указывает OU, куда его поместить
+New-ADUser -Name "Steve Ballmer" -GivenName "Steve" -Surname "Ballmer" -SamAccountName "s.ballmer" -UserPrincipalName "s.ballmer@cortex.corp" -Path "OU=Developers,DC=cortex,DC=corp" -AccountPassword (Read-Host -AsSecureString "Введите пароль:") -Enabled $true
+
+# Добавить пользователя в группу 'Domain Admins' (очень осторожно!)
+Add-ADGroupMember -Identity "Domain Admins" -Members "s.ballmer"
+
+# Отключить учетную запись
+Disable-ADAccount -Identity s.ballmer</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="passwords-policies">
+                <h2>4. Хранение паролей и политика доступа</h2>
+                <p>Windows никогда не хранит пароли в открытом виде. Она хранит их <strong>хэши</strong>.</p>
+                <ul>
+                    <li><strong>SAM (Security Account Manager):</strong> Локальная база данных на каждом компьютере (<code>C:\Windows\System32\config\SAM</code>), хранит хэши локальных пользователей.</li>
+                    <li><strong>NTDS.dit:</strong> Основная база данных Active Directory на контроллере домена. Хранит хэши всех доменных пользователей. Доступ к ней — главная цель атакующих.</li>
+                </ul>
+                <p><strong>Политика паролей</strong> настраивается через Групповые политики (о них ниже) и определяет требования к паролям: минимальная длина, сложность, срок действия, история паролей.</p>
+                 <div class="pro-tip-box">
+                    <p><strong>LAPS (Local Administrator Password Solution)</strong> — бесплатный инструмент от Microsoft для автоматической смены и централизованного хранения паролей локальных администраторов на всех компьютерах в домене. Это must-have для безопасности.</p>
+                </div>
+            </section>
+            
+            <section id="gpo">
+                <h2>5. Управление групповыми политиками (GPO)</h2>
+                <p>Групповая политика (Group Policy Object, GPO) — это самый мощный инструмент централизованного управления в Windows. Это набор правил, который применяется к пользователям или компьютерам, находящимся в определенном OU.</p>
+                <p><strong>Что можно сделать с помощью GPO? Практически все:</strong></p>
+                <ul>
+                    <li>Настроить политику паролей.</li>
+                    <li>Запретить запуск определенных программ.</li>
+                    <li>Автоматически устанавливать принтеры.</li>
+                    <li>Запретить использование USB-накопителей.</li>
+                    <li>Настроить параметры Windows Firewall.</li>
+                    <li>Установить стандартные обои на рабочий стол.</li>
+                </ul>
+                <p>Управление GPO через PowerShell позволяет автоматизировать создание и применение политик.</p>
+                <div class="code-block">
+                    <code># Создать новую GPO
+New-GPO -Name "CORTEX_Workstation_Security"
+
+# Привязать GPO к OU 'Workstations'
+New-GPLink -Name "CORTEX_Workstation_Security" -Target "OU=Workstations,DC=cortex,DC=corp"
+
+# Установить с помощью GPO значение в реестре (например, отключить автозапуск USB)
+Set-GPRegistryValue -Name "CORTEX_Workstation_Security" -Key "HKLM\Software\Policies\Microsoft\Windows\DeviceInstall\Restrictions" -ValueName "DenyRemovableDevices" -Type DWord -Value 1</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="registry">
+                <h2>6. Строение реестра и его возможности</h2>
+                <p>Реестр Windows — это иерархическая база данных, в которой хранится вся информация о конфигурации системы, настройках программ, профилях пользователей и оборудовании. PowerShell представляет реестр в виде дисков, как файловую систему.</p>
+                <h3>Основные "кусты" (Hives) реестра:</h3>
+                <table>
+                  <thead><tr><th>Куст</th><th>Сокращение</th><th>Описание</th></tr></thead>
+                  <tbody>
+                    <tr><td>HKEY_CLASSES_ROOT</td><td>HKCR</td><td>Ассоциации файлов (какая программа открывает .txt).</td></tr>
+                    <tr><td>HKEY_CURRENT_USER</td><td>HKCU</td><td>Настройки текущего вошедшего в систему пользователя.</td></tr>
+                    <tr><td>HKEY_LOCAL_MACHINE</td><td>HKLM</td><td>Настройки, общие для всех пользователей на данном компьютере (софт, драйверы).</td></tr>
+                    <tr><td>HKEY_USERS</td><td>HKU</td><td>Профили всех пользователей, которые когда-либо логинились.</td></tr>
+                    <tr><td>HKEY_CURRENT_CONFIG</td><td>HKCC</td><td>Информация о текущем профиле оборудования.</td></tr>
+                  </tbody>
+                </table>
+                <div class="warning-box">
+                    <p><strong>Осторожно!</strong> Неправильное изменение реестра может привести к полной неработоспособности системы. Всегда делайте резервную копию перед внесением изменений.</p>
+                </div>
+                 <div class="code-block">
+                    <code># Перейти на "диск" реестра HKLM
+Set-Location HKLM:
+
+# Посмотреть содержимое "папки"
+Get-ChildItem Software\Microsoft\Windows
+
+# Проверить, существует ли ключ
+Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dhcp"
+
+# Создать новый ключ и значение
+New-Item -Path "HKCU:\Software\CortexApp"
+New-ItemProperty -Path "HKCU:\Software\CortexApp" -Name "Version" -Value "1.0"</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="audit">
+                <h2>7. Службы аудита: Кто, что, когда?</h2>
+                <p>Аудит позволяет отслеживать и записывать в журнал безопасности все важные события в системе. Это критически важно для расследования инцидентов и контроля действий пользователей.</p>
+                <p>Аудит настраивается через Групповые политики. Вы можете включить аудит для таких событий, как:</p>
+                <ul>
+                    <li>Успешные и неудачные попытки входа в систему.</li>
+                    <li>Доступ к файлам и папкам.</li>
+                    <li>Изменение членства в группах (например, добавление кого-то в "Администраторы домена").</li>
+                    <li>Изменение политик.</li>
+                </ul>
+                <p>Все события записываются в <strong>Журнал событий (Event Viewer)</strong>. В PowerShell для работы с ним используется командлет <code>Get-WinEvent</code>.</p>
+                <div class="code-block">
+                    <code># Найти последние 10 событий неудачного входа в систему (Event ID 4625)
+Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4625} -MaxEvents 10
+
+# Найти все события, связанные с очисткой журнала безопасности (признак действий злоумышленника)
+Get-WinEvent -LogName Security | Where-Object {$_.ID -eq 1102}</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="signatures">
+                <h2>8. Цифровые подписи и сертификаты</h2>
+                <p>Цифровая подпись гарантирует две вещи: <strong>подлинность</strong> (код действительно написан тем, кто заявлен) и <strong>целостность</strong> (код не был изменен после подписи).</p>
+                <p>В контексте PowerShell это напрямую связано с <strong>политикой выполнения (Execution Policy)</strong>. Это мера безопасности, которая определяет, можно ли запускать скрипты на данном компьютере.</p>
+                <ul>
+                    <li><code>Restricted</code> — (по умолчанию) Запуск скриптов запрещен.</li>
+                    <li><code>AllSigned</code> — Можно запускать только скрипты, подписанные доверенным издателем.</li>
+                    <li><code>RemoteSigned</code> — Можно запускать локальные скрипты, а скачанные из интернета должны быть подписаны.</li>
+                    <li><code>Unrestricted</code> — Можно запускать любые скрипты (небезопасно).</li>
+                </ul>
+                 <div class="code-block">
+                    <code># Посмотреть текущую политику выполнения
+Get-ExecutionPolicy
+
+# Установить политику, требующую подписи для скачанных скриптов
+# Требуются права администратора
+Set-ExecutionPolicy RemoteSigned
+
+# Проверить подпись файла скрипта
+Get-AuthenticodeSignature -FilePath "C:\Scripts\MyScript.ps1"</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+
+            <section id="task">
+                <h2>9. Итоговое практическое задание</h2>
+                <p>Вы — администратор домена `cortex.corp`. Ваша задача — создать безопасное и управляемое окружение для нового отдела `Marketing`.</p>
+                <ol>
+                    <li>С помощью PowerShell создайте в Active Directory новое OU с именем `Marketing`.</li>
+                    <li>Создайте в этом OU двух новых пользователей: `j.doe` (John Doe) и `s.smith` (Sarah Smith). Задайте им пароли.</li>
+                    <li>Создайте группу безопасности `Marketing_Users` и добавьте в нее обоих пользователей.</li>
+                    <li>Создайте новую GPO с именем `Marketing_Restrictions`.</li>
+                    <li>Привяжите эту GPO к OU `Marketing`.</li>
+                    <li>С помощью этой GPO установите правило: минимальная длина пароля для пользователей этого OU должна быть 10 символов (это делается через политики безопасности).</li>
+                    <li>С помощью этой же GPO запретите пользователям доступ к Редактору реестра (`regedit.exe`). (Подсказка: ищите в Administrative Templates -> System).</li>
+                    <li>Создайте простой скрипт PowerShell `Welcome.ps1`, который выводит на экран "Welcome to Cortex Corp!".</li>
+                    <li>Установите политику выполнения на вашем компьютере в `RemoteSigned`. Убедитесь, что ваш локальный скрипт запускается.</li>
+                </ol>
+                <p>Выполнив это задание, вы на практике примените все ключевые концепции администрирования Windows, от создания пользователей до централизованного управления их окружением с помощью GPO и PowerShell.</p>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Cortex Academy. Знания — это свобода.</p>
+    </footer>
+
+    <script src="/hack.js"></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок 5: Сетевое администрирование Linux - Cortex Academy</title>
+    <link rel="stylesheet" href="/hack.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+
+    <header>
+        <div class="logo">Cortex X</div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="courses.html">Программа</a>
+            <a href="#">Войти</a>
+        </nav>
+    </header>
+
+    <div class="lesson-hero">
+        <div class="lesson-hero-content">
+            <span class="lesson-meta">Модуль 2 • Урок 5</span>
+            <h1>Сетевое администрирование Linux</h1>
+            <p>Переходим от теории к практике. Научитесь управлять сетевыми интерфейсами, настраивать ключевые сервисы, защищать периметр и анализировать трафик в Linux.</p>
+        </div>
+    </div>
+
+    <main class="lesson-container">
+        <!-- Боковая навигация по уроку -->
+        <aside class="lesson-nav">
+            <h3>Содержание урока</h3>
+            <ul>
+                <li><a href="#network-config" class="nav-link active">1. Строение сети в Linux</a></li>
+                <li><a href="#protocols-tools" class="nav-link">2. Основные протоколы и утилиты</a></li>
+                <li><a href="#routing-ssh" class="nav-link">3. Маршрутизация и удалённый доступ (SSH)</a></li>
+                <li><a href="#dns-nfs" class="nav-link">4. Сервисы DNS и NFS</a></li>
+                <li><a href="#apache" class="nav-link">5. Веб-сервер Apache</a></li>
+                <li><a href="#netfilter" class="nav-link">6. Файрвол Netfilter (iptables/nftables)</a></li>
+                <li><a href="#troubleshooting" class="nav-link">7. Работоспособность и диагностика</a></li>
+                <li><a href="#incidents" class="nav-link">8. Инциденты и их расследование</a></li>
+                <li><a href="#monitoring" class="nav-link">9. Мониторинг и алерты</a></li>
+            </ul>
+        </aside>
+
+        <!-- Основной контент урока -->
+        <article class="lesson-content">
+            <section id="network-config">
+                <h2>1. Строение сети в Linux: Интерфейсы и конфигурация</h2>
+                <p>В Linux каждый сетевой адаптер (физический или виртуальный) представлен как <strong>сетевой интерфейс</strong>. У них есть имена: <code>eth0</code> (Ethernet), <code>wlan0</code> (Wi-Fi), <code>lo</code> (loopback, "сам на себя", 127.0.0.1).</p>
+                <p>Современные дистрибутивы (Ubuntu, Debian) используют утилиту <strong>Netplan</strong> для декларативной конфигурации сети. Вы описываете, *что* хотите получить, в простом YAML-файле, а система сама применяет настройки.</p>
+                <div class="pro-tip-box">
+                    <p>Файлы конфигурации Netplan лежат в <code>/etc/netplan/</code>. После изменения файла всегда выполняйте <code>sudo netplan apply</code> для применения настроек.</p>
+                </div>
+                <p><strong>Пример статической конфигурации (`/etc/netplan/01-netcfg.yaml`):</strong></p>
+                <div class="code-block">
+                    <code>network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses:
+        - 192.168.1.100/24
+      routes:
+        - to: default
+          via: 192.168.1.1
+      nameservers:
+        addresses: [8.8.8.8, 1.1.1.1]</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <h3>Ключевые команды для работы с сетью:</h3>
+                <ul>
+                    <li><code>ip addr</code> (или <code>ip a</code>): Показать информацию обо всех интерфейсах и их IP-адресах.</li>
+                    <li><code>ip route</code>: Показать таблицу маршрутизации ядра.</li>
+                    <li><code>ss -tulnp</code>: Показать все слушающие TCP и UDP порты, а также процессы, которые их занимают.</li>
+                </ul>
+            </section>
+
+            <section id="protocols-tools">
+                <h2>2. Основные протоколы и утилиты для их анализа</h2>
+                <p>Мы уже изучили теорию. Теперь посмотрим, как "увидеть" эти протоколы вживую.</p>
+                <ul>
+                    <li><strong>ARP (Address Resolution Protocol):</strong> Связывает IP-адреса (L3) с MAC-адресами (L2) в локальной сети. Посмотреть ARP-таблицу можно командой <code>ip neigh</code>.</li>
+                    <li><strong>ICMP (Internet Control Message Protocol):</strong> Используется для диагностики. Основные утилиты:</li>
+                        <ul>
+                            <li><code>ping [хост]</code>: Проверка доступности и времени отклика.</li>
+                            <li><code>traceroute [хост]</code>: Показывает весь путь (все маршрутизаторы), который проходят пакеты до цели.</li>
+                        </ul>
+                    <li><strong>DNS (Domain Name System):</strong> Утилиты <code>dig</code> и <code>nslookup</code> позволяют делать прямые запросы к DNS-серверам для получения информации о доменах.</li>
+                </ul>
+                 <div class="code-block">
+                    <code># Посмотреть подробную информацию о домене, включая MX-записи (почтовые серверы)
+dig example.com ANY
+
+# Проследить маршрут до серверов Google
+traceroute 8.8.8.8</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+
+            <section id="routing-ssh">
+                <h2>3. Маршрутизация и настройка удалённого доступа (SSH)</h2>
+                <h3>Маршрутизация в Linux</h3>
+                <p>Linux-машина сама по себе может выступать в роли маршрутизатора. Для этого нужно включить в ядре функцию IP-форвардинга.</p>
+                <div class="code-block">
+                    <code># Включить IP-форвардинг "на лету"
+sudo sysctl -w net.ipv4.ip_forward=1
+
+# Чтобы сделать изменение постоянным, нужно раскомментировать строку
+# net.ipv4.ip_forward=1 в файле /etc/sysctl.conf</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <p>После этого вы можете добавлять статические маршруты командой <code>ip route add</code>.</p>
+                
+                <h3>SSH (Secure Shell) — ваш главный инструмент</h3>
+                <p>SSH — это зашифрованный протокол для безопасного удаленного управления системой. Он работает по клиент-серверной модели.</p>
+                <div class="warning-box">
+                    <p><strong>Безопасность SSH — превыше всего!</strong>
+                    <br>1. <strong>Отключите вход по паролю, используйте ключи.</strong> Создайте пару ключей командой <code>ssh-keygen</code> и скопируйте публичный ключ на сервер с помощью <code>ssh-copy-id</code>.
+                    <br>2. <strong>Отключите вход для root.</strong> В файле <code>/etc/ssh/sshd_config</code> установите <code>PermitRootLogin no</code>.
+                    <br>3. <strong>Смените стандартный порт 22</strong> на другой (например, 2222), чтобы защититься от автоматических сканеров.</p>
+                </div>
+            </section>
+
+            <section id="dns-nfs">
+                <h2>4. Файловая система NFS и работа с DNS</h2>
+                <h3>NFS (Network File System)</h3>
+                <p>NFS — это протокол, позволяющий "расшарить" директорию на сервере, чтобы клиенты могли монтировать ее и работать с ней как с локальной папкой. Это стандарт для общего доступа к файлам в UNIX-подобных системах.</p>
+                <p><strong>На сервере:</strong> Устанавливается <code>nfs-kernel-server</code>, в файле <code>/etc/exports</code> описывается, какая директория и кому доступна.<br>
+                <strong>На клиенте:</strong> Устанавливается <code>nfs-common</code>, директория монтируется командой <code>sudo mount -t nfs server_ip:/path /local_mount_point</code>.</p>
+
+                <h3>Настройка DNS-клиента</h3>
+                <p>Каждый Linux-хост является DNS-клиентом. Настройки резолвера (программы, которая делает DNS-запросы) находятся в файле <code>/etc/resolv.conf</code>. В современных системах этот файл часто управляется автоматически (например, Netplan или systemd-resolved), и напрямую его редактировать не стоит.</p>
+                <div class="info-box">
+                    <p>Для создания полноценного DNS-сервера в Linux чаще всего используется программа <strong>BIND9</strong>. Ее настройка — сложная, но важная тема для любого системного администратора.</p>
+                </div>
+            </section>
+
+            <section id="apache">
+                <h2>5. Веб-сервер Apache</h2>
+                <p>Apache HTTP Server (или просто Apache) — один из самых популярных веб-серверов в мире. Он отвечает за то, чтобы отдавать посетителям содержимое вашего сайта по протоколу HTTP/HTTPS.</p>
+                <p><strong>Установка и управление (на Ubuntu/Debian):</strong></p>
+                <div class="code-block">
+                    <code># Установить Apache
+sudo apt install apache2
+
+# Проверить статус
+sudo systemctl status apache2
+
+# Включить модуль для работы с SSL (для HTTPS)
+sudo a2enmod ssl
+
+# Включить модуль для перезаписи URL (очень часто нужен)
+sudo a2enmod rewrite</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <h3>Виртуальные хосты</h3>
+                <p>Apache позволяет размещать несколько сайтов на одном сервере. Каждый сайт настраивается в отдельном конфигурационном файле, который называется <strong>виртуальный хост</strong>. Эти файлы лежат в <code>/etc/apache2/sites-available/</code>. Чтобы "включить" сайт, нужно создать символическую ссылку на его конфиг в директории <code>/etc/apache2/sites-enabled/</code> с помощью команды <code>a2ensite</code>.</p>
+            </section>
+
+            <section id="netfilter">
+                <h2>6. Файрвол Netfilter (iptables / nftables)</h2>
+                <p><strong>Netfilter</strong> — это фреймворк внутри ядра Linux, который позволяет перехватывать, модифицировать и фильтровать сетевые пакеты. <strong>iptables</strong> — это классическая утилита для управления Netfilter. <strong>nftables</strong> — это ее более современный и производительный преемник.</p>
+                <p>Работа `iptables` основана на <strong>цепочках (chains)</strong> правил. Основные цепочки:</p>
+                <ul>
+                    <li><code>INPUT</code>: для пакетов, предназначенных самому серверу.</li>
+                    <li><code>OUTPUT</code>: для пакетов, сгенерированных самим сервером.</li>
+                    <li><code>FORWARD</code>: для пакетов, которые сервер маршрутизирует (пропускает через себя).</li>
+                </ul>
+                <p>Правила применяются по порядку. У каждой цепочки есть политика по умолчанию (например, <code>DROP</code> — отбрасывать все, что не разрешено).</p>
+                 <div class="code-block">
+                    <code># Посмотреть текущие правила
+sudo iptables -L -v -n
+
+# Пример базового набора правил: разрешить установленные соединения, SSH и HTTP, остальное запретить
+sudo iptables -P INPUT DROP
+sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                 <div class="warning-box">
+                    <p>Настраивать `iptables` по SSH очень опасно. Одной неверной командой (например, <code>iptables -P INPUT DROP</code> без предварительного разрешающего правила для SSH) вы можете навсегда отрезать себе доступ к серверу!</p>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>7. Работоспособность сети и диагностика (Troubleshooting)</h2>
+                <p>Сеть не работает. С чего начать? Действуйте методично, по уровням OSI, снизу вверх:</p>
+                <ol>
+                    <li><strong>Физический уровень:</strong> Проверьте кабели, индикаторы на сетевой карте и коммутаторе. Банально, но часто помогает.</li>
+                    <li><strong>Канальный уровень:</strong> Проверьте ARP-таблицу (<code>ip neigh</code>). Видит ли ваш хост MAC-адрес шлюза?</li>
+                    <li><strong>Сетевой уровень:</strong>
+                        <ul>
+                            <li>Проверьте свой IP-адрес (<code>ip a</code>).</li>
+                            <li>Пингуется ли шлюз по умолчанию (<code>ping 192.168.1.1</code>)?</li>
+                            <li>Пингуется ли внешний IP-адрес (<code>ping 8.8.8.8</code>)? Если да, но не пингуется доменное имя, то проблема в DNS.</li>
+                            <li>Используйте <code>traceroute</code>, чтобы понять, на каком узле обрывается связь.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Транспортный/Прикладной уровень:</strong> Используйте <code>telnet</code> или <code>nc</code> (netcat), чтобы проверить, открыт ли порт на удаленном хосте (<code>telnet google.com 443</code>). Проверьте настройки файрвола.</li>
+                </ol>
+            </section>
+
+            <section id="incidents">
+                <h2>8. Инциденты в локальной сети и их расследование</h2>
+                <p>Расследование инцидента — это детективная работа. Ваша задача — собрать улики, не уничтожив их.</p>
+                <p><strong>Первые шаги при подозрении на взлом:</strong></p>
+                <ol>
+                    <li><strong>Не паникуйте!</strong> Не перезагружайте сервер — это уничтожит массу ценной информации в оперативной памяти.</li>
+                    <li><strong>Изолируйте хост:</strong> Отключите его от сети, чтобы предотвратить дальнейшее распространение атаки.</li>
+                    <li><strong>Соберите "летучие" данные:</strong>
+                        <ul>
+                            <li>Текущие сетевые соединения: <code>ss -anp</code></li>
+                            <li>Запущенные процессы: <code>ps aux</code></li>
+                            <li>Кто залогинен в систему: <code>who</code>, <code>w</code></li>
+                            <li>История команд: <code>history</code></li>
+                        </ul>
+                        Сохраните вывод всех этих команд в текстовый файл на внешний носитель.
+                    </li>
+                    <li><strong>Сделайте образ диска:</strong> С помощью утилиты <code>dd</code> создайте побитную копию диска для дальнейшего анализа. Всегда работайте с копией, а не с оригиналом!</li>
+                    <li><strong>Анализ:</strong> Изучите логи (<code>/var/log</code>), ищите подозрительные файлы, нестандартные процессы, открытые порты, измененные системные файлы (с помощью <code>diff</code> или <code>rpm -Va</code>).</li>
+                </ol>
+            </section>
+
+            <section id="monitoring">
+                <h2>9. Мониторинг и алерты: Видеть проблемы до того, как они случатся</h2>
+                <p>Мониторинг — это непрерывный сбор метрик о состоянии системы. Алертинг — это автоматическое уведомление администратора, когда метрика выходит за пределы нормы.</p>
+                <h3>Инструменты для анализа трафика:</h3>
+                <ul>
+                    <li><strong>tcpdump:</strong> Мощнейшая консольная утилита для перехвата и анализа сетевого трафика в реальном времени. Позволяет "видеть" каждый пакет.</li>
+                    <li><strong>Wireshark:</strong> Графический аналог `tcpdump` с невероятными возможностями для декодирования и анализа протоколов.</li>
+                </ul>
+                <h3>Системы мониторинга:</h3>
+                <p>Для серьезного мониторинга используются комплексные системы, такие как <strong>Prometheus + Grafana</strong> (современный стандарт для метрик и дашбордов) или <strong>Zabbix</strong> (классическое all-in-one решение).</p>
+                 <div class="code-block">
+                    <code># Перехватить весь трафик на интерфейсе eth0, идущий на 80 порт
+sudo tcpdump -i eth0 -n "port 80"
+
+# Перехватить весь ICMP-трафик (пинги)
+sudo tcpdump -i eth0 icmp</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Cortex Academy. Знания — это свобода.</p>
+    </footer>
+
+    <script src="/hack.js"></script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок 2: Системное администрирование Linux - Cortex Academy</title>
+    <link rel="stylesheet" href="/hack.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+
+    <header>
+        <div class="logo">Cortex X</div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="courses.html">Программа</a>
+            <a href="#">Войти</a>
+        </nav>
+    </header>
+
+    <div class="lesson-hero">
+        <div class="lesson-hero-content">
+            <span class="lesson-meta">Модуль 1 • Урок 2</span>
+            <h1>Системное администрирование Linux</h1>
+            <p>Вы получаете ключи от цифрового королевства. Полное руководство по управлению пользователями, процессами, безопасностью и ядром системы.</p>
+        </div>
+    </div>
+
+    <main class="lesson-container">
+        <!-- Боковая навигация по уроку -->
+        <aside class="lesson-nav">
+            <h3>Содержание урока</h3>
+            <ul>
+                <li><a href="#security-intro" class="nav-link active">1. Вводный модуль по безопасности</a></li>
+                <li><a href="#bash-ops" class="nav-link">2. Операции в Bash</a></li>
+                <li><a href="#users-groups" class="nav-link">3. Учетные записи и политики</a></li>
+                <li><a href="#access-privileges" class="nav-link">4. Управление доступом и привилегиями</a></li>
+                <li><a href="#io-pipelines" class="nav-link">5. Конвейеры и ввод/вывод</a></li>
+                <li><a href="#boot-process" class="nav-link">6. Загрузка ядра и User Space</a></li>
+                <li><a href="#process-management" class="nav-link">7. Управление процессами</a></li>
+                <li><a href="#system-management" class="nav-link">8. Управление системой (Systemd)</a></li>
+                <li><a href="#package-management" class="nav-link">9. Установка и удаление программ</a></li>
+                <li><a href="#logging-monitoring" class="nav-link">10. Логирование и мониторинг</a></li>
+                <li><a href="#security-mechanisms" class="nav-link">11. Механизмы управления безопасностью</a></li>
+                <li><a href="#backup-restore" class="nav-link">12. Резервное копирование</a></li>
+            </ul>
+        </aside>
+
+        <!-- Основной контент урока -->
+        <article class="lesson-content">
+            <section id="security-intro">
+                <h2>1. Вводный модуль по безопасности: Мышление Администратора</h2>
+                <p>Безопасность — это не программа, которую можно установить. Это процесс и образ мышления. Главный принцип — <strong>принцип наименьших привилегий</strong>. Каждый пользователь и каждая программа должны иметь только те права, которые абсолютно необходимы для выполнения их задач, и ни на байт больше.</p>
+                <p><strong>Три столпа безопасности Linux:</strong></p>
+                <ul>
+                    <li><strong>Разграничение доступа:</strong> Четкое разделение прав между пользователями, группами и процессами.</li>
+                    <li><strong>Минимализм:</strong> Чем меньше программ установлено и сервисов запущено, тем меньше потенциальных векторов для атаки. Не устанавливайте ничего лишнего.</li>
+                    <li><strong>Своевременные обновления:</strong> Большинство взломов происходит через давно известные уязвимости, для которых уже выпущены патчи. Регулярное обновление — ваша главная защита.</li>
+                </ul>
+                 <div class="code-block">
+                    <code># Команда, которую вы должны выполнять регулярно (раз в день/неделю)
+sudo apt update && sudo apt upgrade -y</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+
+            <section id="bash-ops">
+                <h2>2. Основные операции в Bash и работа с файлами</h2>
+                <p>Мы продолжаем совершенствовать наши навыки работы в терминале. Bash — это не просто командная строка, а полноценный язык программирования.</p>
+                <h3>Поиск файлов: `find` и `locate`</h3>
+                <p><code>find</code> — мощнейший инструмент для поиска по множеству критериев. <code>locate</code> — очень быстрый поиск по заранее созданной базе имен файлов.</p>
+                <div class="code-block">
+                    <code># Найти все файлы с расширением .log в директории /var/log
+find /var/log -name "*.log"
+
+# Найти все файлы, измененные за последние 24 часа, в домашней директории
+find ~ -mtime -1
+
+# Найти все файлы, принадлежащие пользователю 'dev1'
+find / -user dev1
+
+# Быстро найти, где находится файл конфигурации sshd_config
+locate sshd_config</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <h3>Работа с текстом: `grep`, `sed`, `awk`</h3>
+                <p>Эти три утилиты — швейцарский нож для обработки текста.</p>
+                <ul>
+                    <li><strong>grep:</strong> Фильтрует строки, содержащие заданный шаблон.</li>
+                    <li><strong>sed:</strong> Потоковый редактор для замены текста в файлах и потоках.</li>
+                    <li><strong>awk:</strong> Мощный язык для обработки и анализа структурированного текста (например, логов).</li>
+                </ul>
+                <div class="code-block">
+                    <code># Найти все строки со словом "error" в лог-файле
+grep "error" /var/log/syslog
+
+# Заменить все вхождения "http" на "https" в файле config.txt
+sed 's/http/https/g' config.txt
+
+# Вывести первый и третий столбец из файла, разделенного пробелами
+awk '{print $1, $3}' data.txt</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="users-groups">
+                <h2>3. Учетные записи в Linux и групповые политики</h2>
+                <p>Как мы уже знаем, основа безопасности — это управление пользователями. Каждый пользователь имеет уникальный ID (UID), а каждая группа — GID. Суперпользователь `root` всегда имеет UID 0.</p>
+                <div class="pro-tip-box">
+                    <p><strong>Важные файлы:</strong><br>
+                    • <code>/etc/passwd</code>: Список пользователей (логин, UID, GID, домашняя папка, оболочка).<br>
+                    • <code>/etc/shadow</code>: Хэши паролей пользователей. Доступен для чтения только root.<br>
+                    • <code>/etc/group</code>: Список групп и их членов.<br>
+                    • <code>/etc/sudoers</code>: Файл, определяющий, кто и какие команды может выполнять через `sudo`.</p>
+                </div>
+                <h3>Примеры управления</h3>
+                 <div class="code-block">
+                    <code># Создать пользователя, сразу добавив его в группу 'www-data' и задав ему оболочку /bin/bash
+sudo useradd -m -g users -G www-data -s /bin/bash newuser
+
+# Заблокировать учетную запись пользователя
+sudo usermod -L newuser
+
+# Разблокировать учетную запись
+sudo usermod -U newuser</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <p>Редактировать файл `sudoers` напрямую опасно. Всегда используйте команду <code>sudo visudo</code>, которая проверит синтаксис перед сохранением.</p>
+            </section>
+            
+            <section id="access-privileges">
+                <h2>4. Управление доступом и привилегиями</h2>
+                <p>Помимо стандартных прав `rwx`, существуют <strong>специальные права доступа</strong>, которые дают файлам временные суперспособности.</p>
+                <table>
+                  <thead><tr><th>Право</th><th>Описание</th><th>Пример</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>SUID</strong> (Set User ID)</td><td>При запуске файл выполняется с правами <strong>владельца</strong> файла, а не того, кто его запустил.</td><td>Команда `passwd`. Обычный пользователь может ее запустить, и она временно получит права `root`, чтобы изменить защищенный файл `/etc/shadow`.</td></tr>
+                    <tr><td><strong>SGID</strong> (Set Group ID)</td><td>При запуске файл выполняется с правами <strong>группы</strong> файла. Если установлено на директорию, все новые файлы в ней будут наследовать группу директории.</td><td>Директория проекта, где все файлы должны принадлежать группе `developers`.</td></tr>
+                    <tr><td><strong>Sticky Bit</strong></td><td>Устанавливается на директории. Позволяет всем создавать файлы, но удалять файл может только его владелец (или root).</td><td>Директория `/tmp`. Любой может создать временный файл, но не может удалить чужой.</td></tr>
+                  </tbody>
+                </table>
+                 <div class="code-block">
+                    <code># Установить SUID бит на программу (опасно!)
+sudo chmod u+s /usr/local/bin/my_app
+
+# Установить SGID на директорию проекта
+sudo chmod g+s /var/www/project
+
+# Установить Sticky Bit
+sudo chmod +t /shared_folder</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="io-pipelines">
+                <h2>5. Управление вводом/выводом и конвейерная обработка</h2>
+                <p>Это сердце философии UNIX: "Пишите программы, которые делают что-то одно и делают это хорошо. Пишите программы, которые бы работали вместе". Конвейер `|` — это клей, который соединяет эти программы.</p>
+                <p>У каждого процесса есть три стандартных потока:</p>
+                <ul>
+                    <li><code>stdin</code> (0) - стандартный ввод (обычно клавиатура).</li>
+                    <li><code>stdout</code> (1) - стандартный вывод (обычно экран).</li>
+                    <li><code>stderr</code> (2) - стандартный вывод ошибок (обычно экран).</li>
+                </ul>
+                 <div class="code-block">
+                    <code># Найти 5 самых больших файлов в системе и вывести их
+# du -> sort -> head
+sudo du -ah / 2>/dev/null | sort -rh | head -n 5
+
+# Объяснение:
+# sudo du -ah / : Показать размеры всех файлов, начиная с корня.
+# 2>/dev/null : Перенаправить все ошибки (stderr) в "черную дыру", чтобы они не мешали.
+# | sort -rh : Отсортировать вывод по-человечески (h) и в обратном порядке (r).
+# | head -n 5 : Взять только первые 5 строк.</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="boot-process">
+                <h2>6. Загрузка ядра Linux и запуск User Space</h2>
+                <p>Что происходит, когда вы нажимаете кнопку питания? Это сложный, но строго регламентированный процесс.</p>
+                <pre class="ascii-diagram">
+1. BIOS/UEFI -> 2. Bootloader (GRUB) -> 3. Kernel -> 4. init (systemd)
+                </pre>
+                <ol>
+                    <li><strong>BIOS/UEFI:</strong> Прошивка на материнской плате, которая проводит самотестирование (POST) и находит загрузочное устройство.</li>
+                    <li><strong>Bootloader (GRUB2):</strong> Маленькая программа, которая находится в самом начале диска. Ее задача — загрузить ядро Linux в оперативную память. GRUB позволяет выбрать, какую ОС или какое ядро загружать.</li>
+                    <li><strong>Kernel:</strong> Ядро инициализируется, определяет все оборудование, монтирует корневую файловую систему в режиме "только чтение".</li>
+                    <li><strong>init (systemd):</strong> Ядро запускает самый первый процесс с PID=1. В современных системах это `systemd`. С этого момента начинается <strong>запуск User Space</strong>. `systemd` читает свои конфигурационные файлы (`.service`, `.target`) и последовательно запускает все необходимые системные службы: сеть, графический интерфейс, SSH-сервер и т.д.</li>
+                </ol>
+            </section>
+            
+            <section id="process-management">
+                <h2>7. Управление процессами</h2>
+                <p>Мы уже знаем, как "убивать" процессы. Давайте научимся управлять ими более тонко.</p>
+                <ul>
+                    <li><strong>Приоритеты:</strong> Команда <code>nice</code> позволяет запустить процесс с пониженным приоритетом (чтобы он не мешал более важным задачам). <code>renice</code> позволяет изменить приоритет уже запущенного процесса.</li>
+                    <li><strong>Фоновый режим:</strong> Добавив `&` в конце команды, вы запустите ее в фоновом режиме, и терминал сразу освободится. Команда <code>jobs</code> покажет фоновые задачи, а <code>fg</code> вернет задачу на передний план.</li>
+                </ul>
+                <div class="code-block">
+                    <code># Запустить ресурсоемкое сжатие архива с низким приоритетом
+nice -n 19 tar -czf backup.tar.gz /large_directory
+
+# Сделать уже запущенный процесс с PID 4567 менее приоритетным
+sudo renice -n 10 -p 4567
+
+# Запустить скрипт в фоне
+./my_script.sh &</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="system-management">
+                <h2>8. Управление системой (Systemd)</h2>
+                <p><code>systemd</code> — это не просто `init`, это целый комплекс для управления системой. Его основная единица — `unit`. Юниты бывают разных типов: `.service` (службы), `.target` (группы юнитов, аналоги "уровней запуска"), `.mount` (точки монтирования) и другие.</p>
+                <div class="pro-tip-box">
+                    <p>Файлы юнитов, которые вы создаете или изменяете, должны лежать в <code>/etc/systemd/system/</code>. Не трогайте системные юниты в <code>/lib/systemd/system/</code>.</p>
+                </div>
+                 <div class="code-block">
+                    <code># Посмотреть все запущенные юниты типа 'service'
+systemctl list-units --type=service --state=running
+
+# Посмотреть, от каких юнитов зависит сетевой сервис
+systemctl list-dependencies network.target
+
+# Перезагрузить конфигурацию systemd после создания нового юнита
+sudo systemctl daemon-reload</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="package-management">
+                <h2>9. Установка и удаление программ (APT)</h2>
+                <p>APT (Advanced Package Tool) — мощная система управления пакетами в Debian-based дистрибутивах (включая Ubuntu). Он работает с файлами `.deb`.</p>
+                <div class="code-block">
+                    <code># Установить Nginx
+sudo apt install nginx
+
+# Удалить Nginx, но оставить его конфигурационные файлы
+sudo apt remove nginx
+
+# Удалить Nginx ПОЛНОСТЬЮ, включая конфиги
+sudo apt purge nginx
+
+# Почистить локальный кэш скачанных пакетов
+sudo apt clean
+
+# Удалить пакеты, которые были установлены как зависимости, но больше не нужны
+sudo apt autoremove</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="logging-monitoring">
+                <h2>10. Логирование и мониторинг</h2>
+                <p>Хороший администратор не ждет, пока система сломается. Он постоянно следит за ее "пульсом".</p>
+                <h3>Ключевые утилиты мониторинга:</h3>
+                <ul>
+                    <li><code>htop</code>: Интерактивный монитор процессов (лучше, чем <code>top</code>).</li>
+                    <li><code>df -h</code>: Показывает свободное место на дисках.</li>
+                    <li><code>du -sh *</code>: Показывает размеры файлов и папок в текущей директории.</li>
+                    <li><code>free -h</code>: Показывает использование оперативной памяти и swap.</li>
+                    <li><code>ss -tuln</code>: Показывает, какие сетевые порты открыты и слушают соединения.</li>
+                </ul>
+                <p>Логи — это ваша машина времени. <code>journalctl</code> — основной инструмент. Он позволяет фильтровать логи по времени, по сервису, по уровню приоритета (ошибки, предупреждения).</p>
+                <div class="code-block">
+                    <code># Показать все ошибки (priority 3) с начала текущего дня
+journalctl -p 3 --since "today"</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="security-mechanisms">
+                <h2>11. Механизмы управления безопасностью</h2>
+                <p>Помимо прав доступа, в Linux есть и более продвинутые механизмы.</p>
+                <ul>
+                    <li><strong>Firewall (UFW):</strong> Uncomplicated Firewall — простая "обертка" над сложным `iptables`. Позволяет легко настраивать правила для сетевого трафика.</li>
+                    <li><strong>SSH Hardening:</strong> Защита удаленного доступа. Ключевые меры: отключение входа для `root`, использование только ключевой аутентификации (отключение паролей), смена стандартного порта 22.</li>
+                    <li><strong>AppArmor / SELinux:</strong> Mandatory Access Control (MAC) системы. Они создают жесткие профили для каждой программы, определяя, к каким файлам и ресурсам она может обращаться, даже если запущена от имени `root`. Это сложная, но очень мощная защита.</li>
+                </ul>
+                 <div class="code-block">
+                    <code># Пример базовой настройки UFW
+sudo ufw allow ssh      # Разрешить подключения по SSH
+sudo ufw allow http     # Разрешить HTTP
+sudo ufw allow https    # Разрешить HTTPS
+sudo ufw enable         # Включить файрвол</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="backup-restore">
+                <h2>12. Резервное копирование и восстановление данных</h2>
+                <p><strong>Правило бэкапа 3-2-1:</strong> <strong>3</strong> копии данных, на <strong>2</strong> разных носителях, <strong>1</strong> из которых находится в другом географическом месте.</p>
+                <p>Автоматизация — ключ к надежным бэкапам. Для этого используется планировщик задач <strong>cron</strong>.</p>
+                <p>Команда <code>sudo crontab -e</code> открывает файл с расписанием задач для `root`. Каждая строка имеет формат: `минута час день_месяца месяц день_недели команда`.</p>
+                <div class="code-block">
+                    <code># Пример строки в crontab:
+# Каждый день в 2:30 ночи запускать скрипт для резервного копирования
+30 2 * * * /usr/local/bin/backup_script.sh</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <p>Сам скрипт `backup_script.sh` может содержать команды `rsync` для копирования данных, `tar` для архивации и `mysqldump` для бэкапа баз данных.</p>
+                <div class="info-box">
+                    <p>Восстановление — это просто `rsync` в обратную сторону. Но перед восстановлением всегда делайте бэкап текущего состояния, на случай если что-то пойдет не так!</p>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Cortex Academy. Знания — это свобода.</p>
+    </footer>
+
+    <script src="/hack.js"></script>
+</body>
+</html>

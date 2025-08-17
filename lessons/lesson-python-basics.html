@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок 7: Основы Python. Часть 1 - Cortex Academy</title>
+    <link rel="stylesheet" href="/hack.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+
+    <header>
+        <div class="logo">Cortex X</div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="courses.html">Программа</a>
+            <a href="#">Войти</a>
+        </nav>
+    </header>
+
+    <div class="lesson-hero">
+        <div class="lesson-hero-content">
+            <span class="lesson-meta">Модуль 3 • Урок 7</span>
+            <h1>Основы Python: Язык для взлома и защиты</h1>
+            <p>Освойте главный инструмент для автоматизации задач в кибербезопасности. От переменных и циклов до написания вашей первой полноценной функции.</p>
+        </div>
+    </div>
+
+    <main class="lesson-container">
+        <!-- Боковая навигация по уроку -->
+        <aside class="lesson-nav">
+            <h3>Содержание урока</h3>
+            <ul>
+                <li><a href="#intro" class="nav-link active">1. Введение: Зачем Python?</a></li>
+                <li><a href="#basics" class="nav-link">2. Основы: Переменные и Типы данных</a></li>
+                <li><a href="#operators" class="nav-link">3. Операторы и выражения</a></li>
+                <li><a href="#conditions" class="nav-link">4. Условные операторы: if/elif/else</a></li>
+                <li><a href="#for-loop" class="nav-link">5. Цикл For: Перебор всего</a></li>
+                <li><a href="#while-loop" class="nav-link">6. Цикл While и вложенные циклы</a></li>
+                <li><a href="#numbers" class="nav-link">7. Работа с числами: int/float</a></li>
+                <li><a href="#functions" class="nav-link">8. Функции: Строительные блоки</a></li>
+                <li><a href="#task" class="nav-link">9. Практика: Пишем свой сканер</a></li>
+            </ul>
+        </aside>
+
+        <!-- Основной контент урока -->
+        <article class="lesson-content">
+            <section id="intro">
+                <h2>1. Введение: Зачем Python специалисту по кибербезопасности?</h2>
+                <p>Python — это язык №1 в мире кибербезопасности. Почему? Потому что он позволяет невероятно быстро превращать идеи в работающие инструменты. Вам не нужно тратить недели на написание сложного кода на C++. На Python вы можете написать простой сканер портов или скрипт для брутфорса за 15 минут.</p>
+                <p><strong>Где используется Python в нашей сфере:</strong></p>
+                <ul>
+                    <li><strong>Автоматизация рутины:</strong> Написание скриптов для сканирования сетей, сбора информации, анализа логов.</li>
+                    <li><strong>Написание эксплойтов:</strong> Быстрое прототипирование и написание PoC (Proof of Concept) для уязвимостей.</li>
+                    <li><strong>Анализ вредоносного ПО:</strong> Разбор и анализ поведения вирусов.</li>
+                    <li><strong>Веб-скрапинг и OSINT:</strong> Автоматический сбор информации из открытых источников.</li>
+                    <li><strong>Работа с сетью:</strong> Анализ и создание сетевых пакетов с помощью библиотек вроде Scapy.</li>
+                </ul>
+                <p><strong>Установка:</strong> Перейдите на <a href="https://www.python.org/downloads/" target="_blank">официальный сайт Python</a>, скачайте и установите последнюю версию. При установке на Windows обязательно поставьте галочку "Add Python to PATH". Проверить установку можно в терминале:</p>
+                <div class="code-block">
+                    <code>python --version</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+
+            <section id="basics">
+                <h2>2. Основы: Переменные и Типы данных</h2>
+                <p><strong>Переменная</strong> — это именованный контейнер для хранения данных. Вы даете имя, кладете в него значение, и потом можете это значение использовать или изменять.</p>
+                <div class="pro-tip-box">
+                    <p>Python — язык с динамической типизацией. Это значит, что вам не нужно объявлять тип переменной. Интерпретатор сам поймет, что вы в нее положили.</p>
+                </div>
+                <h3>Основные типы данных:</h3>
+                <ul>
+                    <li><strong>str (строка):</strong> Текст. Заключается в одинарные <code>'</code> или двойные <code>"</code> кавычки.<br><code>target_ip = "192.168.1.1"</code></li>
+                    <li><strong>int (целое число):</strong> <code>port = 80</code></li>
+                    <li><strong>float (число с плавающей точкой):</strong> <code>version = 2.1</code></li>
+                    <li><strong>bool (булево значение):</strong> Только <code>True</code> или <code>False</code> (с большой буквы!).<br><code>is_open = True</code></li>
+                </ul>
+                 <div class="code-block">
+                    <code># Создаем переменные разных типов
+target_host = "scanme.nmap.org"
+port_to_scan = 443
+scan_timeout = 5.5
+verbose_mode = True
+
+# Выводим значения и их типы
+print(f"Цель: {target_host}, Тип: {type(target_host)}")
+print(f"Порт: {port_to_scan}, Тип: {type(port_to_scan)}")</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <p>Конструкция <code>f"..."</code> называется f-строкой. Это самый современный и удобный способ форматирования строк в Python.</p>
+            </section>
+            
+            <section id="operators">
+                <h2>3. Операторы и выражения</h2>
+                <p>Операторы — это символы, которые выполняют операции над переменными и значениями.</p>
+                <h3>Арифметические операторы:</h3>
+                <p><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> (деление), <code>//</code> (целочисленное деление), <code>%</code> (остаток от деления), <code>**</code> (возведение в степень).</p>
+                <h3>Операторы сравнения:</h3>
+                <p><code>==</code> (равно), <code>!=</code> (не равно), <code>></code>, <code><</code>, <code>>=</code>, <code><=</code>. Результат всегда <code>True</code> или <code>False</code>.</p>
+                <h3>Логические операторы:</h3>
+                <p><code>and</code> (логическое И), <code>or</code> (логическое ИЛИ), <code>not</code> (логическое НЕ). Используются для комбинирования условий.</p>
+                <div class="code-block">
+                    <code>port = 80
+is_encrypted = False
+
+# Проверить, является ли порт стандартным веб-портом
+if port == 80 or port == 443:
+    print("Это веб-порт")
+
+# Проверить, является ли соединение небезопасным
+if port == 80 and not is_encrypted:
+    print("ВНИМАНИЕ: Небезопасное HTTP соединение!")</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+
+            <section id="conditions">
+                <h2>4. Условный оператор: if / elif / else</h2>
+                <p>Это основа логики любой программы. Конструкция `if` позволяет выполнять код только при выполнении определенного условия.</p>
+                <div class="warning-box">
+                    <p><strong>Внимание на отступы!</strong> В Python блоки кода определяются не фигурными скобками, а отступами (обычно 4 пробела). Это строгое правило. Неправильный отступ — синтаксическая ошибка.</p>
+                </div>
+                <ul>
+                    <li><strong>if:</strong> Проверяет первое условие. Если оно истинно, выполняет блок кода и выходит.</li>
+                    <li><strong>elif (else if):</strong> Если `if` ложно, проверяет это условие. `elif` блоков может быть сколько угодно.</li>
+                    <li><strong>else:</strong> Если все предыдущие условия ложны, выполняется этот блок.</li>
+                </ul>
+                <div class="code-block">
+                    <code># Простой анализатор портов
+port = 22
+
+if port == 21:
+    print("Обнаружен FTP-сервер.")
+elif port == 22:
+    print("Обнаружен SSH-сервер. Проверьте безопасность!")
+elif port == 80:
+    print("Обнаружен HTTP веб-сервер.")
+elif port == 443:
+    print("Обнаружен HTTPS веб-сервер.")
+else:
+    print(f"Неизвестный сервис на порту {port}.")</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+
+            <section id="for-loop">
+                <h2>5. Цикл For: Перебор всего</h2>
+                <p>Цикл <code>for</code> — это ваш главный инструмент для итерации. Он позволяет "пройтись" по любому итерируемому объекту (строке, списку, диапазону чисел) и выполнить действие для каждого его элемента.</p>
+                <h3>Перебор диапазона чисел с `range()`</h3>
+                <p>Функция <code>range(start, stop, step)</code> генерирует последовательность чисел. <code>stop</code> не включается в диапазон!</p>
+                <div class="code-block">
+                    <code># Сканируем "хорошо известные" порты от 1 до 1024
+print("Начинаем сканирование...")
+for port in range(1, 1025):
+    # Здесь будет логика сканирования
+    print(f"Сканирую порт {port}...")
+print("Сканирование завершено.")</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+
+                <h3>Перебор символов в строке</h3>
+                <p>Строка — это тоже последовательность. Цикл `for` может пройтись по каждому ее символу.</p>
+                <div class="code-block">
+                    <code>password_hash = "5f4dcc3b5aa765d61d8327deb882cf99"
+allowed_chars = "0123456789abcdef"
+
+for char in password_hash:
+    if char not in allowed_chars:
+        print(f"Ошибка: хэш содержит недопустимый символ '{char}'!")
+        break # Прерываем цикл</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="while-loop">
+                <h2>6. Цикл While и вложенные циклы</h2>
+                <h3>Цикл `while`</h3>
+                <p>Цикл `while` выполняется до тех пор, пока его условие истинно. Он идеален, когда вы не знаете заранее, сколько итераций потребуется.</p>
+                <div class="warning-box">
+                    <p>Следите за условием выхода! Если условие никогда не станет ложным, вы получите бесконечный цикл, и программа зависнет.</p>
+                </div>
+                <div class="code-block">
+                    <code># Простая симуляция подбора пароля
+attempts = 0
+max_attempts = 1000
+
+while attempts < max_attempts:
+    print(f"Попытка №{attempts + 1}...")
+    # Здесь была бы логика проверки пароля
+    attempts += 1 # <- Критически важная строка, изменяющая условие!
+
+print("Достигнут лимит попыток.")</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                
+                <h3>Вложенные циклы</h3>
+                <p>Это цикл внутри другого цикла. Они используются для перебора комбинаций. Классический пример в кибербезопасности — брутфорс по словарю.</p>
+                 <div class="code-block">
+                    <code># Брутфорс по маленьким словарям
+logins = ["admin", "root", "user"]
+passwords = ["12345", "password", "qwerty"]
+
+for login in logins:
+    for password in passwords:
+        print(f"Пробую комбинацию: {login}:{password}")
+        # Здесь была бы логика отправки запроса на аутентификацию</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
+            
+            <section id="numbers">
+                <h2>7. Работа с числами: int/float и их особенности</h2>
+                <p>Мы уже знакомы с типами <code>int</code> и <code>float</code>. Но у `float` есть важная особенность, о которой нужно знать.</p>
+                <p>Компьютеры хранят числа в двоичной системе, и некоторые десятичные дроби (например, 0.1) не могут быть представлены точно. Это приводит к микроскопическим ошибкам округления.</p>
+                 <div class="code-block">
+                    <code># Этот код выведет False, что может удивить!
+print(0.1 + 0.2 == 0.3) 
+# Вывод: False
+
+# Потому что реальный результат будет примерно 0.30000000000000004
+print(0.1 + 0.2)</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <div class="info-box">
+                    <p>Для большинства задач в нашей сфере эта точность не критична. Но если вы работаете с криптографией или финансовыми расчетами, нужно использовать специальный модуль `Decimal` для точных вычислений.</p>
+                </div>
+                <p>Преобразование типов делается просто: <code>int()</code>, <code>float()</code>, <code>str()</code>.</p>
+                <code>user_input = "8080"</code><br>
+                <code>port_number = int(user_input) # Превращаем строку в число</code>
+            </section>
+            
+            <section id="functions">
+                <h2>8. Функции: Строительные блоки ваших программ</h2>
+                <p>Функция — это именованный, многократно используемый блок кода, который выполняет определенную задачу. Функции — основа хорошего, читаемого и поддерживаемого кода. Принцип <strong>DRY (Don't Repeat Yourself)</strong> — Не повторяйся!</p>
+                <p>Функция определяется с помощью ключевого слова <code>def</code>. Она может принимать аргументы (входные данные) и возвращать результат с помощью <code>return</code>.</p>
+                <div class="code-block">
+                    <code># Определяем функцию для проверки порта
+def check_port_service(port_number):
+    """
+    Эта функция принимает номер порта и возвращает
+    название предполагаемого сервиса.
+    """
+    if port_number == 80:
+        return "HTTP"
+    elif port_number == 443:
+        return "HTTPS"
+    elif port_number == 22:
+        return "SSH"
+    else:
+        return "Unknown"
+
+# Используем (вызываем) нашу функцию
+service1 = check_port_service(80)
+service2 = check_port_service(9999)
+
+print(f"Сервис на порту 80: {service1}")
+print(f"Сервис на порту 9999: {service2}")</code>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <p>Текст в тройных кавычках называется <strong>docstring</strong> (строка документации). Это хорошая практика, объясняющая, что делает функция.</p>
+            </section>
+            
+            <section id="task">
+                <h2>9. Практика: Пишем свой первый инструмент</h2>
+                <p>Давайте объединим все, что мы выучили, и напишем простой, но полезный скрипт — сканер портов. Он будет проверять, какие из заданных портов "открыты" на целевом хосте.</p>
+                <p><strong>Задача:</strong> Написать скрипт, который:</p>
+                <ol>
+                    <li>Определяет целевой хост (IP-адрес или доменное имя) в переменной.</li>
+                    <li>Определяет список портов для сканирования (например, 21, 22, 80, 443, 8080).</li>
+                    <li>Использует цикл `for` для перебора портов из списка.</li>
+                    <li>Внутри цикла вызывает функцию `scan_port(host, port)`.</li>
+                    <li>Функция `scan_port` должна имитировать проверку (мы пока не умеем работать с сетью по-настоящему) и случайным образом возвращать `True` (порт открыт) или `False` (порт закрыт).</li>
+                    <li>Скрипт должен выводить на экран результат для каждого порта, используя конструкцию `if/else`.</li>
+                </ol>
+                <p>Это задание заставит вас использовать переменные, списки, циклы, функции и условные операторы — весь арсенал, который мы освоили сегодня.</p>
+                <div class="pro-tip-box">
+                    <p><strong>Подсказка:</strong> для случайного выбора используйте модуль `random`. В начале файла напишите <code>import random</code>, а в функции используйте <code>return random.choice([True, False])</code>.</p>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Cortex Academy. Знания — это свобода.</p>
+    </footer>
+
+    <script src="/hack.js"></script>
+</body>
+</html>
