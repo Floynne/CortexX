@@ -1,0 +1,146 @@
+:root {
+    --bg: #050505;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text: #ffffff;
+    --text-dim: #888888;
+    --accent: #f7a600;
+    --green: #2ebd85;
+    --red: #f6465d;
+    --glow: rgba(247, 166, 0, 0.3);
+}
+
+body {
+    margin: 0; padding: 0;
+    font-family: 'Lexend', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    height: 100vh;
+    transition: background 0.5s;
+}
+
+#bg-canvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+}
+
+.app-container {
+    max-width: 800px; margin: 0 auto; padding: 20px;
+    position: relative; z-index: 1;
+    transition: all 0.5s ease;
+}
+
+/* Header */
+header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 0; margin-bottom: 40px;
+    transition: opacity 0.5s;
+}
+.logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; }
+.highlight { color: var(--accent); }
+
+.icon-btn {
+    background: transparent; border: 1px solid var(--card-border); color: var(--text);
+    padding: 10px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; transition: 0.3s;
+    z-index: 100; /* Чтобы кнопка всегда была поверх */
+}
+.icon-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--glow); }
+
+/* Balance */
+.balance-section {
+    text-align: center; margin-bottom: 60px; position: relative;
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1); /* Плавная трансформация */
+}
+
+.label {
+    color: var(--text-dim); font-size: 0.9rem; letter-spacing: 3px;
+    text-transform: uppercase; transition: opacity 0.5s;
+}
+
+.balance-wrapper {
+    font-size: 5rem; font-weight: 700; margin: 10px 0;
+    text-shadow: 0 0 30px rgba(247, 166, 0, 0.1);
+    display: flex; justify-content: center; align-items: center;
+}
+
+.currency { color: var(--accent); margin-right: 10px; font-size: 3rem; transform: translateY(-10px); transition: all 0.8s; }
+.big-number { font-variant-numeric: tabular-nums; } /* Чтобы цифры не прыгали по ширине */
+
+.status-indicator {
+    font-size: 0.8rem; color: var(--green); display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(46, 189, 133, 0.1); padding: 5px 12px; border-radius: 20px;
+    transition: opacity 0.5s;
+}
+.dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
+
+/* Assets */
+.assets-container { transition: opacity 0.5s; }
+.assets-container h3 {
+    color: var(--text-dim); font-weight: 300;
+    border-bottom: 1px solid var(--card-border); padding-bottom: 10px; margin-bottom: 20px;
+}
+.assets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+
+.asset-card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 20px; backdrop-filter: blur(10px);
+    transition: transform 0.3s, border-color 0.3s;
+}
+.asset-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+.coin-header { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; }
+.coin-amt { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 15px; }
+.coin-val { font-size: 1.2rem; font-weight: 500; color: #fff; }
+
+/* Loader */
+.loader { grid-column: 1 / -1; text-align: center; color: var(--text-dim); margin-top: 30px; }
+
+/* --- MONITOR MODE (FULLSCREEN) --- */
+body.monitor-mode { overflow: hidden; }
+
+/* Скрываем всё лишнее */
+body.monitor-mode header .logo,
+body.monitor-mode .assets-container,
+body.monitor-mode .label,
+body.monitor-mode .status-indicator {
+    opacity: 0; pointer-events: none; position: absolute;
+}
+
+/* Кнопку оставляем, но делаем прозрачнее */
+body.monitor-mode #fullscreen-btn {
+    position: fixed; bottom: 30px; right: 30px; opacity: 0.2;
+}
+body.monitor-mode #fullscreen-btn:hover { opacity: 1; }
+
+/* Центрируем и увеличиваем баланс */
+body.monitor-mode .balance-section {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 100%; margin: 0; z-index: 10;
+}
+
+body.monitor-mode .balance-wrapper {
+    font-size: 15vw; /* Гигантский размер от ширины экрана */
+    margin: 0;
+}
+
+body.monitor-mode .currency {
+    font-size: 8vw;
+    margin-right: 2vw;
+    transform: translateY(-2vw);
+}
+
+/* Анимации вспышек */
+@keyframes flashGreen {
+    0% { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+    15% { color: var(--green); text-shadow: 0 0 50px var(--green); transform: scale(1.02); }
+    100% { color: #fff; transform: scale(1); }
+}
+
+@keyframes flashRed {
+    0% { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+    15% { color: var(--red); text-shadow: 0 0 50px var(--red); transform: scale(1.02); }
+    100% { color: #fff; transform: scale(1); }
+}
+
+@keyframes blink { 0% { opacity: 1; box-shadow: 0 0 5px var(--green); } 50% { opacity: 0.3; } 100% { opacity: 1; box-shadow: 0 0 5px var(--green); } }
+.flash-up { animation: flashGreen 1.2s cubic-bezier(0.25, 1, 0.5, 1); }
+.flash-down { animation: flashRed 1.2s cubic-bezier(0.25, 1, 0.5, 1); }

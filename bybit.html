@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bybit Floynne</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Фон -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="app-container">
+        
+        <header>
+            <div class="logo">BYBIT <span class="highlight">PRO</span></div>
+            <div class="controls">
+                <button id="fullscreen-btn" class="icon-btn" title="Monitor Mode">⛶</button>
+            </div>
+        </header>
+
+        <div class="balance-section">
+            <span class="label">NET WORTH</span>
+            <div class="balance-wrapper">
+                <span class="currency">$</span>
+                <span id="total-balance" class="big-number">0.00</span>
+            </div>
+            <div class="status-indicator">
+                <span class="dot"></span> Live Data
+            </div>
+        </div>
+
+        <div class="assets-container">
+            <h3>ASSETS ALLOCATION</h3>
+            <div id="assets-list" class="assets-grid">
+                <div class="loader">Waiting for blockchain...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
