@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Tracker | Premium</title>
+    <link rel="stylesheet" href="wallet.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ЭКРАН АВТОРИЗАЦИИ -->
+    <div id="auth-view" class="view-section active">
+        <div class="auth-card">
+            <div class="logo justify-center mb-6">
+                <i class="ph-fill ph-wallet"></i>
+                <span>FinTracker</span>
+            </div>
+            <h2 id="auth-title">Вход в аккаунт</h2>
+            <p class="subtitle mb-6 text-center" id="auth-subtitle">С возвращением! Введите данные.</p>
+            
+            <form id="auth-form">
+                <div class="form-group">
+                    <label>Имя пользователя (Логин)</label>
+                    <input type="text" id="username" required placeholder="Введите логин" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary w-100" id="auth-btn">Войти</button>
+            </form>
+            
+            <p class="auth-switch">
+                <span id="auth-switch-text">Нет аккаунта?</span> 
+                <button class="btn-text" onclick="toggleAuthMode()" id="auth-switch-btn">Создать</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- ОСНОВНОЕ ПРИЛОЖЕНИЕ -->
+    <div id="app-view" class="view-section">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="ph-fill ph-wallet"></i>
+                    <span>FinTracker</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn-icon" onclick="toggleTheme()" title="Сменить тему">
+                        <i class="ph ph-moon" id="theme-icon"></i>
+                    </button>
+                    <div class="profile-menu">
+                        <div class="profile-placeholder" id="user-avatar">А</div>
+                        <button class="btn-text text-muted" onclick="logout()">Выйти</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <section class="hero-section">
+                <p class="subtitle">Общий капитал</p>
+                <h1 id="total-balance" data-value="0">$0.00</h1>
+            </section>
+
+            <section class="actions">
+                <button class="btn btn-primary" onclick="openModal('income')">
+                    <i class="ph ph-arrow-down-left"></i> Пополнить
+                </button>
+                <button class="btn btn-secondary" onclick="openModal('expense')">
+                    <i class="ph ph-arrow-up-right"></i> Снять
+                </button>
+                <button class="btn btn-outline" onclick="openModal('usdt')">
+                    <i class="ph ph-currency-circle-dollar"></i> Купить USDT
+                </button>
+            </section>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="ph-fill ph-trend-up text-green"></i>
+                        <span>Заработано</span>
+                    </div>
+                    <h2 id="total-income" data-value="0">$0.00</h2>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="ph-fill ph-trend-down text-red"></i>
+                        <span>Потрачено</span>
+                    </div>
+                    <h2 id="total-expense" data-value="0">$0.00</h2>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="ph-fill ph-coin text-blue"></i>
+                        <span>Инвестиции USDT</span>
+                    </div>
+                    <h2 id="total-usdt" data-value="0">0.00 ₮</h2>
+                </div>
+            </section>
+
+            <section class="transactions-section">
+                <div class="section-header">
+                    <h3>История операций</h3>
+                </div>
+                
+                <div class="transactions-card">
+                    <ul id="transaction-list"></ul>
+                    <div id="empty-state" class="empty-state">
+                        <i class="ph ph-receipt"></i>
+                        <p>Здесь пока нет операций</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal-backdrop" id="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="modal-title">Новая операция</h2>
+                <button class="btn-icon" onclick="closeModal()"><i class="ph ph-x"></i></button>
+            </div>
+            
+            <form id="transaction-form">
+                <input type="hidden" id="type">
+                
+                <div class="form-group">
+                    <label>Сумма</label>
+                    <div class="input-wrapper">
+                        <span class="currency-symbol" id="currency-symbol">$</span>
+                        <input type="number" id="amount" step="0.01" required placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Категория</label>
+                    <select id="category" required>
+                        <option value="Зарплата">Зарплата</option>
+                        <option value="Фриланс">Фриланс</option>
+                        <option value="Крипта">Крипта</option>
+                        <option value="Покупки">Покупки</option>
+                        <option value="Трейдинг">Трейдинг</option>
+                        <option value="CS2">CS2</option>
+                        <option value="Игры">Игры</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Дата</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="wallet.js"></script>
+</body>
+</html>
