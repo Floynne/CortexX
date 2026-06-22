@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floynne | Developer & Gamer</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="./favicon.ico" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body class="loading">
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <div class="bg-glow"></div>
+
+    <header>
+        <div class="logo">FLOYNNE<span class="accent">.</span></div>
+        <nav>
+            <a href="#projects" class="hover-target">Проекты</a>
+            <a href="blog.html" class="hover-target">Блог / Статьи</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1 class="massive-title fade-up">Floynne<span class="accent">.</span></h1>
+            
+            <h2 class="typewriter-container fade-up delay-1">
+                I am a <span id="typewriter" class="accent"></span><span class="blink-cursor">|</span>
+            </h2>
+
+            <p class="subtitle fade-up delay-2">
+                Создаю чистое будущее, пишу код, ломаю игры. Минималистичный дизайн и бескомпромиссная производительность.
+            </p>
+
+            <!-- Ссылки на соцсети -->
+            <div class="social-links fade-up delay-3">
+                <a href="mailto:floynnee@gmail.com" class="social-link hover-target">Email</a>
+                <a href="https://t.me/floynnee" class="social-link hover-target" target="_blank">Telegram</a>
+                <a href="https://www.youtube.com/@Floynne" class="social-link hover-target" target="_blank">YouTube</a>
+                <a href="https://www.twitch.tv/floynne" class="social-link hover-target" target="_blank">Twitch</a>
+                <a href="https://discord.gg/dgM6nujKZb" class="social-link hover-target" target="_blank">Discord</a>
+                <a href="https://steamcommunity.com/id/floynne" class="social-link hover-target" target="_blank">Steam</a>
+            </div>
+
+            <div class="fade-up delay-4" style="margin-top: 30px;">
+                <button class="btn btn-donate hover-target" onclick="openSupportModal()">
+                    ☕ Поддержать проект
+                </button>
+            </div>
+
+            <div class="scroll-indicator fade-up delay-4">
+                <span>Листай вниз</span>
+                <div class="mouse"><div class="wheel"></div></div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects-section">
+            <h2 class="section-title fade-up">Экосистема проектов</h2>
+            
+            <div class="projects-grid" id="cards">
+                
+                <!-- Проект 1: AmneziaVPN -->
+                <a href="project-vpn.html" class="card hover-target fade-up delay-1">
+                    <div class="card-border"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="card-tag">Network / VPN</span>
+                            <div class="card-arrow">↗</div>
+                        </div>
+                        <h3>AmneziaVPN Config</h3>
+                        <p>Регион: Москва. Обход белых списков, стабильный пинг в играх и шифрование. Настроен для работы без ограничений.</p>
+                    </div>
+                </a>
+
+                <!-- Проект 2: UCortex -->
+                <a href="project-ucortex.html" class="card hover-target fade-up delay-2">
+                    <div class="card-border"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="card-tag">Software / Downloader</span>
+                            <div class="card-arrow">↗</div>
+                        </div>
+                        <h3>UCortex</h3>
+                        <p>Минималистичный софт для скачивания программ напрямую. Никакой рекламы, никаких подписок — только чистый код.</p>
+                    </div>
+                </a>
+
+                <!-- Проект 3: Cortex Booster -->
+                <a href="project-booster.html" class="card hover-target fade-up delay-3">
+                    <div class="card-border"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="card-tag">Optimization / AI</span>
+                            <div class="card-arrow">↗</div>
+                        </div>
+                        <h3>Cortex Booster</h3>
+                        <p>Умная оптимизация ПК. Повышение FPS и стабилизация пинга в играх с использованием AI-алгоритмов.</p>
+                    </div>
+                </a>
+
+                <!-- Проект 4: Mail -->
+                <a href="project-mail.html" class="card hover-target fade-up delay-4">
+                    <div class="card-border"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="card-tag">Productivity / Client</span>
+                            <div class="card-arrow">↗</div>
+                        </div>
+                        <h3>Unified Mail</h3>
+                        <p>Почтовый клиент, который объединяет все твои ящики на ПК в одном строгом и быстром интерфейсе.</p>
+                    </div>
+                </a>
+
+                <!-- Проект 5: ulocker -->
+                <a href="project-ulocker.html" class="card hover-target fade-up delay-5">
+                    <div class="card-border"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="card-tag">Security / Rescue</span>
+                            <div class="card-arrow">↗</div>
+                        </div>
+                        <h3>uLocker</h3>
+                        <p>Экстренное восстановление ПК. Если вирусы или локеры блокируют систему — эта утилита вернет тебе контроль.</p>
+                    </div>
+                </a>
+
+                <!-- Проект 6: Cortex X -->
+                <a href="cortexx.html" class="card hover-target fade-up delay-5">
+                    <div class="card-border"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="card-tag">Site / Cortex X</span>
+                            <div class="card-arrow">↗</div>
+                        </div>
+                        <h3>Cortex X</h3>
+                        <p>Cortex X это сайт который предоставляет тебе множество инструментов. Полностью конфиденциальный т.к сохраняет данные в кэше твоего браузера</p>
+                    </div>
+                </a>
+
+                <!-- Проект 7: Coming Soon -->
+                <div class="card disabled-card fade-up delay-6">
+                    <div class="card-border"></div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="card-tag" style="border-color: #555; color: #555;">In Progress</span>
+                            <div class="card-arrow" style="color: #555;">...</div>
+                        </div>
+                        <h3 style="color: #888;">Coming soon</h3>
+                        <p>Пишу код, пью кофе. Скоро здесь появится что-то совершенно новое.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- НОВОЕ МОДАЛЬНОЕ ОКНО ДЛЯ ДОНАТОВ (Вставить перед <script src="script.js">) -->
+    <div class="modal-overlay" id="supportModal">
+        <div class="modal-content hover-target">
+            <span class="close-modal" onclick="closeSupportModal()">✖</span>
+            <span class="tag" style="margin-bottom: 10px; display: inline-block;">Donate / Support</span>
+            <h2 style="margin-bottom: 10px;">Поддержать автора</h2>
+            <p style="color: #888; margin-bottom: 30px; font-size: 0.9rem;">
+                Все средства идут на оплату серверов, развитие проектов и крепкий кофе. Кликни, чтобы скопировать.
+            </p>
+            
+            <!-- Реквизиты: Банки -->
+            <div class="support-item">
+                <span>💳 Т-Банк / Альфа-Банк (СБП)</span>
+                <div class="copy-box hover-target" onclick="copyToClipboard('+7 (995) 136-39-56', this)">
+                    +7 (995) 136-39-56
+                </div>
+            </div>
+
+            <!-- Реквизиты: Крипта USDT -->
+            <div class="support-item">
+                <span>🪙 USDT (TRC-20)</span>
+                <div class="copy-box hover-target" onclick="copyToClipboard('TYourCryptoWalletAddressHere999', this)">
+                    TYourCryptoWalletAddressHere999
+                </div>
+            </div>
+
+            <!-- Реквизиты: Крипта TON -->
+            <div class="support-item">
+                <span>💎 TON (The Open Network)</span>
+                <div class="copy-box hover-target" onclick="copyToClipboard('EQYourTonWalletAddressHere777', this)">
+                    EQYourTonWalletAddressHere777
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
