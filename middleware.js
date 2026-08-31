@@ -1,5 +1,5 @@
 // === НАСТРОЙКА ДОСТУПА ===
-const ACCESS_PASSWORD = 'YOUR_SECRET_PASSWORD'; // <-- Твой пароль для входа
+const ACCESS_PASSWORD = '556595access'; // <-- Твой пароль для входа
 const COOKIE_NAME = 'floynne_session_token';
 const COOKIE_VALUE = 'floynne_auth_verified_ok';
 
