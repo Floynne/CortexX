@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Даня & Лиза ❤️ 04.12.2022</title>
+  <link rel="stylesheet" href="love.css" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Конфетти -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- СПЛЭШ-СКРИН -->
+  <div id="splashScreen" class="splash-screen">
+    <div class="splash-box">
+      <div class="splash-heart-glow">💖</div>
+      <h2 class="splash-title">Даня & Лиза</h2>
+      <div class="splash-progress-track">
+        <div class="splash-progress-bar"></div>
+      </div>
+      <p class="splash-status">Загружаем нашу вселенную...</p>
+    </div>
+  </div>
+
+  <!-- КИНЕМАТОГРАФИЧНЫЙ ЭКРАН ПЕРЕХОДОВ («А ТЕПЕРЬ...») -->
+  <div id="transitionCurtain" class="transition-curtain">
+    <div class="curtain-inner">
+      <div class="curtain-icon" id="curtainIcon">✨</div>
+      <div class="curtain-subtitle">Готова? 💫</div>
+      <h3 class="curtain-title" id="curtainTitle">А теперь...</h3>
+    </div>
+  </div>
+
+  <!-- Аудио трек -->
+  <audio id="bgMusic" loop preload="auto" src="music.mp3"></audio>
+
+  <!-- Индикатор историй (динамический) -->
+  <div class="stories-header">
+    <div class="stories-timeline" id="storiesProgress"></div>
+    <div class="story-user-badge">
+      <span class="online-dot"></span>
+      <span class="user-txt">MazKey &bull; Alona</span>
+    </div>
+  </div>
+
+  <!-- Фоновые эффекты -->
+  <div class="space-ambient"></div>
+  <canvas id="starsCanvas"></canvas>
+  <div id="heartsLayer" class="hearts-layer"></div>
+
+  <!-- КОНТЕЙНЕР СЛАЙДОВ -->
+  <div class="story-viewport" id="storyViewport">
+
+    <!-- СЛАЙД 1: Обложка -->
+    <section class="story-slide active" data-slide="0">
+      <div class="slide-card text-center">
+        <div class="glow-orb">💖</div>
+        <span class="badge-pill neon shimmer-border">04.12.2022 &bull; 00:36:03</span>
+        <h1 class="hero-heading glow-text-anim">Солнышко, это для тебя</h1>
+        <p class="hero-caption">История о том, как случайная встреча в GTA 5 стала смыслом всей жизни...</p>
+        
+        <button class="btn-start pulse-btn" id="startBtn">
+          <span>Открыть нашу вселенную ✨</span>
+        </button>
+        <span class="music-tip">Я старался 👉👈</span>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 2: Точный таймер отношений -->
+    <section class="story-slide" data-slide="1">
+      <div class="slide-card">
+        <span class="badge-pill">Каждая секунда с тобой</span>
+        <h2 class="section-heading">4 года душа в душу</h2>
+        <p class="section-desc">Точное время, как я сломал все твои планы 😅:</p>
+
+        <div class="timer-display">
+          <div class="t-cell glass-card-glow"><span id="days">000</span><small>Дней</small></div>
+          <div class="t-cell glass-card-glow"><span id="hours">00</span><small>Часов</small></div>
+          <div class="t-cell glass-card-glow"><span id="minutes">00</span><small>Минут</small></div>
+          <div class="t-cell glass-card-glow"><span id="seconds">00</span><small>Секунд</small></div>
+        </div>
+
+        <div class="quote-pill glow-border-soft">
+          «Я знаю, что отношения на расстоянии — это фигня... Но ты сломал все мои планы» © Alona
+        </div>
+
+        <button class="btn-step" onclick="nextSlide()">Та самая ночь 04.12 👉</button>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 3: Интерактивный Discord Чат -->
+    <section class="story-slide" data-slide="2">
+      <div class="slide-card">
+        <span class="badge-pill discord">04.12.2022 &bull; 01:29</span>
+        <h2 class="section-heading">Как всё началось 💬</h2>
+        <p class="section-desc">Тот самый диалог, который изменил всё</p>
+
+        <div class="discord-card">
+          <div class="dc-top-bar">
+            <span class="dc-tag"># ночной-дискорд</span>
+            <span class="dc-time-label">04.12.2022</span>
+          </div>
+
+          <div class="dc-chat-stream" id="dcChatStream">
+            <div class="dc-msg-box show dc-anim-1">
+              <div class="dc-avi maz">M</div>
+              <div class="dc-msg-body">
+                <div class="dc-nick maz">MazKey <span class="dc-time">01:29</span></div>
+                <div class="dc-bubble">Тебе не нужен парень..?</div>
+              </div>
+            </div>
+
+            <div class="dc-msg-box show dc-anim-2">
+              <div class="dc-avi liza">A</div>
+              <div class="dc-msg-body">
+                <div class="dc-nick liza">Alona <span class="dc-time">01:29</span></div>
+                <div class="dc-bubble">Ну можно) почему бы и нет)</div>
+              </div>
+            </div>
+
+            <div class="dc-msg-box show dc-anim-3">
+              <div class="dc-avi maz">M</div>
+              <div class="dc-msg-body">
+                <div class="dc-nick maz">MazKey <span class="dc-time">01:30</span></div>
+                <div class="dc-bubble">Ура) ❤️</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-step" onclick="nextSlide()">Наши воспоминания 👉</button>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 4: Локальные мемы и цитаты -->
+    <section class="story-slide" data-slide="3">
+      <div class="slide-card">
+        <span class="badge-pill">Наш архив</span>
+        <h2 class="section-heading">Интересненькие моменты ✨</h2>
+        <p class="section-desc">Свайпай карточки вправо 👉</p>
+
+        <div class="memories-grid-scroll">
+          <div class="memory-item card-hover-fx">
+            <div class="mem-icon">🎙️</div>
+            <h4>«Ты картавишь?»</h4>
+            <p>— Ты картавишь? 😊<br>— Неееее!<br>— Дааа, как мило 🥰<br>— Неееееет!</p>
+          </div>
+
+          <div class="memory-item card-hover-fx">
+            <div class="mem-icon">🔒</div>
+            <h4>«Вывезу по характеру»</h4>
+            <p>— Ты не вывезешь меня по характеру.<br>— Вывезу!<br>И ведь вывез, и безумно люблю!</p>
+          </div>
+
+          <div class="memory-item card-hover-fx">
+            <div class="mem-icon">🏡</div>
+            <h4>Одноэтажный дом</h4>
+            <p>«4 комнаты, зал с кухней, гараж и баня» — я всё сделаю ради твоего комфорта и нашего будущего ❤️</p>
+          </div>
+
+          <div class="memory-item card-hover-fx">
+            <div class="mem-icon">💍</div>
+            <h4>Колечко</h4>
+            <p>— На колечко откладываю...!<br>— Ты у меня бесценный бриллиантик 🥺💍</p>
+          </div>
+
+          <div class="memory-item card-hover-fx">
+            <div class="mem-icon">👶</div>
+            <h4>Дочка Мила</h4>
+            <p>Хочу ребенка с твоими глазами 🥺... Если не с нашими — продаем их 😂</p>
+          </div>
+
+          <div class="memory-item card-hover-fx">
+            <div class="mem-icon">🌸</div>
+            <h4>Любимые пионы</h4>
+            <p>— Какие цветы тебе нравятся?<br>— Пионы.<br>— Они точно не из золота? 😂</p>
+          </div>
+
+          <div class="memory-item card-hover-fx">
+            <div class="mem-icon">🥯</div>
+            <h4>Булочка & Домовёнок</h4>
+            <p>Твои сонные видео-кружочки, милое ворчание и то, как ты греешь душу даже сквозь километры.</p>
+          </div>
+        </div>
+
+        <button class="btn-step" onclick="nextSlide()">Наши ночи в играх 👉</button>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 5: Игры и ночные звонки -->
+    <section class="story-slide" data-slide="4">
+      <div class="slide-card">
+        <span class="badge-pill">Голос в наушниках</span>
+        <h2 class="section-heading">Сотни ночей вместе 🎧</h2>
+        <p class="section-desc">Через экран, но ближе, чем кто-либо рядом</p>
+
+        <div class="games-visual-card">
+          <div class="game-tag-row">
+            <span class="gt radmir">Radmir GTA 5 RP</span>
+            <span class="gt portal">Portal 2</span>
+            <span class="gt bunny">Super Bunny Man</span>
+            <span class="gt forest">The Forest</span>
+            <span class="gt repo">Repo</span>
+            <span class="gt grnd">Grounded</span>
+          </div>
+
+          <div class="call-mockup">
+            <div class="call-avatar-wrap">
+              <div class="c-avatar">Л</div>
+              <div class="ring-anim"></div>
+            </div>
+            <div class="call-info">
+              <div class="c-name">Лиза ❤️</div>
+              <div class="c-status">Звонок длится: 4 года...</div>
+            </div>
+          </div>
+          <p class="call-caption">Засыпать под твой голос в наушниках — моя любимая привычка.</p>
+        </div>
+
+        <button class="btn-step" onclick="nextSlide()">Мое сердце из фото 👉</button>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 6: Большое Сердце с поочередной прорисовкой -->
+    <section class="story-slide" data-slide="5">
+      <div class="slide-card">
+        <span class="badge-pill">Моя галерея</span>
+        <h2 class="section-heading">Каждая частичка — ты ❤️</h2>
+        <p class="section-desc">Нажми на любое фото, чтобы рассмотреть ближе</p>
+
+        <!-- Плотное многослойное сердце -->
+        <div class="giant-layered-heart" id="giantHeartGrid"></div>
+
+        <button class="btn-step" onclick="nextSlide()">Тебе письмо 💌</button>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 7: Интерактивное Письмо -->
+    <section class="story-slide" data-slide="6">
+      <div class="slide-card">
+        <span class="badge-pill">Сокровенное</span>
+        <h2 class="section-heading">Письмо для Тебя 💌</h2>
+
+        <div class="envelope-box" id="loveEnvelope">
+          <div class="wax-seal">💖</div>
+          <div class="env-flap"></div>
+          <div class="env-pocket"></div>
+          <div class="env-letter">
+            <div class="letter-scroll-body">
+              <p class="letter-handwritten">
+                Моя любимая Зайка, самая родная Булочка моя! ❤️<br><br>
+                Помнишь ту ночь — 4 декабря 2022 года в 01:29? Мы сидели на Радмире, и я с замиранием сердца спросил: «Тебе не нужен парень..?», а ты с улыбкой ответила: «Ну можно) почему бы и нет)». Тогда я даже представить не мог, что за этим простым ответом начнется самая прекрасная история в моей жизни, а ты станешь для меня целым миром.<br><br>
+                За эти 4 года мы прошли через столько всего: тысячи часов звонков в Дискорде и ТГ, наши игры до самого рассвета, глупые обиды, точки в сообщениях и километры между городами. Но сквозь любые преграды и проверки временем я всегда знал одно — ближе и роднее тебя у меня никого нет.<br><br>
+                Каждый раз, когда ты устаешь на работе, когда тебе тяжело или грустно — мне больше всего на свете хочется оказаться рядом. Сварить тебе горячее какао, укрыть пледом, принести охапку твоих любимых пионов и просто крепко-крепко прижать к себе, забрав всю твою усталость.<br><br>
+                Я обещаю тебе: всё то, о чем мы мечтаем — наш одноэтажный дом, гараж, баня, дочка Мила с нашими глазами и наше общее будущее — обязательно сбудется. И главное: день, когда между нами больше не будет экрана телефона, уже совсем близко.<br><br>
+                Я приеду, посмотрю в твои самые красивые глаза, нежно возьму за руку и надену на твой пальчик то самое заветное колечко 💍.<br><br>
+                Спасибо тебе за каждый день. Ты — мой самый бесценный бриллиантик.<br><br>
+                <strong>Безумно люблю тебя, навсегда твой Даня ❤️</strong>
+                </p>
+            </div>
+          </div>
+        </div>
+        <span class="tap-hint-txt">Нажми на конверт, чтобы прочитать</span>
+
+        <button class="btn-step" onclick="nextSlide()">Главный вопрос 💍</button>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 8: Финал и Убегающая кнопка -->
+    <section class="story-slide" data-slide="7">
+      <div class="slide-card text-center">
+        <div class="final-ring-anim">💍</div>
+        <h2 class="final-title">Ты дождешься нашей встречи в жизни и будешь моей навсегда?</h2>
+        <p class="final-hint">Попробуй нажать «Нет», если осмелишься 😉</p>
+
+        <!-- Арена кнопок -->
+        <div class="btn-arena" id="arenaBox">
+          <button id="yesBtn" class="vote-btn yes-style">ДА! БЕЗУСЛОВНО ❤️</button>
+          <button id="noBtn" class="vote-btn no-style">Нет 😜</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Модалка зума фото -->
+  <div id="photoZoomModal" class="zoom-modal">
+    <span class="modal-close-btn">&times;</span>
+    <img id="zoomImgTarget" src="" alt="Zoomed memory" />
+  </div>
+
+  <script src="love.js"></script>
+</body>
+</html>
