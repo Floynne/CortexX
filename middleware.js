@@ -249,7 +249,7 @@ function getLockscreenHTML() {
             <div id="error" class="error-msg"></div>
         </form>
 
-        <a href="/blog.html" class="public-link">Перейти в блог / статьи ↗</a>
+        // <a href="/blog.html" class="public-link">Перейти в блог / статьи ↗</a>
     </div>
 
     <script>
