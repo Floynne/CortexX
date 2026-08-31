@@ -131,8 +131,8 @@ function goToSlide(idx) {
       setTimeout(() => {
         curtain.classList.remove('show');
         isTransitioning = false;
-      }, 450);
-    }, 800);
+      }, 1450);
+    }, 1800);
     return;
   }
 
